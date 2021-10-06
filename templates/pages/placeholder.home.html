@@ -1,10 +1,22 @@
-{% extends 'layouts/main.html' %}
-{% block title %}Home{% endblock %}
-{% block content %}
+{% extends 'layouts/main.html' %} {% block title %}Home{% endblock %} {% block
+content %}
 
-<div class="page-header">
-  <h1>Sticky footer with fixed navbar</h1>
+<div>
+  <!-- <div class="page-header"> -->
+  <h1>Aplicación de gestión de citas y usuarios</h1>
 </div>
-<p class="lead">Pin a fixed-height footer to the bottom of the viewport in desktop browsers with this custom HTML and CSS. A fixed navbar has been added within <code>#wrap</code> with <code>padding-top: 60px;</code> on the <code>.container</code>.</p>
+
+<img
+  src='{{ url_for("static", filename="img/hospital.jpg")}}'
+  alt=""
+  width="900px"
+/>
+
+<p>
+  <!-- <p class="lead"> -->
+  Bienvenido a la Oficina virtual de información. En este portal puede acceder
+  al sistema de citas del hospital. Ingrese sus credenciales para acceder. Si
+  aún no se ha dado de alta, pulse Registro.
+</p>
 
 {% endblock %}

@@ -2,11 +2,12 @@
 # Imports
 #----------------------------------------------------------------------------#
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session, flash
 # from flask.ext.sqlalchemy import SQLAlchemy
 import logging
 from logging import Formatter, FileHandler
 from forms import *
+from markupsafe import escape
 import os
 
 #----------------------------------------------------------------------------#
@@ -42,6 +43,8 @@ def login_required(test):
 
 
 @app.route('/')
+@app.route('/index/')
+@app.route('/home/')
 def home():
     return render_template('pages/placeholder.home.html')
 
@@ -97,11 +100,11 @@ if not app.debug:
 
 # Default port:
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
 
 # Or specify port manually:
 '''
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=port, debug=True)
 '''
