@@ -71,7 +71,7 @@ def forgot():
     form = ForgotForm(request.form)
     return render_template('forms/forgot.html', form=form)
 
-@app.route('/lista')
+@app.route('/lista/')
 def lista():
     return render_template('pages/list.html')
 

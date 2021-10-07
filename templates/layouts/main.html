@@ -65,11 +65,19 @@
               </ul>
             </li> -->
           </ul>
-          <ul class="nav navbar-nav pull-right">
-            <li><a href="{{ url_for('register') }}">Registrarse como médico</a></li>
-            <li><a href="{{ url_for('register') }}">Registrarse como paciente</a></li>
-            <li><a href="{{ url_for('login') }}">Ingresar</a></li>
-          </ul>
+          {% if lista_var == 'on' %}	        
+            <ul class="nav navbar-nav pull-right">
+              <li><a href="{{ url_for('home') }}">Home</a></li>
+            </ul> 
+            {% set lista_var = 'off' %}
+          {% else %}
+	          <ul class="nav navbar-nav pull-right">
+              <li><a href="{{ url_for('register') }}">Registrarse como médico</a></li>
+              <li><a href="{{ url_for('register') }}">Registrarse como paciente</a></li>
+              <li><a href="{{ url_for('login') }}">Ingresar</a></li>
+            </ul>    
+          {% endif %}
+          
         </div><!--/.nav-collapse -->
       </div>
     </div>
