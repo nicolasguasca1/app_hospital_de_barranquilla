@@ -35,10 +35,8 @@
 
 </head>
 <body>
-
   <!-- Wrap all page content here -->
   <div id="wrap">
-
     <!-- Fixed navbar -->
     <div class="navbar navbar-default navbar-fixed-top">
       <div class="container">
@@ -75,8 +73,6 @@
         </div><!--/.nav-collapse -->
       </div>
     </div>
-    
-
     <!-- Begin page content -->
     <main id="content" role="main" class="container">
 
@@ -90,7 +86,6 @@
           {% endfor %}
         {% endif %}
       {% endwith %}
-
       {% block content %}
         <form method="post" class="form">
           <h3 class="form-heading">Login <a href="{{ url_for('home') }}" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
@@ -102,7 +97,6 @@
           <p>You must add database as well as Flask-Login to enable user management. See the <a href="http://www.realpython.com">Real Python</a> course for more info!</p>
         </form>
       {% endblock %}
-      
     </main>
 
   </div>
@@ -113,7 +107,7 @@
       {% block footer %}{% endblock %}
     </div>
   </div>
-
+  {% block detail %}{% endblock %}
   <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script type="text/javascript" src="/static/js/libs/jquery-1.11.1.min.js"><\/script>')</script>
   <script type="text/javascript" src="/static/js/libs/bootstrap-3.1.1.min.js" defer></script>
@@ -126,6 +120,5 @@
     load: ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js'
   });
   </script>
-
 </body>
 </html>
