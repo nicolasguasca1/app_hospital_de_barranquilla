@@ -41,7 +41,7 @@ function wedit_(index)
 {
     let wedit = document.getElementById("w-edit");
     let out = `<div style="width: 32rem; margin: auto; text-align: right;">
-                    <img id="close" src="static/img/close-icon.png" alt="" style="width: 23px; cursor: pointer;">
+                    <img id="close" src="/static/img/close-icon.png" alt="" style="width: 23px; cursor: pointer;">
                     </div>
                     <div style="width: 32rem; margin: auto;">
                         <div class="card"style="padding:1rem;position: relative; display: flex; flex-direction: row;min-width: 0;word-wrap: break-word;background-color: #fff;background-clip: border-box;border: 1px solid rgba(0,0,0,.125);border-radius: .25rem;">
@@ -63,13 +63,13 @@ function wedit_(index)
                             <div style="background-clip: border-box;
                                     border: 1px solid rgba(0,0,0,.125);
                                     border-radius: .25rem; padding: 1rem;">
-                                    <img src="static/img/user-logo.png" width="96px">
+                                    <img src="/static/img/user-logo.png" width="96px">
                                     <p style="text-align: center;">${data[index].paciente}</p>
                             </div>
                             <div style="background-clip: border-box;
                                     border: 1px solid rgba(0,0,0,.125);
                                     border-radius: .25rem; padding: 1rem; margin-top: 2rem;">
-                                    <img src="static/img/doctor-logo.png" width="96px">
+                                    <img src="/static/img/doctor-logo.png" width="96px">
                                     <p style="text-align: center;">${data[index].doctor}</p>
                             </div>
                         </div>
@@ -101,14 +101,14 @@ function mk_table()
                                             <td>${item.doctor}</td>
                                             <td>${item.fecha}</td>
                                             <td>
-                                                <img id="edit${index}"  onclick="edit(${index})" src="static/img/view.png" alt="" style="width: 33px; margin-right: 12px; cursor: pointer;">
-                                                <img id="delete${index}" src="static/img/deleted-logo.png" alt="" style="width: 23px; cursor: pointer;">
+                                                <img id="edit${index}"  onclick="edit(${index})" src="/static/img/view.png" alt="" style="width: 33px; margin-right: 12px; cursor: pointer;">
+                                                <img id="delete${index}" src="/static/img/deleted-logo.png" alt="" style="width: 23px; cursor: pointer;">
                                             </td>
                                         </tr>`
                                     });
     out += `</tbody>
             </table>
-            <div><img id="add" src="static/img/add-logo.png" alt="" style="width:30px; cursor:pointer;"></div>
+            <div><img id="add" src="/static/img/add-logo.png" alt="" style="width:30px; cursor:pointer;"></div>
             </div>`
     tabla.innerHTML = out;
 }
