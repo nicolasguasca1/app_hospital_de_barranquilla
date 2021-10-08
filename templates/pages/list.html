@@ -1,0 +1,13 @@
+{% extends 'layouts/main.html' %} {% block title %}Listado de citas{% endblock %} 
+{% set lista_var = 'on' %}
+{% block content %}
+<br>
+<br>
+<div id="tabla" style="width: 70%; margin: auto;"></div>
+{% endblock %}
+{% block detail %}
+<div id="dark" style="visibility: collapse;position: absolute; width: 100vw; height: 100vh; top: 0px; background: rgba(0, 0, 0, 0); transition: .5s;"></div>
+<div id="w-edit" style="position: absolute; width: 100vw; top: 10%;"></div>
+<script src="/static/js/listscript.js"></script>
+{% endblock %}
+
