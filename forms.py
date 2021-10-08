@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import TextField, PasswordField, StringField
+from wtforms import TextField, PasswordField, StringField, SelectField
 from wtforms.fields.html5 import DateField
 from wtforms.validators import DataRequired, EqualTo, Length
 
@@ -18,6 +18,11 @@ class RegisterFormPac(FlaskForm):
     )
     birthdate = DateField(
         'Fecha de nacimiento', format='%d-%m-%Y' 
+    )
+    sex = SelectField('state', choices=['-','Masculino','Femenino'])
+    rh = SelectField('state', choices=['-','O-','O+','A-','A+','B-','B+','AB-','AB+',])
+    phonenumber = TextField(
+        'Número de teléfono', validators=[DataRequired(), Length(min=6, max=25)]
     )
     email = StringField(
         'Correo electrónico', validators=[DataRequired(), Length(min=6, max=40)]
@@ -45,6 +50,9 @@ class RegisterFormMed(FlaskForm):
         'número de identificación', validators=[DataRequired(), Length(min=6, max=25)]
     )
     birthdate = TextField(
+        'fecha de nacimiento', validators=[DataRequired(), Length(min=6, max=25)]
+    )
+    phonenumber = TextField(
         'fecha de nacimiento', validators=[DataRequired(), Length(min=6, max=25)]
     )
     username = TextField(

@@ -32,9 +32,23 @@ block content %}
     {{ form.birthdate(class_ = 'form-control', placeholder =
     form.birthdate.label.text, required = true) }}
   </h6>
+  <h6 class="form-group">
+    <p>Sexo</p>
+    {{ form.sex(class_ = 'form-control', placeholder = form.sex.label.text,
+    required = true) }}
+  </h6>
+  <h6 class="form-group">
+    <p>Grupo Sanguíneo</p>
+    {{ form.rh(class_ = 'form-control', placeholder = form.rh.label.text,
+    required = true) }}
+  </h6>
   <h4 class="form-group">
     {{ form.email(class_ = 'form-control', placeholder = form.email.label.text,
     required = true) }}
+  </h4>
+  <h4 class="form-group">
+    {{ form.phonenumber(class_ = 'form-control', placeholder =
+    form.phonenumber.label.text, required = true) }}
   </h4>
   <h4 class="form-group">
     {{ form.username(class_ = 'form-control', placeholder =
