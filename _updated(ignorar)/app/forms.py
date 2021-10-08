@@ -27,5 +27,5 @@ class LoginForm(Form):
 
 class ForgotForm(Form):
     email = TextField(
-        'Email', validators=[DataRequired(), Length(min=6, max=40)]
+        'Email', validators=[DataRequired(), Length(min=5, max=40)]
     )
