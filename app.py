@@ -60,11 +60,15 @@ def login():
     return render_template('forms/login.html', form=form)
 
 
-@app.route('/register')
-def register():
-    form = RegisterForm(request.form)
-    return render_template('forms/register.html', form=form)
+@app.route('/registropac')
+def registropac():
+    pacform = RegisterFormPac(request.form)
+    return render_template('forms/registropac.html', form=pacform)
 
+@app.route('/registromed')
+def registromed():
+    medform = RegisterFormMed(request.form)
+    return render_template('forms/registromed.html', form=medform)
 
 @app.route('/forgot')
 def forgot():
