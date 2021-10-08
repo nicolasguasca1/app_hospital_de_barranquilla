@@ -14,13 +14,59 @@ block content %}
     acepta nuestra política de privacidad y sus datos quedan consignados en la
     base de datos general del Hospital.
   </p>
-  {{ form.name(class_ = 'form-control first-input', placeholder =
-  form.name.label.text, required = true, autofocus = true) }} {{
-  form.email(class_ = 'form-control', placeholder = form.email.label.text,
-  required = true) }} {{ form.password(class_ = 'form-control', placeholder =
-  form.password.label.text, required = true) }} {{ form.confirm(class_ =
-  'form-control last-input', placeholder = form.confirm.label.text, required =
-  true) }}
+  <h4 class="form-group">
+    {{ form.name(class_ = 'form-control first-input', placeholder =
+    form.name.label.text, required = true, autofocus = true) }}
+  </h4>
+  <h4 class="form-group">
+    {{ form.lastname(class_ = 'form-control first-input', placeholder =
+    form.lastname.label.text, required = true, autofocus = true) }}
+  </h4>
+  <h4 class="form-group">
+    {{ form.id(class_ = 'form-control first-input', placeholder =
+    form.id.label.text, required = true, autofocus = true) }}
+  </h4>
+
+  <h6 class="form-group">
+    <p>Fecha de nacimiento</p>
+    {{ form.birthdate(class_ = 'form-control', placeholder =
+    form.birthdate.label.text, required = true) }}
+  </h6>
+  <h6 class="form-group">
+    <p>Sexo</p>
+    {{ form.sex(class_ = 'form-control', placeholder = form.sex.label.text,
+    required = true) }}
+  </h6>
+  <h6 class="form-group">
+    <p>Grupo Sanguíneo</p>
+    {{ form.rh(class_ = 'form-control', placeholder = form.rh.label.text,
+    required = true) }}
+  </h6>
+  <h4 class="form-group">
+    {{ form.email(class_ = 'form-control', placeholder = form.email.label.text,
+    required = true) }}
+  </h4>
+  <h4 class="form-group">
+    {{ form.professionalId(class_ = 'form-control', placeholder =
+    form.professionalId.label.text, required = true) }}
+  </h4>
+  <h4 class="form-group">
+    {{ form.phonenumber(class_ = 'form-control', placeholder =
+    form.phonenumber.label.text, required = true) }}
+  </h4>
+  <h4 class="form-group">
+    {{ form.username(class_ = 'form-control', placeholder =
+    form.username.label.text, required = true) }}
+  </h4>
+  <h4 class="form-group">
+    {{ form.password(class_ = 'form-control', placeholder =
+    form.password.label.text, required = true) }}
+  </h4>
+  <h4 class="form-group">
+    {{ form.confirm(class_ = 'form-control last-input', placeholder =
+    form.confirm.label.text, required = true) }}
+  </h4>
+
   <p class="pull-left">
     Si ya se encuentra registrado pulse
     <a href="{{ url_for('login') }}">Ingresar</a>
