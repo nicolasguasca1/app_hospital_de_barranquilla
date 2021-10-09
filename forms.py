@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import TextField, PasswordField, StringField, SelectField
+from wtforms import TextField, PasswordField, StringField, SelectField, SubmitField
 from wtforms.fields.html5 import DateField
 from wtforms.validators import DataRequired, EqualTo, Length
 
@@ -77,8 +77,9 @@ class RegisterFormMed(FlaskForm):
 
 
 class LoginForm(FlaskForm):
-    name = TextField('Username', [DataRequired()])
-    password = PasswordField('Password', [DataRequired()])
+    usr = TextField('Usuario *',validators=[DataRequired(message='Se requiere el usuario'), Length(min=6, max=40, message='Longitud debe estar entre 6 y 40')])
+    pwd = PasswordField('Contraseña *',validators=[DataRequired(message='Se requiere la clave')])
+    btn = SubmitField('Login')
 
 
 class ForgotForm(FlaskForm):
