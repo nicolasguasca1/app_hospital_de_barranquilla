@@ -62,7 +62,7 @@ def login():
     else: 
         # Recuperar los datos
         usr = escape(form.usr.data.strip())
-        pwd = escape(form.pwd.data.strip())
+        pwd = escape(form.pwd.data.strip( ))
         # Validar los datos
         swvalido = True
         if len(usr)<6 or len(usr)>40:
@@ -100,6 +100,12 @@ def forgot():
 @app.route('/lista/')
 def lista():
     return render_template('pages/list.html')
+
+@app.route('/logout/')
+def logout():
+    session.clear()
+    return render_template('pages/placeholder.home.html')
+
 
 # Error handlers.
 
