@@ -1,33 +1,87 @@
-from flask_wtf import Form
-from wtforms import TextField, PasswordField
+from flask_wtf import FlaskForm
+from wtforms import TextField, PasswordField, StringField, SelectField
+from wtforms.fields.html5 import DateField
 from wtforms.validators import DataRequired, EqualTo, Length
 
 # Set your classes here.
 
 
-class RegisterForm(Form):
-    name = TextField(
-        'Username', validators=[DataRequired(), Length(min=6, max=25)]
+class RegisterFormPac(FlaskForm):
+    name = StringField(
+        'Nombres', validators=[DataRequired(), Length(min=6, max=25)]
     )
-    email = TextField(
-        'Email', validators=[DataRequired(), Length(min=6, max=40)]
+    lastname = StringField(
+        'Apellidos', validators=[DataRequired(), Length(min=6, max=25)]
+    )
+    id = StringField(
+        'Número de identificación', validators=[DataRequired(), Length(min=6, max=25)]
+    )
+    birthdate = DateField(
+        'Fecha de nacimiento', format='%d-%m-%Y' 
+    )
+    sex = SelectField('state', choices=['-','Masculino','Femenino'])
+    rh = SelectField('state', choices=['-','O-','O+','A-','A+','B-','B+','AB-','AB+',])
+    phonenumber = TextField(
+        'Número de teléfono', validators=[DataRequired(), Length(min=6, max=25)]
+    )
+    email = StringField(
+        'Correo electrónico', validators=[DataRequired(), Length(min=6, max=40)]
+    )
+    username = StringField(
+        'Defina un nombre de usuario', validators=[DataRequired(), Length(min=6, max=25)]
     )
     password = PasswordField(
-        'Password', validators=[DataRequired(), Length(min=6, max=40)]
+        'Defina una contraseña', validators=[DataRequired(), Length(min=6, max=40)]
     )
     confirm = PasswordField(
-        'Repeat Password',
+        'Repetir contraseña',
+        [DataRequired(),
+        EqualTo('password', message='Passwords must match')]
+    )
+
+class RegisterFormMed(FlaskForm):
+    name = StringField(
+        'Nombres', validators=[DataRequired(), Length(min=6, max=25)]
+    )
+    lastname = StringField(
+        'Apellidos', validators=[DataRequired(), Length(min=6, max=25)]
+    )
+    id = StringField(
+        'Número de identificación', validators=[DataRequired(), Length(min=6, max=25)]
+    )
+    birthdate = DateField(
+        'Fecha de nacimiento', format='%d-%m-%Y' 
+    )
+    sex = SelectField('state', choices=['-','Masculino','Femenino'])
+    rh = SelectField('state', choices=['-','O-','O+','A-','A+','B-','B+','AB-','AB+',])
+    phonenumber = TextField(
+        'Número de teléfono', validators=[DataRequired(), Length(min=6, max=25)]
+    )
+    email = StringField(
+        'Correo electrónico', validators=[DataRequired(), Length(min=6, max=40)]
+    )
+    professionalId = StringField(
+        'Número de tarjeta profesional', validators=[DataRequired(), Length(min=6, max=40)]
+    )
+    username = StringField(
+        'Defina un nombre de usuario', validators=[DataRequired(), Length(min=6, max=25)]
+    )
+    password = PasswordField(
+        'Defina una contraseña', validators=[DataRequired(), Length(min=6, max=40)]
+    )
+    confirm = PasswordField(
+        'Repetir contraseña',
         [DataRequired(),
         EqualTo('password', message='Passwords must match')]
     )
 
 
-class LoginForm(Form):
+class LoginForm(FlaskForm):
     name = TextField('Username', [DataRequired()])
     password = PasswordField('Password', [DataRequired()])
 
 
-class ForgotForm(Form):
+class ForgotForm(FlaskForm):
     email = TextField(
         'Email', validators=[DataRequired(), Length(min=6, max=40)]
     )
