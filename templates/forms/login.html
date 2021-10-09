@@ -8,12 +8,12 @@ block content %}
     ></a>
   </h1>
   <h4 class="form-group">
-    {{ form.name(class_ = 'form-control first-input', placeholder =
-    form.name.label.text, required = true, autofocus = true) }}
+    {{ form.usr(class_ = 'form-control first-input', placeholder =
+    form.usr.label.text, required = true, autofocus = true) }}
   </h4>
   <h4 class="form-group">
-    {{ form.password(class_ = 'form-control last-input', placeholder =
-    form.password.label.text, required = true) }}
+    {{ form.pwd(class_ = 'form-control last-input', placeholder =
+    form.pwd.label.text, required = true) }}
   </h4>
 
   <p class="pull-left">
@@ -29,7 +29,7 @@ block content %}
     type="submit"
     value="Ingresar"
     class="btn btn-primary btn-lg btn-block"
-    disabled
+    onClick="{ form.btn() }"
   />
   <p>
     You must add database as well as Flask-Login to enable user management. See
