@@ -1,24 +1,35 @@
-{% extends 'layouts/form.html' %} {% block title %}Reset Password{% endblock %}
-{% block content %}
+{% extends 'layouts/form.html' %} {% block title %}Recuperar contraseña{%
+endblock %} {% block content %}
 <form method="post" class="form form-reset">
-  <h3 class="form-heading">
-    Reset Password
+  <h1 class="form-heading">
+    Recuperar contraseña
     <a href="{{ url_for('home') }}" title="Back to homepage"
       ><i class="fa fa-home pull-right"></i
     ></a>
-  </h3>
-  {{ form.email(class_ = 'form-control first-input last-input', placeholder =
-  form.email.label.text) }}
-  <p class="pull-left"><a href="{{ url_for('login') }}">Ingreso</a></p>
-  <p class="pull-right">
-    <a href="{{ url_for('registropac') }}">Registro paciente</a>
+  </h1>
+  <h4>
+    <p>
+      Ingrese el correo electrónico con el que se dio de alta para poder
+      enviarle un enlace de recuperación
+    </p>
+  </h4>
+  <h4 class="form-group">
+    {{ form.email(class_ = 'form-control first-input last-input', placeholder =
+    form.email.label.text) }}
+  </h4>
+  <p class="pull-left">
+    <a href="{{ url_for('login') }}">Ir de vuelta a inicio de sesión</a>
   </p>
+
   <p class="pull-right">
-    <a href="{{ url_for('registromed') }}">Registro médico</a>
+    Si no se ha dado de alta, puede registrarse
+    <a href="{{ url_for('registropac') }}">como paciente</a>
+    o
+    <a href="{{ url_for('registromed') }}">como médico</a>
   </p>
   <input
     type="submit"
-    value="Submit"
+    value="Enviar"
     class="btn btn-lg btn-primary btn-block"
     disabled
   />
