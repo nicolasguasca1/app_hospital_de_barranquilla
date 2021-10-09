@@ -61,8 +61,8 @@ def login():
         return render_template('forms/login.html', form=form)
     else: 
         # Recuperar los datos
-        usr = form.usr.data.strip()
-        pwd = form.pwd.data.strip()
+        usr = escape(form.usr.data.strip())
+        pwd = escape(form.pwd.data.strip())
         # Validar los datos
         swvalido = True
         if len(usr)<6 or len(usr)>40:
