@@ -103,8 +103,8 @@ def lista():
 
 @app.route('/vistamedico')
 def vistamedic():
-    form = MedicForm(request.form)
-    return render_template('forms/vistamedico.html', form=form)
+    form = DashBoardMedico(request.form)
+    return render_template('forms/dashboard-medico.html', form=form)
 
 # Error handlers.
 

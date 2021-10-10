@@ -88,7 +88,7 @@ class ForgotForm(FlaskForm):
     )
 
 # Clase del formulario Dashboard - medico
-class MedicForm(FlaskForm):
+class DashBoardMedico(FlaskForm):
     tipoid = SelectField(u'Tipo de identificación ', choices=[('C.C'), ('T.I'), ('T.E')])
     id = TextField('No. ID', validators = [DataRequired()])
     name = TextField('Nombres', validators = [DataRequired()])
