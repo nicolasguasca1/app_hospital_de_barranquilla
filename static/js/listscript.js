@@ -1,5 +1,5 @@
 let tabla = document.getElementById("tabla");
-//datos..
+
 let data = [
     {
         descrip: "Odontología",
