@@ -65,11 +65,17 @@
               </ul>
             </li> -->
           </ul>
+          {# if lista_var != 'on'#}
           <ul class="nav navbar-nav pull-right">
             <li><a href="{{ url_for('registromed') }}">Registro médico</a></li>
             <li><a href="{{ url_for('registropac') }}">Registro paciente</a></li>
             <li><a href="{{ url_for('login') }}">Ingresar</a></li>
           </ul>
+          {# else #}
+          <!--<ul class="nav navbar-nav pull-right">
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+          </ul>-->
+          {# endif #}
         </div><!--/.nav-collapse -->
       </div>
     </div>
@@ -100,7 +106,6 @@
     </main>
 
   </div>
-
   <div id="footer">
     <div class="container">
       <p>Ministerio de Salud &copy; Todos los derechos reservados</p>

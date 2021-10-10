@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import TextField, PasswordField, StringField, SelectField
+from wtforms import validators
 from wtforms.fields.html5 import DateField
 from wtforms.validators import DataRequired, EqualTo, Length
 
@@ -85,3 +86,16 @@ class ForgotForm(FlaskForm):
     email = TextField(
         'Email', validators=[DataRequired(), Length(min=6, max=40)]
     )
+
+# Clase del formulario Dashboard - medico
+class MedicForm(FlaskForm):
+    tipoid = SelectField(u'Tipo de identificación ', choices=[('C.C'), ('T.I'), ('T.E')])
+    id = TextField('No. ID', validators = [DataRequired()])
+    name = TextField('Nombres', validators = [DataRequired()])
+    last = TextField('Apellidos', validators = [DataRequired(), Length(min=2, max=40)])
+    especialidad = SelectField(u'Especialidad ', choices=[('General'), ('Odontología'), ('Pediatría')])
+    phone = TextField('Telefono', validators = [DataRequired(), Length(min=2, max=40)])
+    time = SelectField(u'Hora de atención', choices=[('9:00'), ('12:30'), ('16:00')])
+    user = TextField('Usuario', validators = [DataRequired(), Length(min=2, max=40)])
+    password = PasswordField('Contraseña', [DataRequired()])
+    email = TextField('Correo electrónico', validators = [DataRequired(), Length(min=2, max=40)])

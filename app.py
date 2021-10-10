@@ -79,6 +79,11 @@ def forgot():
 def lista():
     return render_template('pages/list.html')
 
+@app.route('/vistamedico')
+def vistamedic():
+    form = MedicForm(request.form)
+    return render_template('forms/vistamedico.html', form=form)
+
 # Error handlers.
 
 
