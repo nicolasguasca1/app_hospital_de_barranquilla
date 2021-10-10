@@ -54,10 +54,32 @@ def about():
     return render_template('pages/placeholder.about.html')
 
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm(request.form)
-    return render_template('forms/login.html', form=form)
+    if request.method=='GET':
+        return render_template('forms/login.html', form=form)
+    else: 
+        # Recuperar los datos
+        usr = escape(form.usr.data.strip())
+        pwd = escape(form.pwd.data.strip( ))
+        # Validar los datos
+        swvalido = True
+        if len(usr)<6 or len(usr)>40:
+            swvalido = False
+            flash("El nombre de usuario es requerido y tiene entre 6 y 40 caracteres")
+        if len(pwd)<6 or len(pwd)>40:
+            swvalido = False
+            flash("El nombre de usuario es requerido y tiene entre 6 y 40 caracteres")
+        # Realizar el login simulado
+        if swvalido and usr=='test123' and pwd=='test123':
+            session.clear()
+            session['usr_id'] = usr
+            session['pwd_id'] = pwd
+            return render_template('pages/placeholder.home.html')
+        else:
+            return render_template('forms/login.html', form=form)
+
 
 
 @app.route('/registropac')

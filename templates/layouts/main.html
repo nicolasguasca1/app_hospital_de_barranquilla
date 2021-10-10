@@ -49,10 +49,11 @@
           <a class="navbar-brand" href="/">Hospital General De Barranquilla</a>
         </div>
         <div class="collapse navbar-collapse">
+          {% if 'usr_id' in session %}
           <ul class="nav navbar-nav">
-            <!-- <li {% if request.endpoint == 'home' %} class="active" {% endif %}><a href="{{ url_for('home') }}">Dashboard administrativo</a></li>
-            <li {% if request.endpoint == 'about' %} class="active" {% endif %}><a href="{{ url_for('about') }}">About</a></li> -->
-            <!-- <li class="dropdown">
+            <li {% if request.endpoint == 'home' %}  {% endif %}><a href="{{ url_for('home') }}">Dashboard administrativo</a></li>
+            <li {% if request.endpoint == 'about' %} class="active" {% endif %}><a href="{{ url_for('about') }}">About</a></li>
+            <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li><a>Action</a></li>
@@ -63,19 +64,18 @@
                 <li><a>Separated link</a></li>
                 <li><a>One more separated link</a></li>
               </ul>
-            </li> -->
+            </li>
           </ul>
-          {# if lista_var != 'on'#}
+          <ul class="nav navbar-nav pull-right">
+            <li><a href="{{ url_for('logout') }}">Salir</a></li>
+          </ul>
+          {% else %}
           <ul class="nav navbar-nav pull-right">
             <li><a href="{{ url_for('registromed') }}">Registro médico</a></li>
             <li><a href="{{ url_for('registropac') }}">Registro paciente</a></li>
             <li><a href="{{ url_for('login') }}">Ingresar</a></li>
           </ul>
-          {# else #}
-          <!--<ul class="nav navbar-nav pull-right">
-            <li><a href="{{ url_for('home') }}">Home</a></li>
-          </ul>-->
-          {# endif #}
+          {% endif %}
         </div><!--/.nav-collapse -->
       </div>
     </div>
@@ -106,6 +106,7 @@
     </main>
 
   </div>
+
   <div id="footer">
     <div class="container">
       <p>Ministerio de Salud &copy; Todos los derechos reservados</p>
