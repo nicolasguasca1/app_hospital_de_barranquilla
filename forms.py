@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import TextField, PasswordField, StringField, SelectField, SubmitField
+from wtforms import TextField, PasswordField, StringField, SelectField, SubmitField, TextAreaField
 from wtforms.fields.html5 import DateField
 from wtforms.validators import DataRequired, EqualTo, Length
 
@@ -99,3 +99,17 @@ class DashBoardMedico(FlaskForm):
     user = TextField('Usuario', validators = [DataRequired(message='Se requiere nombre de usuario'), Length(min=2, max=40)])
     password = PasswordField('Contraseña', [DataRequired(message='Se requiere la clave')])
     email = TextField('Correo electrónico', validators = [DataRequired(message='Se requiere el correo electrónico'), Length(min=2, max=40)])
+
+#Clase del formulario crear cita
+class CitaForm(FlaskForm):
+    tipoid = SelectField(u'Tipo de identificación ', choices=[('C.C'), ('T.I'), ('T.E')])
+    id = TextField('No. ID', validators = [DataRequired(message='Se requiere el ID')])
+    medico = SelectField(u'Medico ', choices=[('Daniel R.'), ('Lorena P.'), ('Katiana A.')])
+    especialidad = SelectField(u'Especialidad ', choices=[('General'), ('Odontología'), ('Pediatría')])
+    time = SelectField(u'Hora de atención', choices=[('9:00'), ('12:30'), ('16:00')])
+    paciente = TextField('Nombre', validators = [DataRequired(message='Se requiere nombre del paciente'), Length(min=2, max=40)])
+    apellido = TextField('Apellido', validators = [DataRequired(message='Se requiere apellido del paciente'), Length(min=2, max=40)])
+    id_paciente = TextField('No ID', [DataRequired(message='Se requiere la clave')])
+    email = TextField('Correo electrónico', validators = [DataRequired(message='Se requiere el correo electrónico'), Length(min=2, max=40)])
+    comentario = TextAreaField("TextArea")
+    fecha = DateField('Fecha', validators = [DataRequired(message='Se requiere la fecha')])

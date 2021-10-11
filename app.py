@@ -99,7 +99,11 @@ def forgot():
 
 @app.route('/lista/')
 def lista():
-    return render_template('pages/list.html')
+    if session:
+        return render_template('pages/list.html')
+    else:
+        return render_template('pages/invalid.html')
+
 
 @app.route('/vistamedico')
 # Con el condicional se aseguran de que la vista se renderiza solo si el usuario está logueado
@@ -109,6 +113,14 @@ def vistamedico():
         return render_template('forms/dashboard-medico.html', form=form)
     else:
         return render_template('pages/invalid.html')
+
+@app.route('/citasForm', methods=['GET', 'POST'])
+# Con el condicional se aseguran de que la vista se renderiza solo si el usuario está logueado
+def citas():
+    if request.method=='POST':
+        form = CitaForm(request.form)
+        return render_template('forms/citasForm.html', form=form)
+    
 
 @app.route('/logout/')
 def logout():
