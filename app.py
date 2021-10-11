@@ -102,9 +102,13 @@ def lista():
     return render_template('pages/list.html')
 
 @app.route('/vistamedico')
+# Con el condicional se aseguran de que la vista se renderiza solo si el usuario está logueado
 def vistamedico():
-    form = DashBoardMedico(request.form)
-    return render_template('forms/dashboard-medico.html', form=form)
+    if session:
+        form = DashBoardMedico(request.form)
+        return render_template('forms/dashboard-medico.html', form=form)
+    else:
+        return render_template('pages/invalid.html')
 
 @app.route('/logout/')
 def logout():
