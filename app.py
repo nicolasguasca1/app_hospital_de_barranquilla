@@ -106,6 +106,16 @@ def login():
             session['usr_id'] = usr
             session['pwd_id'] = pwd
             return render_template('pages/placeholder.home.html')
+        elif swvalido and usr=='testmed123' and pwd=='testmed123':
+            session.clear()
+            session['usr_id'] = usr
+            session['pwd_id'] = pwd
+            return render_template('pages/placeholder.home.html')
+        elif swvalido and usr=='testadmin123' and pwd=='testadmin123':
+            session.clear()
+            session['usr_id'] = usr
+            session['pwd_id'] = pwd
+            return render_template('pages/placeholder.home.html')
         # elif form.btn():
         #     login_user(user)
         #     flash('Ha iniciado sesión correctamente.')
@@ -152,15 +162,21 @@ def lista():
         return render_template('pages/invalid.html')
 
 
-@app.route('/vistamedico')
+@app.route('/dashboard')
 # @login_required
 # Con el condicional se aseguran de que la vista se renderiza solo si el usuario está logueado
-def vistamedico():
-    if session:
+def dashboard():
+    if session['usr_id'] == 'test123':
         form = DashBoardMedico(request.form)
         return render_template('forms/dashboard-medico.html', form=form)
-    # else:
-    #     return render_template('pages/invalid.html')
+    # elif session['usr_id'] == 'testmed123':
+    #     form = DashBoardPaciente(request.form)
+    #     return render_template('forms/dashboard-paciente.html', form=form)
+    # elif session['usr_id'] == 'testadmin123':
+    #     form = DashBoardAdmin(request.form)
+    #     return render_template('forms/dashboard-admin.html', form=form)
+    else:
+        return render_template('pages/invalid.html')
 
 @app.route('/citasForm', methods=['GET', 'POST'])
 # Con el condicional se aseguran de que la vista se renderiza solo si el usuario está logueado
