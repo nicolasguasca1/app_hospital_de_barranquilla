@@ -124,11 +124,12 @@ def login():
 
 
 
-@app.route('/registropac')
+@app.route('/registropac', methods=['GET', 'POST'])
 def registropac():
+    if request.method=='GET':
     # if current_user.is_authenticated:
     #     return redirect(url_for('/index/'))
-    pacform = RegisterFormPac(request.form)
+        pacform = RegisterFormPac(request.form)
     # if pacform.submit():
     #     name = pacform.name.data
     #     email = pacform.email.data
@@ -144,9 +145,10 @@ def registropac():
     #     return redirect(next_page)
     return render_template('forms/registropac.html', form=pacform)
 
-@app.route('/registromed')
+@app.route('/registromed', methods=['GET', 'POST'])
 def registromed():
-    medform = RegisterFormMed(request.form)
+    if request.method=='GET':
+        medform = RegisterFormMed(request.form)
     return render_template('forms/registromed.html', form=medform)
 
 @app.route('/forgot')
