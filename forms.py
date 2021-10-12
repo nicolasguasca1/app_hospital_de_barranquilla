@@ -21,7 +21,7 @@ class RegisterFormPac(FlaskForm):
     )
     sex = SelectField('state', choices=['-','Masculino','Femenino'])
     rh = SelectField('state', choices=['-','O-','O+','A-','A+','B-','B+','AB-','AB+',])
-    phonenumber = TextField(
+    phonenumber = StringField(
         'Número de teléfono', validators=[DataRequired(), Length(min=6, max=25)]
     )
     email = StringField(
@@ -38,6 +38,7 @@ class RegisterFormPac(FlaskForm):
         [DataRequired(),
         EqualTo('password', message='Passwords must match')]
     )
+    submit = SubmitField('Registrar')
 
 class RegisterFormMed(FlaskForm):
     name = StringField(
@@ -54,7 +55,7 @@ class RegisterFormMed(FlaskForm):
     )
     sex = SelectField('state', choices=['-','Masculino','Femenino'])
     rh = SelectField('state', choices=['-','O-','O+','A-','A+','B-','B+','AB-','AB+',])
-    phonenumber = TextField(
+    phonenumber = StringField(
         'Número de teléfono', validators=[DataRequired(), Length(min=6, max=25)]
     )
     email = StringField(
@@ -74,29 +75,30 @@ class RegisterFormMed(FlaskForm):
         [DataRequired(),
         EqualTo('password', message='Passwords must match')]
     )
+    submit = SubmitField('Registrar')
 
 
 class LoginForm(FlaskForm):
-    usr = TextField('Usuario *',validators=[DataRequired(message='Se requiere el usuario'), Length(min=6, max=40, message='Longitud debe estar entre 6 y 40')])
+    usr = StringField('Usuario *',validators=[DataRequired(message='Se requiere el usuario'), Length(min=6, max=40, message='Longitud debe estar entre 6 y 40')])
     pwd = PasswordField('Contraseña *',validators=[DataRequired(message='Se requiere la clave')])
     btn = SubmitField('Login')
 
 
 class ForgotForm(FlaskForm):
-    email = TextField(
+    email = StringField(
         'Email', validators=[DataRequired(), Length(min=6, max=40)]
     )
 
 # Clase del formulario Dashboard - medico
 class DashBoardMedico(FlaskForm):
     tipoid = SelectField(u'Tipo de identificación ', choices=[('C.C'), ('T.I'), ('T.E')])
-    id = TextField('No. ID', validators = [DataRequired(message='Se requiere el ID')])
-    name = TextField('Nombres', validators = [DataRequired(message='Se requiere el nombre')])
-    last = TextField('Apellidos', validators = [DataRequired(message='Se requiere el apellido'), Length(min=2, max=40)])
+    id = StringField('No. ID', validators = [DataRequired(message='Se requiere el ID')])
+    name = StringField('Nombres', validators = [DataRequired(message='Se requiere el nombre')])
+    last = StringField('Apellidos', validators = [DataRequired(message='Se requiere el apellido'), Length(min=2, max=40)])
     especialidad = SelectField(u'Especialidad ', choices=[('General'), ('Odontología'), ('Pediatría')])
-    phone = TextField('Telefono', validators = [DataRequired(message='Se requiere el teléfono'), Length(min=2, max=40)])
+    phone = StringField('Telefono', validators = [DataRequired(message='Se requiere el teléfono'), Length(min=2, max=40)])
     time = SelectField(u'Hora de atención', choices=[('9:00'), ('12:30'), ('16:00')])
-    user = TextField('Usuario', validators = [DataRequired(message='Se requiere nombre de usuario'), Length(min=2, max=40)])
+    user = StringField('Usuario', validators = [DataRequired(message='Se requiere nombre de usuario'), Length(min=2, max=40)])
     password = PasswordField('Contraseña', [DataRequired(message='Se requiere la clave')])
     email = TextField('Correo electrónico', validators = [DataRequired(message='Se requiere el correo electrónico'), Length(min=2, max=40)])
 

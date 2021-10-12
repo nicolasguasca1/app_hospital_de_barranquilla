@@ -2,13 +2,19 @@
 # Imports
 #----------------------------------------------------------------------------#
 
-from flask import Flask, render_template, request, session, flash
+from flask import Flask, render_template, request, session, flash, redirect, url_for
 # from flask.ext.sqlalchemy import SQLAlchemy
 import logging
 from logging import Formatter, FileHandler
 from forms import *
 from markupsafe import escape
 import os
+from flask_user import current_user, login_required, roles_required, UserManager
+from flask_login import LoginManager, login_user, UserMixin
+from models import get_user, users, User
+from werkzeug.urls import url_parse
+
+
 
 #----------------------------------------------------------------------------#
 # App Config.
@@ -16,6 +22,8 @@ import os
 
 app = Flask(__name__)
 app.config.from_object('config')
+# login_manager = LoginManager(app)
+# login_manager.login_view = "login"
 #db = SQLAlchemy(app)
 
 # Automatically tear down SQLAlchemy.
@@ -25,7 +33,16 @@ def shutdown_session(exception=None):
     db_session.remove()
 '''
 
-# Login required decorator.
+# Login manager decorator.
+# @login_manager.user_loader
+# def load_user(user_id):
+#     for user in users:
+#         if user.id == int(user_id):
+#             return user
+#     return None
+
+# Login required function
+
 '''
 def login_required(test):
     @wraps(test)
@@ -42,9 +59,9 @@ def login_required(test):
 #----------------------------------------------------------------------------#
 
 
-@app.route('/')
-@app.route('/index/')
-@app.route('/home/')
+@app.route('/', methods=['GET'])
+@app.route('/index/', methods=['GET'])
+@app.route('/home/', methods=['GET'])
 def home():
     return render_template('pages/placeholder.home.html')
 
@@ -56,9 +73,21 @@ def about():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    # if current_user.is_authenticated:
+    #     return redirect(url_for('/index/'))
     form = LoginForm(request.form)
     if request.method=='GET':
         return render_template('forms/login.html', form=form)
+    # elif form.btn():
+    #     user = get_user(form.usr.data)
+    #     myUser = User(user.id.data,user.name.data,user.usr.data,user.pwd.data,user.isAdmin.data)
+    #     if user is not None and myUser.check_password(form.pwd.data):
+    #         login_user(user)
+    #         next_page = request.args.get('next')
+    #         if not next_page or url_parse(next_page) .netloc != '':
+    #             next_page = url_for('pages/placeholder.home.html')
+    #         return redirect(next_page)
+    #     return render_template('forms/login.html', form=form)
     else: 
         # Recuperar los datos
         usr = escape(form.usr.data.strip())
@@ -77,6 +106,9 @@ def login():
             session['usr_id'] = usr
             session['pwd_id'] = pwd
             return render_template('pages/placeholder.home.html')
+        # elif form.btn():
+        #     login_user(user)
+        #     flash('Ha iniciado sesión correctamente.')
         else:
             return render_template('forms/login.html', form=form)
 
@@ -84,7 +116,22 @@ def login():
 
 @app.route('/registropac')
 def registropac():
+    # if current_user.is_authenticated:
+    #     return redirect(url_for('/index/'))
     pacform = RegisterFormPac(request.form)
+    # if pacform.submit():
+    #     name = pacform.name.data
+    #     email = pacform.email.data
+    #     password = pacform.password.data
+    #     # Creamos el usuario y lo guardamos
+    #     user = User(len(users) + 1, name, email, password)
+    #     users.append(user)
+    #     # Dejamos al usuario logueado
+    #     login_user(user, remember=True)
+    #     next_page = request.args.get('next', None)
+    #     if not next_page or url_parse(next_page).netloc != '':
+    #         next_page = url_for('index')
+    #     return redirect(next_page)
     return render_template('forms/registropac.html', form=pacform)
 
 @app.route('/registromed')
@@ -106,13 +153,14 @@ def lista():
 
 
 @app.route('/vistamedico')
+# @login_required
 # Con el condicional se aseguran de que la vista se renderiza solo si el usuario está logueado
 def vistamedico():
     if session:
         form = DashBoardMedico(request.form)
         return render_template('forms/dashboard-medico.html', form=form)
-    else:
-        return render_template('pages/invalid.html')
+    # else:
+    #     return render_template('pages/invalid.html')
 
 @app.route('/citasForm', methods=['GET', 'POST'])
 # Con el condicional se aseguran de que la vista se renderiza solo si el usuario está logueado
