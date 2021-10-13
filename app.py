@@ -186,7 +186,32 @@ def citas():
     if request.method=='POST':
         form = CitaForm(request.form)
         return render_template('forms/citasForm.html', form=form)
-    
+
+# rutas del dashboard administrativo
+
+@app.route('/Dashboard-Admin/')
+def DashboardAdmin():
+    if request.method=='GET':
+        return render_template('DashboardAdmin.html')
+
+@app.route('/vistaPaciente/', methods=['GET','POST'])
+def vistaPaciente():
+    frm = Paciente()
+    if request.method=='GET':
+        return render_template('Dashboard-pacientes.html',form=frm)
+
+@app.route('/vistamedico/', methods=['GET','POST'])
+def vistamedico():
+    frm = DashBoardMedico()
+    if request.method=='GET':
+        return render_template('dashboard-medico.html', form=frm)
+
+@app.route('/vistaCitas/', methods=['GET','POST'])
+def vistacitas():
+    frm = Cita()
+    if request.method=='GET':
+        return render_template('dashboard-citas.html', form=frm)
+
 
 @app.route('/logout/')
 def logout():
