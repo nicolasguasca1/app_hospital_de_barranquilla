@@ -1,8 +1,9 @@
-{% extends 'layouts/main.html' %} {% block title %}Dashboard | Medico{% endblock
-%} {% if 'usr_id'in session %} {% block content %}
+{% extends 'DashboardAdmin.html' %} {% block title %}Dashboard | Medico{% endblock%}
+{% block cuerpo %}
+<!--{% if 'usr_id'in session %}-->
 <br />
 <br />
-<form
+<form  action ='/vistamedico/'
   method="post"
   style="
     padding: 1rem;
@@ -123,7 +124,8 @@
     </div>
   </div>
 </form>
-{% endblock %} {% else %}
+{% endblock %} 
+<!--{% else %}
 <h3 class="form-heading">
   Ruta inválida
   <a href="{{ url_for('home') }}" title="Back to homepage"
@@ -133,4 +135,4 @@
 <p class="lead">
   Para acceder a la ruta solicitada es necesario iniciar sesión.
 </p>
-{% endif %}
+{% endif %} -->
