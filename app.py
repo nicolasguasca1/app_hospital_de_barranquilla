@@ -168,7 +168,8 @@ def lista():
 # @login_required
 # Con el condicional se aseguran de que la vista se renderiza solo si el usuario está logueado
 def dashboard():
-    if session['usr_id'] == 'test123':
+    # usr_id = 'usr_id' in session
+    # if usr_id:
         form = DashBoardMedico(request.form)
         return render_template('forms/dashboard-medico.html', form=form)
     # elif session['usr_id'] == 'testmed123':
@@ -177,8 +178,11 @@ def dashboard():
     # elif session['usr_id'] == 'testadmin123':
     #     form = DashBoardAdmin(request.form)
     #     return render_template('forms/dashboard-admin.html', form=form)
-    else:
-        return render_template('pages/invalid.html')
+    # elif session['usr_id'] == 'testmed123':
+    #     form = DashBoardMedico(request.form)
+    #     return render_template('forms/dashboard-medico.html', form=form)
+    # else:
+    #     return render_template('pages/invalid.html')
 
 @app.route('/citasForm', methods=['GET', 'POST'])
 # Con el condicional se aseguran de que la vista se renderiza solo si el usuario está logueado
