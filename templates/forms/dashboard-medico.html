@@ -1,9 +1,10 @@
-{% extends 'DashboardAdmin.html' %} {% block title %}Dashboard | Medico{% endblock%}
-{% block cuerpo %}
+{% extends 'forms/DashboardAdmin.html' %}
 <!--{% if 'usr_id'in session %}-->
+{% block cuerpo %}
 <br />
 <br />
-<form  action ='/vistamedico/'
+<form
+  action="/vistamedico/"
   method="post"
   style="
     padding: 1rem;
@@ -124,7 +125,7 @@
     </div>
   </div>
 </form>
-{% endblock %} 
+{% endblock %}
 <!--{% else %}
 <h3 class="form-heading">
   Ruta inválida
