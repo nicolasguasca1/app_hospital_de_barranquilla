@@ -192,19 +192,19 @@ def citas():
 @app.route('/Dashboard-Admin/')
 def DashboardAdmin():
     if request.method=='GET':
-        return render_template('DashboardAdmin.html')
+        return render_template('forms/DashboardAdmin.html')
 
 @app.route('/vistaPaciente/', methods=['GET','POST'])
 def vistaPaciente():
     frm = Paciente()
     if request.method=='GET':
-        return render_template('Dashboard-pacientes.html',form=frm)
+        return render_template('forms/Dashboard-pacientes.html',form=frm)
 
 @app.route('/vistamedico/', methods=['GET','POST'])
 def vistamedico():
     frm = DashBoardMedico()
     if request.method=='GET':
-        return render_template('dashboard-medico.html', form=frm)
+        return render_template('forms/dashboard-medico.html', form=frm)
 
 @app.route('/vistaCitas/', methods=['GET','POST'])
 def vistacitas():
