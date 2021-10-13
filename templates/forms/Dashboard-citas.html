@@ -1,0 +1,69 @@
+{% extends 'DashboardAdmin.html' %}
+{% block cuerpo %}
+        <form action='/vistaCitas/' method='POST' name='admusr' id='admusr'>
+            
+            <div class='fila'>
+                    </br>
+                    <div class='cesp'>&nbsp;</div>
+                    <div class='c1'>{{ form.txtNroCita.label }}</div>
+                    <div class='c1'>{{ form.txtNroCita(size=15, minlength=1, maxlength=15)}}</div>
+                    <div class='cesp'>&nbsp;</div>
+                    <div class='c2'>{{ form.tipoid.label }}</div>
+                    <div class='c1'>{{ form.tipoid(size=1) }}</div>
+                    <div class='cesp'>&nbsp;</div>
+                    <div class='c2'>{{ form.txtNroDoc.label }}</div>
+                    <div class='c1'>{{ form.txtNroDoc(size=15, minlength=1, maxlength=15)}}</div>
+        
+                </div>
+            <div class='fila'>
+                    </br>
+                    <div class='cesp'>&nbsp;</div>
+                    <div class='c1'>{{ form.selEspecialidad.label }}</div>
+                    <div class='c1'>{{ form.selEspecialidad(size=1) }}</div>
+                    <div class='cesp'>&nbsp;</div>
+                    <div class='c1'>{{ form.selMedico.label }}</div>
+                    <div class='c1'>{{ form.selMedico(size=1) }}</div>
+                    <div class='cesp'>&nbsp;</div>
+            </div>
+            <div class='fila'>
+                    </br>
+                    <div class='cesp'>&nbsp;</div>
+                    <div class='c2'>{{ form.DateFecha.label }}</div>
+                    <div class='c2'>{{ form.DateFecha(size=30) }}</div>
+                    <div class='cesp'>&nbsp;</div>
+                    <div class='c1'>{{ form.selhora.label }}</div>
+                    <div class='c1'>{{ form.selhora(size=1) }}</div>
+                    <div class='cesp'>&nbsp;</div>
+                    <div class='c1'>{{ form.Comentarios.label }}</div>
+                    <div class='c2'>{{ form.Comentarios(size=2) }}</div>
+            </div>
+            <div class='fila'>
+                </br>
+                <div class='cesp'>&nbsp;</div>
+                <div class='c1'>{{ form.TxtNombres.label }}</div>
+                <div class='c2'>{{ form.TxtNombres(size=30) }}</div>
+                <div class='cesp'>&nbsp;</div>
+                <div class='c1'>{{ form.TxtApellidos.label }}</div>
+                <div class='c2'>{{ form.TxtApellidos(size=30) }}</div>
+                <div class='cesp'>&nbsp;</div>
+                <div class='c1'>{{ form.mailUsuario.label }}</div>
+                <div class='c1'>{{ form.mailUsuario(size=15) }}</div>
+                <div class='c1'>&nbsp;</div>
+            </div>
+            <div class='fila'>
+                    </br>
+                    <div class='cesp'>&nbsp;</div>
+                    <div class='cesp'>&nbsp;</div>
+                    <div class='c1'>{{ form.btnReg() }}</div>
+                    <div class='cesp'>&nbsp;</div>
+					<div class='c1'>{{ form.btnEditar() }}</div>
+                    <div class='cesp'>&nbsp;</div>
+					<div class='c1'>{{ form.btnEliminar() }}</div>
+                    <div class='cesp'>&nbsp;</div>
+					<div class='c1'>{{ form.btnNotificar() }}</div>
+                    <div class='cesp30'>&nbsp;</div>
+					<div class='c1'>{{ form.btnSalir()}}</div>	
+            </div>
+                </br>
+         </form>
+{% endblock %}
