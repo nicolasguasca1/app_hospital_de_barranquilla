@@ -56,11 +56,11 @@
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown">Servicios <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><a>Búsqueda de registros</a></li>
+                <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('lista') }}">Búsqueda de registros</a></li>
                 <li><a>Otras acciones futuras</a></li>
                 <li class="divider"></li>
                 <li class="dropdown-header">Mi cuenta</li>
-                <li><a>Perfil de usuario</a></li>
+                <li {% if request.endpoint == 'perfil' %} class="active"  {% endif %}><a href="{{ url_for('perfil') }}">Perfil de usuario</a></li>
                 <li><a>Otros servicios futuros</a></li>
               </ul>
             </li>

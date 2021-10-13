@@ -159,7 +159,7 @@ def forgot():
 @app.route('/lista/')
 def lista():
     if session:
-        return render_template('pages/list.html')
+        return render_template('pages/lista.html')
     else:
         return render_template('pages/invalid.html')
 
