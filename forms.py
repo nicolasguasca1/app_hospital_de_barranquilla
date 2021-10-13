@@ -1,7 +1,10 @@
 from flask_wtf import FlaskForm
+from typing import Sized
+
 from wtforms import TextField, PasswordField, StringField, SelectField, SubmitField, TextAreaField
-from wtforms.fields.html5 import DateField
-from wtforms.validators import DataRequired, EqualTo, Length
+from wtforms.fields.html5 import EmailField, DateField
+from wtforms.validators import InputRequired,DataRequired, EqualTo, Length
+from wtforms.widgets.core import TextArea
 
 # Set your classes here.
 
@@ -115,3 +118,43 @@ class CitaForm(FlaskForm):
     email = TextField('Correo electrónico', validators = [DataRequired(message='Se requiere el correo electrónico'), Length(min=2, max=40)])
     comentario = TextAreaField("TextArea")
     fecha = DateField('Fecha', validators = [DataRequired(message='Se requiere la fecha')])
+
+# Clase del formulario dashboard paciente
+
+class Paciente(FlaskForm):
+   selTipId   = SelectField(u'Tipo de Identificación', choices=[('cc', 'Cedula'), ('pp', 'Pasaporte'), ('ti', 'Tarjeta Identidad')])
+   txtNroDoc  = TextField('Nro. documento*',validators=[InputRequired(message='Digite el Nro de documento')])
+   TxtNombres = TextField('Nombres*', validators=[InputRequired(message='Digite el nombre(s)')])
+   TxtApellidos = TextField(' Apellidos *', validators=[InputRequired(message='Digite los apellidos')])
+   TxtNroCel = TextField(' Nro Celular *', validators=[InputRequired(message='Digite nro Celular')])
+   DateFecha = DateField('Fecha de Nacimiento',format='%Y-%m-%d')
+   selSexo =  SelectField(u'Genero', choices=[('M', 'Masculino'), ('F', 'Femenino'), ('O', 'Otro')]) 
+   selGrupoRh = SelectField(u'Grupo Sanguineo', choices=[('A+', 'A+'), ('A-', 'A-'), ('O+', 'O+')]) 
+   txtUsuario = TextField('Usuario *', validators=[InputRequired(message='Ingrese Usuario')])
+   PwdClave = PasswordField('Contraseña *',validators=[InputRequired(message='Se requiere la clave')])    
+   mailUsuario = EmailField('Email *', validators=[InputRequired(message='Digite el correo electrónico')])
+   btnReg = SubmitField('Registrar') 
+   btnEditar = SubmitField('Editar')
+   btnEliminar = SubmitField('Eliminar')
+   btnNotificar = SubmitField('Notificar')
+   btnSalir = SubmitField('Salir')
+
+# Clase del formulario dashboard Cita
+class Cita(FlaskForm):
+   txtNroCita = TextField('Nro. Cita*',validators=[InputRequired(message='Digite el Nro de cita')])
+   selEspecialidad   = SelectField(u'Especialidad', choices=[('01', 'Cardiologo'), ('02', 'Ortopedista'), ('03', 'Hemologo')])
+   selMedico   = SelectField(u'Medico', choices=[('01', 'Carlos Arturo'), ('02', 'Pedro Gonzalez'), ('03', 'Juan Mejia')])
+   DateFecha = DateField('Fecha ',format='%Y-%m-%d')
+   selhora   = SelectField(u'Hora', choices=[('08', '8:a.m'), ('09', '9:a.m'), ('10', '10:a.m')])
+   tipoid = SelectField(u'Tipo de identificación ', choices= [('cc', 'Cedula'), ('pp', 'Pasaporte'), ('ti', 'Tarjeta Identidad')])
+   txtNroDoc  = TextField('Nro. documento*',validators=[InputRequired(message='Digite el Nro de documento')])
+   TxtNombres = TextField('Nombres*', validators=[InputRequired(message='Digite el nombre(s)')])
+   TxtApellidos = TextField(' Apellidos *', validators=[InputRequired(message='Digite los apellidos')])
+   mailUsuario = EmailField('Email *', validators=[InputRequired(message='Digite el correo electrónico')])
+   Comentarios = TextAreaField('Comentarios')
+   btnReg = SubmitField('Reservar') 
+   btnEditar = SubmitField('Editar')
+   btnEliminar = SubmitField('Eliminar')
+   btnNotificar = SubmitField('Notificar')
+   btnSalir = SubmitField('Salir')
+
