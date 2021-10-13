@@ -210,7 +210,7 @@ def vistamedico():
 def vistacitas():
     frm = Cita()
     if request.method=='GET':
-        return render_template('dashboard-citas.html', form=frm)
+        return render_template('forms/dashboard-citas.html', form=frm)
 
 
 @app.route('/logout/')
