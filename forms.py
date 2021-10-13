@@ -158,3 +158,7 @@ class Cita(FlaskForm):
    btnNotificar = SubmitField('Notificar')
    btnSalir = SubmitField('Salir')
 
+class Perfil(FlaskForm):
+    usr = StringField('Usuario *',validators=[DataRequired(message='Se requiere el usuario'), Length(min=6, max=40, message='Longitud debe estar entre 6 y 40')])
+    pwd = PasswordField('Contraseña *',validators=[DataRequired(message='Se requiere la clave')])
+    mailUsuario = EmailField('Email *', validators=[InputRequired(message='Digite el correo electrónico')])

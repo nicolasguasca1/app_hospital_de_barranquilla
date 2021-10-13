@@ -216,6 +216,12 @@ def vistacitas():
     if request.method=='GET':
         return render_template('forms/dashboard-citas.html', form=frm)
 
+@app.route('/perfil/', methods=['GET','POST'])
+def perfil():
+    frm = Perfil()
+    if request.method=='GET':
+        return render_template('forms/perfil.html', form=frm)
+
 
 @app.route('/logout/')
 def logout():
