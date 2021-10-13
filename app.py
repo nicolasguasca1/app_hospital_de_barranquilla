@@ -73,8 +73,8 @@ def about():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    # if current_user.is_authenticated:
-    #     return redirect(url_for('/index/'))
+    # if session['usr_id']:
+    #     return redirect(url_for('home'))
     form = LoginForm(request.form)
     if request.method=='GET':
         return render_template('forms/login.html', form=form)

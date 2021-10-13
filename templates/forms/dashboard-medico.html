@@ -1,5 +1,4 @@
-{% extends 'forms/DashboardAdmin.html' %} {% if 'usr_id'in session %} {% block
-cuerpo %}
+{% extends 'forms/DashboardAdmin.html' %} {% block cuerpo %}
 <br />
 <br />
 <form
@@ -124,14 +123,4 @@ cuerpo %}
     </div>
   </div>
 </form>
-{% endblock %} {% else %}
-<h3 class="form-heading">
-  Ruta inválida
-  <a href="{{ url_for('home') }}" title="Back to homepage"
-    ><i class="fa fa-home pull-right"></i
-  ></a>
-</h3>
-<p class="lead">
-  Para acceder a la ruta solicitada es necesario iniciar sesión.
-</p>
-{% endif %}
+{% endblock %}
