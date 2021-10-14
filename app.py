@@ -198,11 +198,11 @@ def DashboardAdmin():
     if request.method=='GET':
         return render_template('forms/DashboardAdmin.html')
 
-@app.route('/vistaPaciente/', methods=['GET','POST'])
-def vistaPaciente():
+@app.route('/pacientes/', methods=['GET','POST'])
+def pacientes():
     frm = Paciente()
     if request.method=='GET':
-        return render_template('forms/Dashboard-pacientes.html',form=frm)
+        return render_template('forms/pacientes.html',form=frm)
 
 @app.route('/vistamedico/', methods=['GET','POST'])
 def vistamedico():
@@ -210,7 +210,7 @@ def vistamedico():
     if request.method=='GET':
         return render_template('forms/dashboard-medico.html', form=frm)
 
-@app.route('/vistaCitas/', methods=['GET','POST'])
+@app.route('/vistacitas/', methods=['GET','POST'])
 def vistacitas():
     frm = Cita()
     if request.method=='GET':
