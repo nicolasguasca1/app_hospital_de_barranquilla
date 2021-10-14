@@ -223,6 +223,12 @@ def perfil():
         return render_template('forms/perfil.html', form=frm)
 
 
+@app.route('/vistaBusquedas/', methods=['GET','POST'])
+def vistaBusquedas():
+    frm = VistaBusquedas()
+    if request.method=='GET':
+        return render_template('forms/vistaBusquedas.html', form=frm)
+
 @app.route('/logout/')
 def logout():
     session.clear()
