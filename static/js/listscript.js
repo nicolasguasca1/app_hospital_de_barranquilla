@@ -1,5 +1,5 @@
 let tabla = document.getElementById("tabla");
-//datos..
+
 let data = [
     {
         descrip: "Odontología",
@@ -21,6 +21,7 @@ let data = [
     }
 ];
 
+/*
 function add_form()
 {
     document.getElementById("dark").style.background = "rgba(0, 0, 0, .7)";
@@ -135,7 +136,7 @@ function add_form()
     add.innerHTML = out;
     document.getElementById("close").addEventListener("click", ()=>close_());
     document.getElementById("add_btn").addEventListener("click", ()=>add_data());
-}
+}*/
 function add_data()
 {
     let especialidad = document.getElementById("especialidad").value;
@@ -292,8 +293,26 @@ function mk_table()
                                     });
     out += `</tbody>
             </table>
-            <div><img id="add" onclick="add_form()" src="/static/img/add-logo.png" alt="" style="width:30px; cursor:pointer;"></div>
+            <div><img id="add" src="/static/img/add-logo.png" alt="" style="width:30px; cursor:pointer;"></div>
             </div>`
     tabla.innerHTML = out;
+    document.getElementById("add").addEventListener("click" ,function(e)
+    {
+        document.getElementById("dark").style.background = "rgba(0, 0, 0, .7)";
+        document.getElementById("dark").style.visibility = "visible";
+        e.preventDefault();
+        $.ajax({
+            type:'POST',
+            url:'/citasForm',
+            /*data:{
+            var: 1
+            },*/
+            success:function(response)
+            {
+                document.getElementById("w-edit").innerHTML = response;
+                document.getElementById("close").addEventListener("click", ()=>close_());
+            }
+        })
+    });
 }
 document.addEventListener("load", mk_table());

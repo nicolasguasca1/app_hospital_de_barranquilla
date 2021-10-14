@@ -1,15 +1,32 @@
 {% extends 'layouts/main.html' %} {% block title %}Inicio{% endblock %} {% block
-content %}
-
+content %} {% if 'usr_id' in session %}
 <div>
   <!-- <div class="page-header"> -->
-  <h1>Aplicación de gestión de citas y usuarios</h1>
+  <h1>¡Bienvenido {{session.usr_id}}!</h1>
 </div>
 
 <img
   src='{{ url_for("static", filename="img/hospital.jpg")}}'
   alt=""
-  width="900px"
+  width="auto"
+  align="right"
+/>
+
+<p class="lead">
+  Acceda a la information de su cuenta o consulte los registros existentes en la
+  barra superior
+</p>
+{% else %}
+<div>
+  <!-- <div class="page-header"> -->
+  <h1>Hospital General De Barranquilla</h1>
+</div>
+
+<img
+  src='{{ url_for("static", filename="img/hospital.jpg")}}'
+  alt=""
+  width="auto"
+  align="right"
 />
 
 <p class="lead">
@@ -17,5 +34,4 @@ content %}
   al sistema de citas del hospital. Ingrese sus credenciales para acceder. Si
   aún no se ha dado de alta, pulse Registro.
 </p>
-
-{% endblock %}
+{% endif %} {% endblock %}

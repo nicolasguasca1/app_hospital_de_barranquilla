@@ -41,31 +41,87 @@
     <div class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <button title=hospital type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/">Hospital General De Barranquilla</a>
+          <a class="navbar-brand" href="{{ url_for('home') }}" title="Back to homepage">
+            <i class="fa fa-home pull-left"></i>
+            Inicio
+          </a>
         </div>
         <div class="collapse navbar-collapse">
-          {% if 'usr_id' in session %}
+          {% if session.usr_id == 'test123' %}
           <ul class="nav navbar-nav">
-            <li {% if request.endpoint == 'home' %}  {% endif %}><a href="{{ url_for('home') }}">Dashboard administrativo</a></li>
-            <li {% if request.endpoint == 'about' %} class="active" {% endif %}><a href="{{ url_for('about') }}">About</a></li>
             <li class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+              <a class="dropdown-toggle" data-toggle="dropdown">Dashboard Administrativo <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><a>Action</a></li>
-                <li><a>Another action</a></li>
-                <li><a>Something else here</a></li>
+                <li {% if request.endpoint == 'vistacitas' %} class="active"  {% endif %}><a href="{{ url_for('vistacitas') }}">Pedir cita</a></li>
+                <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('lista') }}">Registro de citas</a></li>
+              </ul>
+            </li>
+            <!-- <li {% if request.endpoint == 'about' %} class="active" {% endif %}><a href="{{ url_for('about') }}">About</a></li> -->
+            
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown">Servicios <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a>Otras acciones futuras</a></li>
                 <li class="divider"></li>
-                <li class="dropdown-header">Nav header</li>
-                <li><a>Separated link</a></li>
-                <li><a>One more separated link</a></li>
+                <li class="dropdown-header">Mi cuenta</li>
+                <li {% if request.endpoint == 'perfil' %} class="active"  {% endif %}><a href="{{ url_for('perfil') }}">Perfil de usuario</a></li>
+                <li><a>Otros servicios futuros</a></li>
               </ul>
             </li>
           </ul>
+          {% endif %}
+          {% if session.usr_id == 'testmed123' %}
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown">Dashboard Administrativo <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('pacientes') }}">Gestión de pacientes</a></li>
+                <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('lista') }}">Búsqueda de registros</a></li>
+              </ul>
+            </li>
+            <!-- <li {% if request.endpoint == 'about' %} class="active" {% endif %}><a href="{{ url_for('about') }}">About</a></li> -->
+            
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown">Servicios <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a>Otras acciones futuras</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Mi cuenta</li>
+                <li {% if request.endpoint == 'perfil' %} class="active"  {% endif %}><a href="{{ url_for('perfil') }}">Perfil de usuario</a></li>
+                <li><a>Otros servicios futuros</a></li>
+              </ul>
+            </li>
+          </ul>
+          {% endif %}
+          {% if session.usr_id == 'testadmin123' %}
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown">Dashboard Administrativo <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('dashboard') }}">Gestión de usuarios</a></li>
+                <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('lista') }}">Búsqueda de registros</a></li>
+              </ul>
+            </li>
+            <!-- <li {% if request.endpoint == 'about' %} class="active" {% endif %}><a href="{{ url_for('about') }}">About</a></li> -->
+            
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown">Servicios <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a>Otras acciones futuras</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Mi cuenta</li>
+                <li {% if request.endpoint == 'perfil' %} class="active"  {% endif %}><a href="{{ url_for('perfil') }}">Perfil de usuario</a></li>
+                <li><a>Otros servicios futuros</a></li>
+              </ul>
+            </li>
+          </ul>
+          {% endif %}
+          {% if 'usr_id' in session %}
           <ul class="nav navbar-nav pull-right">
             <li><a href="{{ url_for('logout') }}">Salir</a></li>
           </ul>
@@ -106,7 +162,6 @@
     </main>
 
   </div>
-
   <div id="footer">
     <div class="container">
       <p>Ministerio de Salud &copy; Todos los derechos reservados</p>

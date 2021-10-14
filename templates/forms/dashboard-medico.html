@@ -1,0 +1,126 @@
+{% extends 'forms/DashboardAdmin.html' %} {% block cuerpo %}
+<br />
+<br />
+<form
+  action="/vistamedico/"
+  method="post"
+  style="
+    padding: 1rem;
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
+    background-color: #fcfcfc;
+  "
+>
+  <div class="row" style="padding: 1rem">
+    <div class="form-group">
+      <div class="col-sm-2" style="text-align: right">
+        {{ form.tipoid(class_ = 'form-control')}}
+      </div>
+      <div class="col-sm-4">
+        {{ form.id(class_ = 'form-control first-input last-input',
+        placeholder=form.id.label.text, required = true)}}
+      </div>
+    </div>
+  </div>
+  <div class="row" style="padding: 1rem">
+    <div class="form-group">
+      <label class="col-sm-2 control-label" style="text-align: right"
+        >{{form.name.label.text}}</label
+      >
+      <div class="col-sm-4">
+        {{ form.name(class_ = 'form-control', required = true)}}
+      </div>
+      <label class="col-sm-2 control-label" style="text-align: right"
+        >{{form.last.label.text}}</label
+      >
+      <div class="col-sm-4">
+        {{ form.last(class_ = 'form-control', required = true)}}
+      </div>
+    </div>
+  </div>
+  <div class="row" style="padding: 1rem">
+    <div class="form-group">
+      <label class="col-sm-2 control-label" style="text-align: right"
+        >{{form.especialidad.label.text}}</label
+      >
+      <div class="col-sm-4">
+        {{ form.especialidad(class_ = 'form-control', style='width:48%;')}}
+      </div>
+      <label class="col-sm-2 control-label" style="text-align: right"
+        >{{form.phone.label.text}}</label
+      >
+      <div class="col-sm-4">
+        {{ form.phone(class_ = 'form-control', required = true)}}
+      </div>
+    </div>
+  </div>
+  <div class="row" style="padding: 1rem">
+    <div class="form-group">
+      <label class="col-sm-2 control-label" style="text-align: right"
+        >{{form.time.label.text}}</label
+      >
+      <div class="col-sm-4">
+        {{ form.time(class_ = 'form-control', style='width:48%;')}}
+      </div>
+    </div>
+  </div>
+  <div class="row" style="padding: 1rem">
+    <div class="form-group">
+      <label class="col-sm-3 control-label">Datos de autenticación</label>
+    </div>
+  </div>
+  <div class="row" style="padding: 1rem">
+    <div class="form-group">
+      <label class="col-sm-2 control-label" style="text-align: right"
+        >{{form.user.label.text}}</label
+      >
+      <div class="col-sm-4">
+        {{ form.user(class_ = 'form-control', required = true)}}
+      </div>
+      <label class="col-sm-2 control-label" style="text-align: right"
+        >{{form.password.label.text}}</label
+      >
+      <div class="col-sm-4">
+        {{ form.password(class_ = 'form-control', required = true)}}
+      </div>
+    </div>
+  </div>
+  <div class="row" style="padding: 1rem">
+    <div class="form-group">
+      <label class="col-sm-2 control-label" style="text-align: right"
+        >{{form.email.label.text}}</label
+      >
+      <div class="col-sm-4">
+        {{ form.email(class_ = 'form-control', required = true)}}
+      </div>
+    </div>
+  </div>
+  <div class="row" style="padding: 1rem">
+    <div class="form-group">
+      <div class="col-sm-2">
+        <button type="submit" class="btn btn-primary btn-block">Reserva</button>
+      </div>
+      <div class="col-sm-2">
+        <button type="submit" class="btn btn-primary btn-block">Editar</button>
+      </div>
+      <div class="col-sm-2">
+        <button type="submit" class="btn btn-primary btn-block">
+          Eliminar
+        </button>
+      </div>
+      <div class="col-sm-2">
+        <button type="submit" class="btn btn-primary btn-block">
+          Notificar
+        </button>
+      </div>
+      <div class="col-sm-2"></div>
+      <div>
+        <div class="col-sm-2" style="text-align: right">
+          <button type="submit" class="btn btn-primary btn-block">Salir</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock %}

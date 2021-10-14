@@ -4,6 +4,8 @@ Flask-WTF
 WTForms
 coverage
 MarkupSafe
+Flask-User
+email_validator
 # ecdsa
 # paramiko
 # pycrypto

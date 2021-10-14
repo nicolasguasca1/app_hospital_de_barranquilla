@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Administrativo</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href='{{ url_for("static", filename="css/MenuAdmin.css") }}'
+    />
+    <!-- styles -->
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="/static/css/font-awesome-4.1.0.min.css"
+    />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="/static/css/bootstrap-3.1.1.min.css"
+    />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="/static/css/bootstrap-theme-3.1.1.min.css"
+    />
+    <link type="text/css" rel="stylesheet" href="/static/css/layout.main.css" />
+    <link type="text/css" rel="stylesheet" href="/static/css/main.css" />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="/static/css/main.responsive.css"
+    />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="/static/css/main.quickfix.css"
+    />
+    <!-- /styles -->
+
+    <!-- scripts -->
+    <script src="/static/js/libs/modernizr-2.8.2.min.js"></script>
+    <!--[if lt IE 9
+      ]><script src="/static/js/libs/respond-1.4.2.min.js"></script
+    ><![endif]-->
+    <!-- /scripts -->
+  </head>
+  <body>
+    {% if 'usr_id' in session %}
+    <div>
+      <h1>Hospital General De Barranquilla - Dashboard administrativo</h1>
+    </div>
+    <div class="ppal">
+      <div class="cesp">&nbsp;</div>
+      <div class="c1"><a href="/vistaPaciente/">Pacientes</a></div>
+      <div class="c1"><a href="/vistamedico/">Médicos</a></div>
+      <div class="c1"><a href="/vistaCitas/">Citas</a></div>
+      <!--<div class='c1'><a href='/Salir/'>Logout</a></div>-->
+      <div class="c1">&nbsp;</div>
+    </div>
+    <div class="wkarea">{% block cuerpo %}{% endblock %}</div>
+    <div class="footer">
+      <p>&copy;OCDT 2021.</p>
+    </div>
+    {% else %}
+    <h3 class="form-heading">
+      Ruta inválida
+      <a href="{{ url_for('home') }}" title="Back to homepage"
+        ><i class="fa fa-home pull-right"></i
+      ></a>
+    </h3>
+    <p class="lead">
+      Para acceder a la ruta solicitada es necesario iniciar sesión.
+    </p>
+    {% endif %}
+  </body>
+</html>

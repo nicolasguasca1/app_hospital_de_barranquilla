@@ -1,4 +1,4 @@
-{% extends 'layouts/form.html' %} {% block title %}Ingreso{% endblock %} {%
+{% extends 'layouts/main.html' %} {% block title %}Ingreso{% endblock %} {%
 block content %}
 <form method="post" class="form">
   <h1 class="form-heading">
@@ -7,7 +7,6 @@ block content %}
       ><i class="fa fa-home pull-right"></i
     ></a>
   </h1>
-  <h6>Introduzca sus credenciales</h6>
   <h4 class="form-group">
     {{ form.usr(class_ = 'form-control first-input', placeholder =
     form.usr.label.text, required = true, autofocus = true) }}
@@ -16,16 +15,11 @@ block content %}
     {{ form.pwd(class_ = 'form-control last-input', placeholder =
     form.pwd.label.text, required = true) }}
   </h4>
+  <h4 class="form-group">
+    {{ form.mailUsuario(class_ = 'form-control last-input', placeholder =
+    form.mailUsuario.label.text, required = true) }}
+  </h4>
 
-  <p class="pull-left">
-    <a href="{{ url_for('forgot') }}">Olvidé mi contraseña</a>
-  </p>
-  <p class="pull-right">
-    Si no se ha dado de alta, puede registrarse
-    <a href="{{ url_for('registropac') }}">como paciente</a>
-    o
-    <a href="{{ url_for('registromed') }}">como médico</a>
-  </p>
   <input
     type="submit"
     value="Ingresar"
