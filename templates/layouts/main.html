@@ -104,7 +104,8 @@
               <a class="dropdown-toggle" data-toggle="dropdown">Dashboard Administrativo <b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('dashboard') }}">Gestión de usuarios</a></li>
-                <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('lista') }}">Búsqueda de registros</a></li>
+                <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('vistaBusquedas') }}">Búsqueda de registros</a></li>
+                <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('lista') }}">Mis citas</a></li>
               </ul>
             </li>
             <!-- <li {% if request.endpoint == 'about' %} class="active" {% endif %}><a href="{{ url_for('about') }}">About</a></li> -->
@@ -129,8 +130,6 @@
           <ul class="nav navbar-nav pull-right">
             <li><a href="{{ url_for('registromed') }}">Registro médico</a></li>
             <li><a href="{{ url_for('registropac') }}">Registro paciente</a></li>
-            <li><a href="{{ url_for('vistaBusquedas') }}">Centro de Busqueda</a></li>
-            <li><a href="{{ url_for('perfil') }}"> Cambio de datos</a></li>
             <li><a href="{{ url_for('login') }}">Ingresar</a></li>
           </ul>
           {% endif %}

@@ -11,9 +11,8 @@ from markupsafe import escape
 import os
 from flask_user import current_user, login_required, roles_required, UserManager
 from flask_login import LoginManager, login_user, UserMixin
-from models import get_user, users, User
+# from models import get_user, users, User
 from werkzeug.urls import url_parse
-
 
 
 #----------------------------------------------------------------------------#
@@ -76,7 +75,7 @@ def login():
     # if session['usr_id']:
     #     return redirect(url_for('home'))
     form = LoginForm(request.form)
-    if request.method=='GET':
+    if request.method == 'GET':
         return render_template('forms/login.html', form=form)
     # elif form.btn():
     #     user = get_user(form.usr.data)
@@ -88,30 +87,30 @@ def login():
     #             next_page = url_for('pages/placeholder.home.html')
     #         return redirect(next_page)
     #     return render_template('forms/login.html', form=form)
-    else: 
+    else:
         # Recuperar los datos
         usr = escape(form.usr.data.strip())
-        pwd = escape(form.pwd.data.strip( ))
+        pwd = escape(form.pwd.data.strip())
         # Validar los datos
         swvalido = True
-        if len(usr)<6 or len(usr)>40:
+        if len(usr) < 6 or len(usr) > 40:
             swvalido = False
             flash("El nombre de usuario es requerido y tiene entre 6 y 40 caracteres")
-        if len(pwd)<6 or len(pwd)>40:
+        if len(pwd) < 6 or len(pwd) > 40:
             swvalido = False
             flash("El nombre de usuario es requerido y tiene entre 6 y 40 caracteres")
         # Realizar el login simulado
-        if swvalido and usr=='test123' and pwd=='test123':
+        if swvalido and usr == 'test123' and pwd == 'test123':
             session.clear()
             session['usr_id'] = usr
             session['pwd_id'] = pwd
             return render_template('pages/placeholder.home.html')
-        elif swvalido and usr=='testmed123' and pwd=='testmed123':
+        elif swvalido and usr == 'testmed123' and pwd == 'testmed123':
             session.clear()
             session['usr_id'] = usr
             session['pwd_id'] = pwd
             return render_template('pages/placeholder.home.html')
-        elif swvalido and usr=='testadmin123' and pwd=='testadmin123':
+        elif swvalido and usr == 'testadmin123' and pwd == 'testadmin123':
             session.clear()
             session['usr_id'] = usr
             session['pwd_id'] = pwd
@@ -123,12 +122,11 @@ def login():
             return render_template('forms/login.html', form=form)
 
 
-
 @app.route('/registropac', methods=['GET', 'POST'])
 def registropac():
-    if request.method=='GET':
-    # if current_user.is_authenticated:
-    #     return redirect(url_for('/index/'))
+    if request.method == 'GET':
+        # if current_user.is_authenticated:
+        #     return redirect(url_for('/index/'))
         pacform = RegisterFormPac(request.form)
     # if pacform.submit():
     #     name = pacform.name.data
@@ -145,16 +143,19 @@ def registropac():
     #     return redirect(next_page)
     return render_template('forms/registropac.html', form=pacform)
 
+
 @app.route('/registromed', methods=['GET', 'POST'])
 def registromed():
-    if request.method=='GET':
+    if request.method == 'GET':
         medform = RegisterFormMed(request.form)
     return render_template('forms/registromed.html', form=medform)
+
 
 @app.route('/forgot')
 def forgot():
     form = ForgotForm(request.form)
     return render_template('forms/forgot.html', form=form)
+
 
 @app.route('/lista/')
 def lista():
@@ -170,8 +171,8 @@ def lista():
 def dashboard():
     # usr_id = 'usr_id' in session
     # if usr_id:
-        form = DashBoardMedico(request.form)
-        return render_template('forms/dashboard-medico.html', form=form)
+    form = DashBoardMedico(request.form)
+    return render_template('forms/dashboard-medico.html', form=form)
     # elif session['usr_id'] == 'testmed123':
     #     form = DashBoardPaciente(request.form)
     #     return render_template('forms/dashboard-paciente.html', form=form)
@@ -184,50 +185,57 @@ def dashboard():
     # else:
     #     return render_template('pages/invalid.html')
 
+
 @app.route('/citasForm', methods=['GET', 'POST'])
 # Con el condicional se aseguran de que la vista se renderiza solo si el usuario está logueado
 def citas():
-    if request.method=='POST':
+    if request.method == 'POST':
         form = CitaForm(request.form)
         return render_template('forms/citasForm.html', form=form)
 
 # rutas del dashboard administrativo
 
+
 @app.route('/Dashboard-Admin/')
 def DashboardAdmin():
-    if request.method=='GET':
+    if request.method == 'GET':
         return render_template('forms/DashboardAdmin.html')
 
-@app.route('/pacientes/', methods=['GET','POST'])
+
+@app.route('/pacientes/', methods=['GET', 'POST'])
 def pacientes():
     frm = Paciente()
-    if request.method=='GET':
-        return render_template('forms/pacientes.html',form=frm)
+    if request.method == 'GET':
+        return render_template('forms/pacientes.html', form=frm)
 
-@app.route('/vistamedico/', methods=['GET','POST'])
+
+@app.route('/vistamedico/', methods=['GET', 'POST'])
 def vistamedico():
     frm = DashBoardMedico()
-    if request.method=='GET':
+    if request.method == 'GET':
         return render_template('forms/dashboard-medico.html', form=frm)
 
-@app.route('/vistacitas/', methods=['GET','POST'])
+
+@app.route('/vistacitas/', methods=['GET', 'POST'])
 def vistacitas():
     frm = Cita()
-    if request.method=='GET':
+    if request.method == 'GET':
         return render_template('forms/dashboard-citas.html', form=frm)
 
-@app.route('/perfil/', methods=['GET','POST'])
+
+@app.route('/perfil/', methods=['GET', 'POST'])
 def perfil():
     frm = Perfil()
-    if request.method=='GET':
+    if request.method == 'GET':
         return render_template('forms/perfil.html', form=frm)
 
 
-@app.route('/vistaBusquedas/', methods=['GET','POST'])
+@app.route('/vistaBusquedas/', methods=['GET', 'POST'])
 def vistaBusquedas():
     frm = VistaBusquedas()
-    if request.method=='GET':
+    if request.method == 'GET':
         return render_template('forms/vistaBusquedas.html', form=frm)
+
 
 @app.route('/logout/')
 def logout():
@@ -239,7 +247,7 @@ def logout():
 
 @app.errorhandler(500)
 def internal_error(error):
-    #db_session.rollback()
+    # db_session.rollback()
     return render_template('errors/500.html'), 500
 
 
@@ -247,10 +255,12 @@ def internal_error(error):
 def not_found_error(error):
     return render_template('errors/404.html'), 404
 
+
 if not app.debug:
     file_handler = FileHandler('error.log')
     file_handler.setFormatter(
-        Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]')
+        Formatter(
+            '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]')
     )
     app.logger.setLevel(logging.INFO)
     file_handler.setLevel(logging.INFO)
