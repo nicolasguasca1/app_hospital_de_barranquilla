@@ -22,11 +22,21 @@ block content %}
     {{ form.lastname(class_ = 'form-control first-input', placeholder =
     form.lastname.label.text, required = true, autofocus = true) }}
   </h4>
+  <h6 class="form-group">
+    <p>Tipo de identificación</p>
+    {{ form.tipoid(class_ = 'form-control first-input', placeholder =
+    form.tipoid.label.text, required = true, autofocus = true) }}
+  </h6>
+
   <h4 class="form-group">
     {{ form.id(class_ = 'form-control first-input', placeholder =
     form.id.label.text, required = true, autofocus = true) }}
   </h4>
-
+  <h6 class="form-group">
+    <p>Especialidad</p>
+    {{ form.specialty(class_ = 'form-control first-input', placeholder =
+    form.specialty.label.text, required = true, autofocus = true) }}
+  </h6>
   <h6 class="form-group">
     <p>Fecha de nacimiento</p>
     {{ form.birthdate(class_ = 'form-control', placeholder =
@@ -41,6 +51,11 @@ block content %}
     <p>Grupo Sanguíneo</p>
     {{ form.rh(class_ = 'form-control', placeholder = form.rh.label.text,
     required = true) }}
+  </h6>
+  <h6 class="form-group">
+    <p>Modalidad</p>
+    {{ form.modalidad(class_ = 'form-control', placeholder =
+    form.modalidad.label.text, required = true) }}
   </h6>
   <h4 class="form-group">
     {{ form.email(class_ = 'form-control', placeholder = form.email.label.text,
