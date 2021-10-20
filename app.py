@@ -13,6 +13,9 @@ from flask_user import current_user, login_required, roles_required, UserManager
 from flask_login import LoginManager, login_user, UserMixin
 # from models import get_user, users, User
 from werkzeug.urls import url_parse
+from werkzeug.security import check_password_hash, generate_password_hash
+import sys
+from db import accion, seleccion
 
 
 #----------------------------------------------------------------------------#
@@ -99,49 +102,70 @@ def login():
         if len(pwd) < 6 or len(pwd) > 40:
             swvalido = False
             flash("El nombre de usuario es requerido y tiene entre 6 y 40 caracteres")
-        # Realizar el login simulado
-        if swvalido and usr == 'test123' and pwd == 'test123':
-            session.clear()
-            session['usr_id'] = usr
-            session['pwd_id'] = pwd
-            return render_template('pages/placeholder.home.html')
-        elif swvalido and usr == 'testmed123' and pwd == 'testmed123':
-            session.clear()
-            session['usr_id'] = usr
-            session['pwd_id'] = pwd
-            return render_template('pages/placeholder.home.html')
-        elif swvalido and usr == 'testadmin123' and pwd == 'testadmin123':
-            session.clear()
-            session['usr_id'] = usr
-            session['pwd_id'] = pwd
-            return render_template('pages/placeholder.home.html')
+        # Preparar la consulta
+        sqlmed = f"SELECT idmedico, nombres, mail, clave FROM Médico WHERE usuario = '{usr}'"
+        sqlpac = f"SELECT idpaciente, nombres, mail, clave FROM Paciente WHERE usuario = '{usr}'"
+        sqladmin = f"SELECT idsuper, nombres, mail, clave FROM Superusuario WHERE usuario = '{usr}'"
+
+        # Ejecutar la consulta
+        resmed = seleccion(sqlmed)
+        respac = seleccion(sqlpac)
+        resadmin = seleccion(sqladmin)
+        # Proceso los resultados
+        if len(resmed) != 0:
+            cbd = resmed[0][3]  # Recuperar la clave
+            if check_password_hash(cbd, pwd):
+                session.clear()
+                session['id'] = resmed[0][0]
+                session['nom'] = resmed[0][1]
+                session['usr'] = usr
+                session['cla'] = pwd
+                session['ema'] = resmed[0][2]
+                return render_template('pages/placeholder.home.html')
+            else:
+                flash('ERROR: Usuario o clave invalidos1')
+                return render_template('forms/login.html', form=form)
+        elif len(respac) != 0:
+            cbd = respac[0][3]  # Recuperar la clave
+            if check_password_hash(cbd, pwd):
+                session.clear()
+                session['id'] = respac[0][0]
+                session['nom'] = respac[0][1]
+                session['usr'] = usr
+                session['cla'] = pwd
+                session['ema'] = respac[0][2]
+                return render_template('pages/placeholder.home.html')
+            else:
+                flash('ERROR: Usuario o clave invalidos2')
+                return render_template('forms/login.html', form=form)
+        elif len(resadmin) != 0:
+            cbd = resadmin[0][3]  # Recuperar la clave
+            if check_password_hash(cbd, pwd):
+                session.clear()
+                session['id'] = resadmin[0][0]
+                session['nom'] = resadmin[0][1]
+                session['usr'] = usr
+                session['cla'] = pwd
+                session['ema'] = resadmin[0][2]
+                return render_template('pages/placeholder.home.html')
+            else:
+                flash('ERROR: Usuario o clave invalidos3')
+                return render_template('forms/login.html', form=form)
+
         # elif form.btn():
         #     login_user(user)
         #     flash('Ha iniciado sesión correctamente.')
         else:
+            flash('ERROR: Usuario o clave invalidos4')
             return render_template('forms/login.html', form=form)
 
 
 @app.route('/registropac', methods=['GET', 'POST'])
 def registropac():
+    pacform = RegisterFormPac(request.form)
     if request.method == 'GET':
-        # if current_user.is_authenticated:
-        #     return redirect(url_for('/index/'))
-        pacform = RegisterFormPac(request.form)
-    # if pacform.submit():
-    #     name = pacform.name.data
-    #     email = pacform.email.data
-    #     password = pacform.password.data
-    #     # Creamos el usuario y lo guardamos
-    #     user = User(len(users) + 1, name, email, password)
-    #     users.append(user)
-    #     # Dejamos al usuario logueado
-    #     login_user(user, remember=True)
-    #     next_page = request.args.get('next', None)
-    #     if not next_page or url_parse(next_page).netloc != '':
-    #         next_page = url_for('index')
-    #     return redirect(next_page)
-    return render_template('forms/registropac.html', form=pacform)
+        return render_template('forms/registropac.html', form=pacform)
+    # else:
 
 
 @app.route('/registromed', methods=['GET', 'POST'])
@@ -240,7 +264,7 @@ def vistaBusquedas():
 @app.route('/logout/')
 def logout():
     session.clear()
-    return render_template('pages/placeholder.home.html')
+    return redirect('pages/placeholder.home.html')
 
 # Error handlers.
 
