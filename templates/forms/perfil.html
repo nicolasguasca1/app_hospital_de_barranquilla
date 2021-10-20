@@ -17,47 +17,50 @@
           <h4 class="form-group">
         Correo electrónico actual: {{ dat[0] }}
           <br>
-          <br>
         {{ form.mailUsuario(class_ = 'form-control last-input', placeholder =
-        "Nuevo correo electrónico", required = true) }}
+        "Nuevo correo electrónico") }}
           </h4>
         <input
           type="submit"
           value="Actualizar correo electrónico"
+          name="action1"
           class="btn btn-primary btn-lg btn-block"
-          onClick="{ form.btn() }"
+          onClick="{ form.mailUsuarioUpdate() }"
         />
         </div>
-        <br><br>
+        <br>
         <div class='c2'>
           <h4 class="form-group">
         Usuario actual: {{ dat[1] }}
           <br>
-          <br>
         {{ form.usr(class_ = 'form-control first-input', placeholder =
-        "Nuevo usuario", required = true, autofocus = true) }}
+        "Nuevo usuario", autofocus = true) }}
           </h4>
         <input
         type="submit"
         value="Actualizar usuario"
+        name="action2"
         class="btn btn-primary btn-lg btn-block"
-        onClick="{ form.btn() }"
+        onClick="{ fform.usrUpdate() }"
       />
           </div>
-        <br><br>
+        <br>
         <div class='c2'>
           <h4 class="form-group">
         Cambio de contraseña
           <br>
-          <br>
         {{ form.pwd(class_ = 'form-control last-input', placeholder =
-        "Nueva contraseña", required = true) }}
+        "Nueva contraseña") }}
+        <br>
+        {{ form.confirm(class_ = 'form-control last-input', placeholder =
+        "Repita la nueva contraseña") }}
           </h4>
         <input
         type="submit"
         value="Actualizar contraseña"
+        name="action3"
         class="btn btn-primary btn-lg btn-block"
-        onClick="{ form.btn() }"
+        onClick="{ form.pwdUpdate() }"
       />
         </div>
       {% endfor %}

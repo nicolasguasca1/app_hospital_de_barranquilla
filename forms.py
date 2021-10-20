@@ -218,12 +218,17 @@ class Cita(FlaskForm):
 
 
 class Perfil(FlaskForm):
-    usr = StringField('Usuario *', validators=[DataRequired(message='Se requiere el usuario'), Length(
+    usr = StringField('Usuario *', validators=[Length(
         min=6, max=40, message='Longitud debe estar entre 6 y 40')])
     pwd = PasswordField(
-        'Contraseña *', validators=[DataRequired(message='Se requiere la clave')])
+        'Contraseña *')
+    confirm = PasswordField(
+        'Contraseña *')
     mailUsuario = EmailField(
-        'Email *', validators=[InputRequired(message='Digite el correo electrónico')])
+        'Email *')
+    usrUpdate = SubmitField('Actualizar usuario')
+    pwdUpdate = SubmitField('Actualizar contraseña')
+    mailUsuarioUpdate = SubmitField('Actualizar correo electrónico')
 
 
 class VistaBusquedas(FlaskForm):

@@ -303,27 +303,65 @@ def vistacitas():
 
 @app.route('/get/')
 def get():
-    return session.get('usr', 'not set')
-# @app.route('/perfil/', methods=['GET', 'POST'])
+    return session.get('rol', 'not set')
+
+# RUTA VÁLIDA SOLO PARA PACIENTES POR EL MOMENTO
 
 
-@app.route('/perfil/')
+@app.route('/perfil/', methods=['GET', 'POST'])
 def perfil():
-    # if request.method == 'GET':
+    frm = Perfil(request.form)
     usuario = session['usr']
-    # if 'rol' in session:
-    #     if session['rol'] == 1:
-    # Preparar la consulta
-    sql = f"SELECT mail, usuario, clave FROM Paciente WHERE usuario='{usuario}'"
-    # Ejecutar la consulta
-    res = seleccion(sql)
-    # Proceso los resultados
-    if len(res) == 0:
-        tit = f"No se encontraron datos para : {session['usr']}"
+    if request.method == 'GET':
+        # if session['rol'] == 1:
+        # if 'rol' in session:
+        #     if session['rol'] == 1:
+        # Preparar la consulta
+        sql = f"SELECT mail, usuario, clave FROM Paciente WHERE usuario='{usuario}'"
+        # Ejecutar la consulta
+        res = seleccion(sql)
+        # Proceso los resultados
+        if len(res) == 0:
+            tit = f"No se encontraron datos para : {session['usr']}"
+        else:
+            tit = f"Se muestran los datos para : {session['usr']}"
+            frm = Perfil()
+        return render_template('forms/perfil.html', form=frm, titulo=tit, data=res)
     else:
-        tit = f"Se muestran los datos para : {session['usr']}"
-        frm = Perfil()
-    return render_template('forms/perfil.html', form=frm, titulo=tit, data=res)
+        # Recuperar datos del usuario de la sesion
+        # Recuperar los datos del formulario
+        # Esta forma permite validar las entradas
+        if request.form.get('action1') == 'Actualizar correo electrónico':
+            # usr = escape(request.form['usr'])
+            mailUsuario = escape(request.form['mailUsuario'])
+            # pwd = escape(request.form['pwd'])
+            # Validar los datos
+            swerror = False
+            # if usr == None or len(usr) == 0 or not login_valido(usr):
+            #     flash('ERROR: Debe suministrar un usuario válido ')
+            #     swerror = True
+            if mailUsuario == None or len(mailUsuario) == 0 or not email_valido(mailUsuario):
+                flash('ERROR: Debe suministrar un email válido')
+                swerror = True
+            # if pwd == None or len(pwd) == 0 or not pass_valido(pwd):
+            #     flash('ERROR: Debe suministrar una clave válida')
+            #     swerror = True
+            if not swerror:
+                # Preparar el query -- Paramétrico
+                sql2 = f"UPDATE Paciente set mail = %s where usuario = %s"
+                # Ejecutar la consulta
+                # pwd = generate_password_hash(pwd)
+                res2 = accion(sql2, (mailUsuario, usuario))
+                sql = f"SELECT mail, usuario, clave FROM Paciente WHERE usuario='{usuario}'"
+                # Ejecutar la consulta
+                res = seleccion(sql)
+                # Proceso los resultados
+                if res2 == 0:
+                    flash('ERROR: No se pudieron almacenar los datos, reintente')
+                else:
+                    flash('INFO: Los datos fueron almacenados satisfactoriamente')
+        return render_template('forms/perfil.html', form=frm, data=res)
+
     # elif session['rol'] == 2:
     #     # Preparar la consulta
     #     sql = f'SELECT mail, usuario, clave FROM Medico WHERE usuario = {usuario}'
