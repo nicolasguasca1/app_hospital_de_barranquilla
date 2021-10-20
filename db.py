@@ -13,12 +13,12 @@ def seleccion(sql) -> list:
     return res
 
 
-def accion(sql) -> int:
+def accion(sql, datos) -> int:
     """ Ejecuta una consulta de acción sobre la base de datos """
     try:
         with sqlite3.connect(URL_DB) as con:
             cur = con.cursor()
-            res = cur.execute(sql).rowcount
+            res = cur.execute(sql, datos).rowcount
             if res != 0:
                 con.commit()
     except Exception:

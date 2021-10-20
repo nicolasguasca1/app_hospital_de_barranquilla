@@ -14,7 +14,7 @@ from flask_login import LoginManager, login_user, UserMixin
 # from models import get_user, users, User
 from werkzeug.urls import url_parse
 from werkzeug.security import check_password_hash, generate_password_hash
-import sys
+from utils import login_valido, pass_valido, email_valido
 from db import accion, seleccion
 
 
@@ -166,9 +166,57 @@ def login():
 @app.route('/registropac', methods=['GET', 'POST'])
 def registropac():
     pacform = RegisterFormPac(request.form)
+
     if request.method == 'GET':
         return render_template('forms/registropac.html', form=pacform)
-    # else:
+    else:
+        # Recuperar los datos del formulario
+        name = escape(request.form['name'])
+        lastname = escape(request.form['lastname'])
+        tipoid = escape(request.form['tipoid'])
+        id = escape(request.form['id'])
+        birthdate = escape(request.form['birthdate'])
+        sex = escape(request.form['sex'])
+        rh = escape(request.form['rh'])
+        phonenumber = escape(request.form['phonenumber'])
+        email = escape(request.form['email'])
+        username = escape(request.form['username'])
+        password = escape(request.form['password'])
+        confirm = escape(request.form['confirm'])
+        role = 1
+        # Validar los datos
+        swerror = False
+        if id == None or len(id) == 0:
+            flash('ERROR: Debe suministrar un numero de identificación')
+            swerror = True
+        if username == None or len(username) == 0 or not login_valido(username):
+            flash('ERROR: Debe suministrar un usuario válido ')
+            swerror = True
+        if email == None or len(email) == 0 or not email_valido(email):
+            flash('ERROR: Debe suministrar un email válido')
+            swerror = True
+        if password == None or len(password) == 0 or not pass_valido(password):
+            flash('ERROR: Debe suministrar una clave válida')
+            swerror = True
+        if confirm == None or len(confirm) == 0 or not pass_valido(confirm):
+            flash('ERROR: Debe suministrar una verificación de clave válida')
+            swerror = True
+        if password != confirm:
+            flash('ERROR: La clave y la confirmación no coinciden')
+            swerror = True
+        if not swerror:
+            # Preparar la consulta
+            sql = 'INSERT INTO Paciente(nombres, Apellidos, tipoId, NumeroId, fechaNacimiento, sexo, grupoSanguineo, mail, telefono, usuario, clave, idrol) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)'
+            # Ejecutar la consulta
+            pwd = generate_password_hash(password)  # Cifrar la clave
+            res = accion(sql, (name, lastname, tipoid, id, birthdate,
+                         sex, rh, email, phonenumber, username, pwd, role))
+            # Verificar resultados
+            if res == 0:
+                flash('ERROR: No se pudo insertar el registro')
+            else:
+                flash('INFO: Datos grabados con exito')
+        return render_template('forms/registropac.html', form=pacform)
 
 
 @app.route('/registromed', methods=['GET', 'POST'])
