@@ -103,9 +103,9 @@ def login():
             swvalido = False
             flash("El nombre de usuario es requerido y tiene entre 6 y 40 caracteres")
         # Preparar la consulta
-        sqlmed = f"SELECT idmedico, nombres, mail, clave FROM Médico WHERE usuario = '{usr}'"
-        sqlpac = f"SELECT idpaciente, nombres, mail, clave FROM Paciente WHERE usuario = '{usr}'"
-        sqladmin = f"SELECT idsuper, nombres, mail, clave FROM Superusuario WHERE usuario = '{usr}'"
+        sqlmed = f"SELECT idmedico, nombres, mail, clave, idrol FROM Médico WHERE usuario = '{usr}'"
+        sqlpac = f"SELECT idpaciente, nombres, mail, clave, idrol FROM Paciente WHERE usuario = '{usr}'"
+        sqladmin = f"SELECT idsuper, nombres, mail, clave, idrol FROM Superusuario WHERE usuario = '{usr}'"
 
         # Ejecutar la consulta
         resmed = seleccion(sqlmed)
@@ -121,6 +121,7 @@ def login():
                 session['usr'] = usr
                 session['cla'] = pwd
                 session['ema'] = resmed[0][2]
+                session['rol'] = resmed[0][4]
                 return render_template('pages/placeholder.home.html')
             else:
                 flash('ERROR: Usuario o clave invalidos1')
@@ -134,6 +135,7 @@ def login():
                 session['usr'] = usr
                 session['cla'] = pwd
                 session['ema'] = respac[0][2]
+                session['rol'] = respac[0][4]
                 return render_template('pages/placeholder.home.html')
             else:
                 flash('ERROR: Usuario o clave invalidos2')
@@ -147,6 +149,7 @@ def login():
                 session['usr'] = usr
                 session['cla'] = pwd
                 session['ema'] = resadmin[0][2]
+                session['rol'] = resadmin[0][4]
                 return render_template('pages/placeholder.home.html')
             else:
                 flash('ERROR: Usuario o clave invalidos3')
@@ -264,7 +267,7 @@ def vistaBusquedas():
 @app.route('/logout/')
 def logout():
     session.clear()
-    return redirect('pages/placeholder.home.html')
+    return render_template('pages/placeholder.home.html')
 
 # Error handlers.
 

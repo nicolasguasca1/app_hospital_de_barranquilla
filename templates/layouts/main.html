@@ -52,7 +52,8 @@
           </a>
         </div>
         <div class="collapse navbar-collapse">
-          {% if session.usr_id == 'test123' %}
+          <!-- SE MUESTRA SI EL ROL CORRESPONDE A UN PACIENTE -->
+          {% if session.rol == '1' %}
           <ul class="nav navbar-nav">
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown">Dashboard Administrativo <b class="caret"></b></a>
@@ -75,7 +76,8 @@
             </li>
           </ul>
           {% endif %}
-          {% if session.usr_id == 'testmed123' %}
+          <!-- SE MUESTRA SI EL ROL CORRESPONDE A UN MÉDICO -->
+          {% if session.rol == '2' %}
           <ul class="nav navbar-nav">
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown">Dashboard Administrativo <b class="caret"></b></a>
@@ -98,7 +100,8 @@
             </li>
           </ul>
           {% endif %}
-          {% if session.usr_id == 'testadmin123' %}
+          <!-- SE MUESTRA SI EL ROL CORRESPONDE A UN SUPERUSUARIO -->
+          {% if session.rol == '3' %}
           <ul class="nav navbar-nav">
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown">Dashboard Administrativo <b class="caret"></b></a>
@@ -122,7 +125,7 @@
             </li>
           </ul>
           {% endif %}
-          {% if 'usr_id' in session %}
+          {% if 'usr' in session %}
           <ul class="nav navbar-nav pull-right">
             <li><a href="{{ url_for('logout') }}">Salir</a></li>
           </ul>
