@@ -1,35 +1,75 @@
-{% extends 'layouts/main.html' %} {% block title %}Ingreso{% endblock %} {%
-block content %}
-<form method="post" class="form">
-  <h1 class="form-heading">
-    Inicio de sesión
-    <a href="{{ url_for('home') }}" title="Back to homepage"
-      ><i class="fa fa-home pull-right"></i
-    ></a>
-  </h1>
-  <h4 class="form-group">
-    {{ form.usr(class_ = 'form-control first-input', placeholder =
-    form.usr.label.text, required = true, autofocus = true) }}
-  </h4>
-  <h4 class="form-group">
-    {{ form.pwd(class_ = 'form-control last-input', placeholder =
-    form.pwd.label.text, required = true) }}
-  </h4>
-  <h4 class="form-group">
-    {{ form.mailUsuario(class_ = 'form-control last-input', placeholder =
-    form.mailUsuario.label.text, required = true) }}
-  </h4>
+{% extends 'layouts/main.html' %}
+{% block title %}Listado de citas{% endblock %} 
+{% block content %}
 
-  <input
-    type="submit"
-    value="Ingresar"
-    class="btn btn-primary btn-lg btn-block"
-    onClick="{ form.btn() }"
-  />
-  <p>
-    You must add database as well as Flask-Login to enable user management. See
-    the <a href="http://www.realpython.com">Real Python</a> course for more
-    info!
-  </p>
-</form>
-{% endblock %}
+    <div class="container">
+        <div class="row align-items-center">
+          <div class="col-12 hero-text-image">
+            <div class="row">
+    <form method="post" class="form">
+      <h1 class="form-heading" style="text-align: center;" data-aos="fade-right">
+        Información del perfil
+        
+      </h1>
+      
+      {% for dat in data %}
+        <div class='c2'>
+          <h4 class="form-group">
+        Correo electrónico actual: {{ dat[0] }}
+          <br>
+        {{ form.mailUsuario(class_ = 'form-control last-input', placeholder =
+        "Nuevo correo electrónico") }}
+          </h4>
+        <input
+          type="submit"
+          value="Actualizar correo electrónico"
+          name="action1"
+          class="btn btn-primary btn-lg btn-block"
+          onClick="{ form.mailUsuarioUpdate() }"
+        />
+        </div>
+        <br>
+        <div class='c2'>
+          <h4 class="form-group">
+        Usuario actual: {{ dat[1] }}
+          <br>
+        {{ form.usr(class_ = 'form-control first-input', placeholder =
+        "Nuevo usuario", autofocus = true) }}
+          </h4>
+        <input
+        type="submit"
+        value="Actualizar usuario"
+        name="action2"
+        class="btn btn-primary btn-lg btn-block"
+        onClick="{ fform.usrUpdate() }"
+      />
+          </div>
+        <br>
+        <div class='c2'>
+          <h4 class="form-group">
+        Cambio de contraseña
+          <br>
+        {{ form.pwd(class_ = 'form-control last-input', placeholder =
+        "Nueva contraseña") }}
+        <br>
+        {{ form.confirm(class_ = 'form-control last-input', placeholder =
+        "Repita la nueva contraseña") }}
+          </h4>
+        <input
+        type="submit"
+        value="Actualizar contraseña"
+        name="action3"
+        class="btn btn-primary btn-lg btn-block"
+        onClick="{ form.pwdUpdate() }"
+      />
+        </div>
+      {% endfor %}
+    </form>
+
+    </div>
+</div>
+</div>
+</div>
+    {% endblock %}
+</body>
+</html>

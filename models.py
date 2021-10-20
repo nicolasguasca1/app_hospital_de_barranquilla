@@ -1,15 +1,17 @@
-# from sqlalchemy import create_engine
-# from sqlalchemy.orm import scoped_session, sessionmaker
-# from sqlalchemy.ext.declarative import declarative_base
-# # from sqlalchemy import Column, Integer, String
-# # from app import db
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
+from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String
+from app import db
 
-# engine = create_engine('sqlite:///database.db', echo=True)
-# db_session = scoped_session(sessionmaker(autocommit=False,
-#                                          autoflush=False,
-#                                          bind=engine))
-# Base = declarative_base()
-# Base.query = db_session.query_property()
+engine = create_engine('infogeneral.db', echo=True)
+db_session = scoped_session(sessionmaker(autocommit=False,
+                                         autoflush=False,
+                                         bind=engine))
+Base = declarative_base()
+Base.query = db_session.query_property()
 
 # Set your classes here.
 
@@ -30,9 +32,6 @@ class User(Base):
 # Create tables.
 # Base.metadata.create_all(bind=engine)
 
-from flask_login import UserMixin
-from werkzeug.security import generate_password_hash, check_password_hash
-
 
 class User(UserMixin):
 
@@ -52,8 +51,12 @@ class User(UserMixin):
     def __repr__(self):
         return '<User {}>'.format(self.usr)
 
+
 # users = [[1, "santiago", "santiagouser", "santiago123", False],[2, "camilo", "camilouser", "camilo123", True]]
-users = [{'id':1, 'name': 'santiago', 'usr':'santiagouser','pwd':'santiago123','is_Admin':True}]
+users = [{'id': 1, 'name': 'santiago', 'usr': 'santiagouser',
+          'pwd': 'santiago123', 'is_Admin': True}]
+
+
 def get_user(usr):
     for user in users:
         if user['usr'] == usr:

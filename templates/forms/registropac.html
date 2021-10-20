@@ -22,6 +22,11 @@ block content %}
     {{ form.lastname(class_ = 'form-control first-input', placeholder =
     form.lastname.label.text, required = true, autofocus = true) }}
   </h4>
+  <h6 class="form-group">
+    <p>Tipo de identificación</p>
+    {{ form.tipoid(class_ = 'form-control first-input', placeholder =
+    form.tipoid.label.text, required = true, autofocus = true) }}
+  </h6>
   <h4 class="form-group">
     {{ form.id(class_ = 'form-control first-input', placeholder =
     form.id.label.text, required = true, autofocus = true) }}
