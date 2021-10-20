@@ -2,40 +2,65 @@
 {% block title %}Listado de citas{% endblock %} 
 {% block content %}
 
-    <br><br><br><br><br><br><br><br><br><br><br><br><div class="container">
+    <div class="container">
         <div class="row align-items-center">
           <div class="col-12 hero-text-image">
             <div class="row">
     <form method="post" class="form">
       <h1 class="form-heading" style="text-align: center;" data-aos="fade-right">
-        Cambio de datos
-        <a href="{{ url_for('home') }}" title="Back to homepage"
-          ></a> <br> <br>
+        Información del perfil
+        
       </h1>
-      <h6 class="form-group">
-        {{ form.usr(class_ = 'form-control first-input', placeholder =
-        "Ingrese el nuevo usuario", required = true, autofocus = true) }}
-      </h6>
-      <h6 class="form-group">
-        {{ form.pwd(class_ = 'form-control last-input', placeholder =
-        "Ingrese la nueva contraseña", required = true) }}
-      </h6>
-      <h4 class="form-group">
+      
+      {% for dat in data %}
+        <div class='c2'>
+          <h4 class="form-group">
+        Correo electrónico actual: {{ dat[0] }}
+          <br>
+          <br>
         {{ form.mailUsuario(class_ = 'form-control last-input', placeholder =
-        "Ingrese el nuevo correo electrónico", required = true) }}
-      </h4>
-    
-      <input
+        "Nuevo correo electrónico", required = true) }}
+          </h4>
+        <input
+          type="submit"
+          value="Actualizar correo electrónico"
+          class="btn btn-primary btn-lg btn-block"
+          onClick="{ form.btn() }"
+        />
+        </div>
+        <br><br>
+        <div class='c2'>
+          <h4 class="form-group">
+        Usuario actual: {{ dat[1] }}
+          <br>
+          <br>
+        {{ form.usr(class_ = 'form-control first-input', placeholder =
+        "Nuevo usuario", required = true, autofocus = true) }}
+          </h4>
+        <input
         type="submit"
-        value="Cambiar"
+        value="Actualizar usuario"
         class="btn btn-primary btn-lg btn-block"
         onClick="{ form.btn() }"
       />
-      <p>
-        You must add database as well as Flask-Login to enable user management. See
-        the <a href="http://www.realpython.com">Real Python</a> course for more
-        info!
-      </p>
+          </div>
+        <br><br>
+        <div class='c2'>
+          <h4 class="form-group">
+        Cambio de contraseña
+          <br>
+          <br>
+        {{ form.pwd(class_ = 'form-control last-input', placeholder =
+        "Nueva contraseña", required = true) }}
+          </h4>
+        <input
+        type="submit"
+        value="Actualizar contraseña"
+        class="btn btn-primary btn-lg btn-block"
+        onClick="{ form.btn() }"
+      />
+        </div>
+      {% endfor %}
     </form>
 
     </div>
