@@ -215,7 +215,10 @@ def registropac():
             if res == 0:
                 flash('ERROR: No se pudo insertar el registro')
             else:
-                flash('INFO: Datos grabados con exito')
+                flash(
+                    'Atualización: Datos grabados con exito. Para acceder ingrese sus credenciales.')
+                return redirect(url_for('login'))
+
         return render_template('forms/registropac.html', form=pacform)
 
 
