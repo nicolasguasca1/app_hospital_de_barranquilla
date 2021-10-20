@@ -67,7 +67,7 @@
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown">Servicios <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><a href="{{ url_for ('accion1') }}">Otras acciones futuras</a></li>
+                <li><a>Otras acciones futuras</a></li>
                 <li class="divider"></li>
                 <li class="dropdown-header">Mi cuenta</li>
                 <li {% if request.endpoint == 'perfil' %} class="active"  {% endif %}><a href="{{ url_for('perfil') }}">Perfil de usuario</a></li>
