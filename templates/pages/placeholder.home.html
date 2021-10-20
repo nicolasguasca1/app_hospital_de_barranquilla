@@ -1,5 +1,5 @@
 {% extends 'layouts/main.html' %} {% block title %}Inicio{% endblock %} {% block
-content %} {% if 'usr_id' in session %}
+content %} {% if 'usr' in session %}
 <div>
   <!-- <div class="page-header"> -->
   <h1>¡Bienvenido {{session.usr_id}}!</h1>

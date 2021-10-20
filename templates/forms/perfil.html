@@ -12,17 +12,17 @@
         <a href="{{ url_for('home') }}" title="Back to homepage"
           ></a> <br> <br>
       </h1>
-      <h4 class="form-group">
+      <h6 class="form-group">
         {{ form.usr(class_ = 'form-control first-input', placeholder =
-        form.usr.label.text, required = true, autofocus = true) }}
-      </h4>
-      <h4 class="form-group">
+        "Ingrese el nuevo usuario", required = true, autofocus = true) }}
+      </h6>
+      <h6 class="form-group">
         {{ form.pwd(class_ = 'form-control last-input', placeholder =
-        form.pwd.label.text, required = true) }}
-      </h4>
+        "Ingrese la nueva contraseña", required = true) }}
+      </h6>
       <h4 class="form-group">
         {{ form.mailUsuario(class_ = 'form-control last-input', placeholder =
-        form.mailUsuario.label.text, required = true) }}
+        "Ingrese el nuevo correo electrónico", required = true) }}
       </h4>
     
       <input
