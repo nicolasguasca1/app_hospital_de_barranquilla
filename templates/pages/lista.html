@@ -1,46 +1,83 @@
-{% extends 'layouts/main.html' %}
-{% block title %}Listado de citas{% endblock %} 
-{% block content %}
+{% extends 'layouts/main.html' %} {% block title %}Listado de citas{% endblock
+%} {% block content %}
 
-<br>
-<br>
-<div id="tabla" style="width: 70%; margin: auto;">
-    <div style="color:#777;padding:1rem;"><p><strong>Listado de citas</strong></p></div>
-            <div class="table-responsive" style="background-clip: border-box; border: 1px solid rgba(0,0,0,.125); border-radius: .25rem; padding: 1rem;">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Descripción</th>
-                    <th scope="col">Paciente</th>
-                    <th scope="col">Doctor</th>
-                    <th scope="col">Fecha/Hora</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for item in data %}
-                    <tr>
-                        <th scope="row">{{item.index}}</th>
-                        <td>{{item.descrip}}</td>
-                        <td>{{item.paciente}}</td>
-                        <td>{{item.doctor}}</td>
-                        <td>{{item.fecha}}</td>
-                        <td>
-                           <img id="edit{{index}}"  onclick="edit({{item.index}})" src="/static/img/view.png" alt="" style="width: 33px; margin-right: 12px; cursor: pointer;">
-                            <img id="delete{{index}}" onclick="delete_form({{index}})" src="/static/img/deleted-logo.png" alt="" style="width: 23px; cursor: pointer;">
-                        </td>
-                        </tr>
-                {% endfor %}
-            </tbody>
-            </table>
-            <div><img id="add" src="/static/img/add-logo.png" alt="" style="width:30px; cursor:pointer;"></div>
-            </div>
+<br />
+<br />
+<div id="tabla" style="width: 70%; margin: auto">
+  <div style="color: #777; padding: 1rem">
+    <p><strong>Listado de citas</strong></p>
+  </div>
+  <div
+    class="table-responsive"
+    style="
+      background-clip: border-box;
+      border: 1px solid rgba(0, 0, 0, 0.125);
+      border-radius: 0.25rem;
+      padding: 1rem;
+    "
+  >
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Descripción</th>
+          <th scope="col">Paciente</th>
+          <th scope="col">Doctor</th>
+          <th scope="col">Fecha/Hora</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in data %}
+        <tr>
+          <th scope="row">{{item.index}}</th>
+          <td>{{item.descrip}}</td>
+          <td>{{item.paciente}}</td>
+          <td>{{item.doctor}}</td>
+          <td>{{item.fecha}}</td>
+          <td>
+            <img
+              id="edit{{index}}"
+              onclick="edit({{item.index}})"
+              src="/static/img/view.png"
+              alt=""
+              style="width: 33px; margin-right: 12px; cursor: pointer"
+            />
+            <img
+              id="delete{{index}}"
+              onclick="delete_form({{index}})"
+              src="/static/img/deleted-logo.png"
+              alt=""
+              style="width: 23px; cursor: pointer"
+            />
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div>
+      <img
+        id="add"
+        src="/static/img/add-logo.png"
+        alt=""
+        style="width: 30px; cursor: pointer"
+      />
+    </div>
+  </div>
 </div>
-{% endblock %}
-{% block detail %}
-<div id="dark" style="visibility: collapse;position: absolute; width: 100vw; height: 100vh; top: 0px; background: rgba(0, 0, 0, 0); transition: .5s;"></div>
-<div id="w-edit" style="position: absolute; width: 100vw; top: 10%;"></div>
+{% endblock %} {% block detail %}
+<div
+  id="dark"
+  style="
+    visibility: collapse;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    top: 0px;
+    background: rgba(0, 0, 0, 0);
+    transition: 0.5s;
+  "
+></div>
+<div id="w-edit" style="position: absolute; width: 100vw; top: 10%"></div>
 <script src="/static/js/listscript.js"></script>
 {% endblock %}
-

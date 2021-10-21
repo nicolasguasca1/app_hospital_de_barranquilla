@@ -80,16 +80,6 @@ def login():
     form = LoginForm(request.form)
     if request.method == 'GET':
         return render_template('forms/login.html', form=form)
-    # elif form.btn():
-    #     user = get_user(form.usr.data)
-    #     myUser = User(user.id.data,user.name.data,user.usr.data,user.pwd.data,user.isAdmin.data)
-    #     if user is not None and myUser.check_password(form.pwd.data):
-    #         login_user(user)
-    #         next_page = request.args.get('next')
-    #         if not next_page or url_parse(next_page) .netloc != '':
-    #             next_page = url_for('pages/placeholder.home.html')
-    #         return redirect(next_page)
-    #     return render_template('forms/login.html', form=form)
     else:
         # Recuperar los datos
         usr = escape(form.usr.data.strip())
@@ -284,7 +274,8 @@ def registromed():
             # Preparar la consulta
             pwd = generate_password_hash(password)  # Cifrar la clave
             sql = 'INSERT INTO Médico(nombres,apellidos,tipoId,NumeroId,idespecialidad,fechaNacimiento,sexo,grupoSanguineo,modalidad,mail,tarjetaProfesional,teléfono,usuario,clave,idrol) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
-            res = accion(sql,(name,lastname,tipoid,id,specialty,birthdate,sex,rh,modalidad,email,professionalId,phonenumber,username,pwd,role))
+            res = accion(sql, (name, lastname, tipoid, id, specialty, birthdate, sex,
+                         rh, modalidad, email, professionalId, phonenumber, username, pwd, role))
             # Verificar resultados
             if res == 0:
                 flash('ERROR: No se pudo insertar el registro')
@@ -296,11 +287,11 @@ def registromed():
         return render_template('forms/registromed.html', form=medform)
 
 
-
 @app.route('/forgot')
 def forgot():
     form = ForgotForm(request.form)
     return render_template('forms/forgot.html', form=form)
+
 
 @app.route('/wedit', methods=['GET', 'POST'])
 def vistaCita():
@@ -308,31 +299,32 @@ def vistaCita():
         if request.method == 'GET':
             jsdata = request.args.get('jsdata')
             print("jsdata: "+jsdata)
-    
+
             # Preparar la consulta
             sqlcita = f"SELECT idpaciente, especialidad, idmedico, horario, fecha, comentarios, valoracion, id FROM Cita WHERE id = '{jsdata}'"
             # Ejecutar la consulta
             rescita = seleccion(sqlcita)
-            
+
             sqlmed = f"SELECT nombres, apellidos FROM Médico WHERE idmedico = '{rescita[0][2]}'"
             sqlpac = f"SELECT nombres, apellidos FROM Paciente WHERE idpaciente = '{rescita[0][0]}'"
             resmed = seleccion(sqlmed)
             respac = seleccion(sqlpac)
             datos = {
-                    "id": rescita[0][7],
-                    "descrip": rescita[0][1],
-                    "paciente": respac[0][0]+" "+respac[0][1],
-                    "idp": rescita[0][0],
-                    "doctor": resmed[0][0]+" "+resmed[0][1],
-                    "idd": rescita[0][2],
-                    "fecha": rescita[0][3]+" "+rescita[0][4],
-                    "comentario": rescita[0][5],
-                    "valoracion": rescita[0][6]
-                }
-            
+                "id": rescita[0][7],
+                "descrip": rescita[0][1],
+                "paciente": respac[0][0]+" "+respac[0][1],
+                "idp": rescita[0][0],
+                "doctor": resmed[0][0]+" "+resmed[0][1],
+                "idd": rescita[0][2],
+                "fecha": rescita[0][3]+" "+rescita[0][4],
+                "comentario": rescita[0][5],
+                "valoracion": rescita[0][6]
+            }
+
             return render_template('pages/wedit.html', data=datos)
     else:
         return render_template('pages/invalid.html')
+
 
 @app.route('/lista/', methods=['GET', 'POST'])
 def lista():
@@ -343,7 +335,7 @@ def lista():
             sqlcita = f"SELECT idpaciente, especialidad, idmedico, horario, fecha, comentarios, valoracion, id FROM Cita"
             # Ejecutar la consulta
             rescita = seleccion(sqlcita)
-            
+
             i = 0
             while i < len(rescita):
                 sqlmed = f"SELECT nombres, apellidos FROM Médico WHERE idmedico = '{rescita[i][2]}'"
@@ -406,15 +398,18 @@ def citas():
         valoracion = escape(request.form['valoracion'])
         # Preparar la consulta
         sql = "INSERT INTO Cita(idpaciente, especialidad, idmedico, horario, fecha, comentarios, valoracion) VALUES (?,?,?,?,?,?,?)"
-        res = accion(sql,(idp, especialidad, idmedico, hora, fecha, comentario, valoracion))
+        res = accion(sql, (idp, especialidad, idmedico,
+                     hora, fecha, comentario, valoracion))
         # Verificar resultados
         if res == 0:
             flash('ERROR: No se pudo insertar el registro')
         else:
             flash('Atualización: Datos grabados con exito en la BD.')
         return redirect(url_for('lista'))
-                
+
 # rutas del dashboard administrativo
+
+
 @app.route('/Dashboard-Admin/')
 def DashboardAdmin():
     if request.method == 'GET':
