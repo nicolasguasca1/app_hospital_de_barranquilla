@@ -224,9 +224,77 @@ def registropac():
 
 @app.route('/registromed', methods=['GET', 'POST'])
 def registromed():
+    medform = RegisterFormMed(request.form)
     if request.method == 'GET':
-        medform = RegisterFormMed(request.form)
-    return render_template('forms/registromed.html', form=medform)
+        return render_template('forms/registromed.html', form=medform)
+    else:
+        # Recuperar los datos del formulario
+        name = escape(request.form['name'])
+        lastname = escape(request.form['lastname'])
+        tipoid = escape(request.form['tipoid'])
+        id = escape(request.form['id'])
+        specialty = escape(request.form['specialty'])
+        birthdate = escape(request.form['birthdate'])
+        sex = escape(request.form['sex'])
+        rh = escape(request.form['rh'])
+        modalidad = escape(request.form['modalidad'])
+        email = escape(request.form['email'])
+        professionalId = escape(request.form['professionalId'])
+        phonenumber = escape(request.form['phonenumber'])
+        username = escape(request.form['username'])
+        password = escape(request.form['password'])
+        confirm = escape(request.form['confirm'])
+        role = 2
+        # Validar los datos
+        swerror = False
+        if name == None or len(name) == 0:
+            flash('ERROR: Debe suministrar el nombre del medico')
+            swerror = True
+        if lastname == None or len(lastname) == 0:
+            flash('ERROR: Debe suministrar el apellido del medico')
+            swerror = True
+        if tipoid == None or len(tipoid) == 0:
+            flash('ERROR: Debe suministrar el tipo de documento')
+            swerror = True
+        if id == None or len(id) == 0:
+            flash('ERROR: Debe suministrar un numero de identificación')
+            swerror = True
+        if specialty == None or len(specialty) == 0:
+            flash('ERROR: Debe suministrar la especialidad del médico')
+            swerror = True
+        if modalidad == None or len(modalidad) == 0:
+            flash('ERROR: Debe suministrar la jornada de trabajo del médico')
+            swerror = True
+        if username == None or len(username) == 0 or not login_valido(username):
+            flash('ERROR: Debe suministrar un usuario válido ')
+            swerror = True
+        if email == None or len(email) == 0 or not email_valido(email):
+            flash('ERROR: Debe suministrar un email válido')
+            swerror = True
+        if password == None or len(password) == 0 or not pass_valido(password):
+            flash('ERROR: Debe suministrar una clave válida')
+            swerror = True
+        if confirm == None or len(confirm) == 0 or not pass_valido(confirm):
+            flash('ERROR: Debe suministrar una verificación de clave válida')
+            swerror = True
+        if password != confirm:
+            flash('ERROR: La clave y la confirmación no coinciden')
+            swerror = True
+        if not swerror:
+            # Preparar la consulta
+            pwd = generate_password_hash(password)  # Cifrar la clave
+            sql = 'INSERT INTO Médico(nombres,apellidos,tipoId,NumeroId,idespecialidad,fechaNacimiento,sexo,grupoSanguineo,modalidad,mail,tarjetaProfesional,teléfono,usuario,clave,idrol) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
+            res = accion(sql,(name,lastname,tipoid,id,specialty,birthdate,sex,rh,modalidad,email,professionalId,phonenumber,username,pwd,role))
+            # Verificar resultados
+            if res == 0:
+                flash('ERROR: No se pudo insertar el registro')
+            else:
+                flash(
+                    'Atualización: Datos grabados con exito. Para acceder ingrese sus credenciales.')
+                return redirect(url_for('login'))
+
+        return render_template('forms/registromed.html', form=medform)
+
 
 
 @app.route('/forgot')
