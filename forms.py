@@ -151,7 +151,7 @@ class CitaForm(FlaskForm):
     dataEsp = []
     i = 0
     while i < len(resmed):       
-        dataMedico.append(resmed[i][0])
+        dataMedico.append(str(resmed[i][0])+" "+str(resmed[i][1]))
         i += 1
     i = 0
     while i < len(reshora):       
