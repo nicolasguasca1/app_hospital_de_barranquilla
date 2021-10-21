@@ -224,9 +224,61 @@ def registropac():
 
 @app.route('/registromed', methods=['GET', 'POST'])
 def registromed():
+    pacform = RegisterFormPac(request.form)
+
     if request.method == 'GET':
-        medform = RegisterFormMed(request.form)
-    return render_template('forms/registromed.html', form=medform)
+        return render_template('forms/registropac.html', form=pacform)
+    else:
+        # Recuperar los datos del formulario
+        name = escape(request.form['name'])
+        lastname = escape(request.form['lastname'])
+        tipoid = escape(request.form['tipoid'])
+        id = escape(request.form['id'])
+        birthdate = escape(request.form['birthdate'])
+        sex = escape(request.form['sex'])
+        rh = escape(request.form['rh'])
+        phonenumber = escape(request.form['phonenumber'])
+        email = escape(request.form['email'])
+        username = escape(request.form['username'])
+        password = escape(request.form['password'])
+        confirm = escape(request.form['confirm'])
+        role = 1
+        # Validar los datos
+        swerror = False
+        if id == None or len(id) == 0:
+            flash('ERROR: Debe suministrar un numero de identificación')
+            swerror = True
+        if username == None or len(username) == 0 or not login_valido(username):
+            flash('ERROR: Debe suministrar un usuario válido ')
+            swerror = True
+        if email == None or len(email) == 0 or not email_valido(email):
+            flash('ERROR: Debe suministrar un email válido')
+            swerror = True
+        if password == None or len(password) == 0 or not pass_valido(password):
+            flash('ERROR: Debe suministrar una clave válida')
+            swerror = True
+        if confirm == None or len(confirm) == 0 or not pass_valido(confirm):
+            flash('ERROR: Debe suministrar una verificación de clave válida')
+            swerror = True
+        if password != confirm:
+            flash('ERROR: La clave y la confirmación no coinciden')
+            swerror = True
+        if not swerror:
+            # Preparar la consulta
+            sql = 'INSERT INTO Paciente(nombres, Apellidos, tipoId, NumeroId, fechaNacimiento, sexo, grupoSanguineo, mail, telefono, usuario, clave, idrol) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)'
+            # Ejecutar la consulta
+            pwd = generate_password_hash(password)  # Cifrar la clave
+            res = accion(sql, (name, lastname, tipoid, id, birthdate,
+                         sex, rh, email, phonenumber, username, pwd, role))
+            # Verificar resultados
+            if res == 0:
+                flash('ERROR: No se pudo insertar el registro')
+            else:
+                flash(
+                    'Atualización: Datos grabados con exito. Para acceder ingrese sus credenciales.')
+                return redirect(url_for('login'))
+
+        return render_template('forms/registropac.html', form=pacform)
 
 
 @app.route('/forgot')
@@ -234,37 +286,39 @@ def forgot():
     form = ForgotForm(request.form)
     return render_template('forms/forgot.html', form=form)
 
+
 @app.route('/wedit', methods=['GET', 'POST'])
 def vistaCita():
     if session:
         if request.method == 'GET':
             jsdata = request.args.get('jsdata')
             print("jsdata: "+jsdata)
-    
+
             # Preparar la consulta
             sqlcita = f"SELECT idpaciente, especialidad, idmedico, horario, fecha, comentarios, valoracion, id FROM Cita WHERE id = '{jsdata}'"
             # Ejecutar la consulta
             rescita = seleccion(sqlcita)
-            
+
             sqlmed = f"SELECT nombres, apellidos FROM Médico WHERE idmedico = '{rescita[0][2]}'"
             sqlpac = f"SELECT nombres, apellidos FROM Paciente WHERE idpaciente = '{rescita[0][0]}'"
             resmed = seleccion(sqlmed)
             respac = seleccion(sqlpac)
             datos = {
-                    "id": rescita[0][7],
-                    "descrip": rescita[0][1],
-                    "paciente": respac[0][0]+" "+respac[0][1],
-                    "idp": rescita[0][0],
-                    "doctor": resmed[0][0]+" "+resmed[0][1],
-                    "idd": rescita[0][2],
-                    "fecha": rescita[0][3]+" "+rescita[0][4],
-                    "comentario": rescita[0][5],
-                    "valoracion": rescita[0][6]
-                }
-            
+                "id": rescita[0][7],
+                "descrip": rescita[0][1],
+                "paciente": respac[0][0]+" "+respac[0][1],
+                "idp": rescita[0][0],
+                "doctor": resmed[0][0]+" "+resmed[0][1],
+                "idd": rescita[0][2],
+                "fecha": rescita[0][3]+" "+rescita[0][4],
+                "comentario": rescita[0][5],
+                "valoracion": rescita[0][6]
+            }
+
             return render_template('pages/wedit.html', data=datos)
     else:
         return render_template('pages/invalid.html')
+
 
 @app.route('/lista/', methods=['GET', 'POST'])
 def lista():
@@ -275,7 +329,7 @@ def lista():
             sqlcita = f"SELECT idpaciente, especialidad, idmedico, horario, fecha, comentarios, valoracion, id FROM Cita"
             # Ejecutar la consulta
             rescita = seleccion(sqlcita)
-            
+
             i = 0
             while i < len(rescita):
                 sqlmed = f"SELECT nombres, apellidos FROM Médico WHERE idmedico = '{rescita[i][2]}'"
@@ -338,15 +392,18 @@ def citas():
         valoracion = escape(request.form['valoracion'])
         # Preparar la consulta
         sql = "INSERT INTO Cita(idpaciente, especialidad, idmedico, horario, fecha, comentarios, valoracion) VALUES (?,?,?,?,?,?,?)"
-        res = accion(sql,(idp, especialidad, idmedico, hora, fecha, comentario, valoracion))
+        res = accion(sql, (idp, especialidad, idmedico,
+                     hora, fecha, comentario, valoracion))
         # Verificar resultados
         if res == 0:
             flash('ERROR: No se pudo insertar el registro')
         else:
             flash('Atualización: Datos grabados con exito en la BD.')
         return redirect(url_for('lista'))
-                
+
 # rutas del dashboard administrativo
+
+
 @app.route('/Dashboard-Admin/')
 def DashboardAdmin():
     if request.method == 'GET':

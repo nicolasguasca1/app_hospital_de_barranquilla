@@ -135,12 +135,12 @@ class DashBoardMedico(FlaskForm):
 
 
 class CitaForm(FlaskForm):
-    #Preparar consulta
+    # Preparar consulta
     sqlmed = f"SELECT nombres, apellidos FROM Médico"
     sqlesp = f"SELECT especialidad FROM Especialidades"
     sqlhora = f"SELECT horario FROM Horario"
     sqltipoid = f"SELECT Tipo FROM TipoId"
-    #Ejecutar SQL
+    # Ejecutar SQL
     resmed = seleccion(sqlmed)
     resesp = seleccion(sqlesp)
     reshora = seleccion(sqlhora)
@@ -150,18 +150,18 @@ class CitaForm(FlaskForm):
     dataTipoId = []
     dataEsp = []
     i = 0
-    while i < len(resmed):       
+    while i < len(resmed):
         dataMedico.append(resmed[i][0])
         i += 1
     i = 0
-    while i < len(reshora):       
+    while i < len(reshora):
         dataHora.append(reshora[i][0])
         i += 1
     i = 0
-    while i < len(restipoid):       
+    while i < len(restipoid):
         dataTipoId.append(restipoid[i][0])
         i += 1
-    while i < len(resesp):       
+    while i < len(resesp):
         dataEsp.append(resesp[i][0])
         i += 1
 
