@@ -234,11 +234,68 @@ def forgot():
     form = ForgotForm(request.form)
     return render_template('forms/forgot.html', form=form)
 
+@app.route('/wedit', methods=['GET', 'POST'])
+def vistaCita():
+    if session:
+        if request.method == 'GET':
+            jsdata = request.args.get('jsdata')
+            print("jsdata: "+jsdata)
+    
+            # Preparar la consulta
+            sqlcita = f"SELECT idpaciente, especialidad, idmedico, horario, fecha, comentarios, valoracion, id FROM Cita WHERE id = '{jsdata}'"
+            # Ejecutar la consulta
+            rescita = seleccion(sqlcita)
+            
+            sqlmed = f"SELECT nombres, apellidos FROM Médico WHERE idmedico = '{rescita[0][2]}'"
+            sqlpac = f"SELECT nombres, apellidos FROM Paciente WHERE idpaciente = '{rescita[0][0]}'"
+            resmed = seleccion(sqlmed)
+            respac = seleccion(sqlpac)
+            datos = {
+                    "id": rescita[0][7],
+                    "descrip": rescita[0][1],
+                    "paciente": respac[0][0]+" "+respac[0][1],
+                    "idp": rescita[0][0],
+                    "doctor": resmed[0][0]+" "+resmed[0][1],
+                    "idd": rescita[0][2],
+                    "fecha": rescita[0][3]+" "+rescita[0][4],
+                    "comentario": rescita[0][5],
+                    "valoracion": rescita[0][6]
+                }
+            
+            return render_template('pages/wedit.html', data=datos)
+    else:
+        return render_template('pages/invalid.html')
 
-@app.route('/lista/')
+@app.route('/lista/', methods=['GET', 'POST'])
 def lista():
     if session:
-        return render_template('pages/lista.html')
+        if request.method == 'GET':
+            datos = []
+            # Preparar la consulta
+            sqlcita = f"SELECT idpaciente, especialidad, idmedico, horario, fecha, comentarios, valoracion, id FROM Cita"
+            # Ejecutar la consulta
+            rescita = seleccion(sqlcita)
+            
+            i = 0
+            while i < len(rescita):
+                sqlmed = f"SELECT nombres, apellidos FROM Médico WHERE idmedico = '{rescita[i][2]}'"
+                sqlpac = f"SELECT nombres, apellidos FROM Paciente WHERE idpaciente = '{rescita[i][0]}'"
+                resmed = seleccion(sqlmed)
+                respac = seleccion(sqlpac)
+                temp = {
+                    "index": i+1,
+                    "descrip": rescita[i][1],
+                    "paciente": respac[0][0]+" "+respac[0][1],
+                    "id": rescita[i][0],
+                    "doctor": resmed[0][0]+" "+resmed[0][1],
+                    "idd": rescita[i][2],
+                    "fecha": rescita[i][3]+" "+rescita[i][4],
+                    "comentario": rescita[i][5],
+                    "valoracion": rescita[i][6]
+                }
+                datos.append(temp)
+                i += 1
+            return render_template('pages/lista.html', data=datos)
     else:
         return render_template('pages/invalid.html')
 
@@ -267,13 +324,29 @@ def dashboard():
 @app.route('/citasForm', methods=['GET', 'POST'])
 # Con el condicional se aseguran de que la vista se renderiza solo si el usuario está logueado
 def citas():
-    if request.method == 'POST':
+    if request.method == 'GET':
         form = CitaForm(request.form)
         return render_template('forms/citasForm.html', form=form)
-
+    elif request.method == 'POST':
+        # Recuperar los datos del formulario
+        idp = escape(request.form['id_paciente'])
+        especialidad = escape(request.form['especialidad'])
+        idmedico = escape(request.form['id'])
+        hora = escape(request.form['time'])
+        fecha = escape(request.form['fecha'])
+        comentario = escape(request.form['comentario'])
+        valoracion = escape(request.form['valoracion'])
+        # Preparar la consulta
+        sql = "INSERT INTO Cita(idpaciente, especialidad, idmedico, horario, fecha, comentarios, valoracion) VALUES (?,?,?,?,?,?,?)"
+        res = accion(sql,(idp, especialidad, idmedico, hora, fecha, comentario, valoracion))
+        # Verificar resultados
+        if res == 0:
+            flash('ERROR: No se pudo insertar el registro')
+        else:
+            flash('Atualización: Datos grabados con exito en la BD.')
+        return redirect(url_for('lista'))
+                
 # rutas del dashboard administrativo
-
-
 @app.route('/Dashboard-Admin/')
 def DashboardAdmin():
     if request.method == 'GET':

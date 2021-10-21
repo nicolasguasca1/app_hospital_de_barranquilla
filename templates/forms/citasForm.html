@@ -5,7 +5,7 @@
         <div style="text-align: right;">
             <img id="close" src="/static/img/close-icon.png" alt="" style="width: 23px; cursor: pointer;">
         </div>
-        <form id="citas-form"  method="post" style="padding: 1rem; background-clip: border-box; border: 1px solid rgba(0, 0, 0, 0.125); border-radius: 0.25rem; background-color: #fcfcfc;">
+        <form id="citas-form"  method="post" action="/citasForm" style="padding: 1rem; background-clip: border-box; border: 1px solid rgba(0, 0, 0, 0.125); border-radius: 0.25rem; background-color: #fcfcfc;">
             <div class="row" style="padding: 1rem">
                 <div class="form-group">
                   <label class="col-sm-4 control-label" style="text-align: left">
@@ -36,6 +36,7 @@
             </div>
             <div class="row" style="padding: 1rem;">
                 <div class="form-group">
+                    
                     <div class="col-sm-4">
                         <label class="control-label" style="text-align: left">{{form.time.label.text}}</label>
                         <div style="text-align: right">
@@ -89,12 +90,16 @@
             </div>
             <div class="row" style="padding: 1rem;">
                 <div class="form-group">
-                    <div class="col-sm-8">
+                    <div class="col-sm-4">
                         <div style="text-align: right">
-                            {{form.comentario(class_ = 'form-control', required = true, placeholder='Comentarios')}}
+                            {{form.comentario(class_ = 'form-control', placeholder='Comentarios')}}
                         </div>
                     </div>
-                    <div class="col-sm-2"></div>
+                    <div class="col-sm-4">
+                        <div style="text-align: right">
+                            {{form.valoracion(class_ = 'form-control', placeholder='Valoración')}}
+                        </div>
+                    </div>
                     <div class="col-sm-2">
                         <button type="submit" class="btn btn-primary btn-block">Guardar</button>
                     </div>                    

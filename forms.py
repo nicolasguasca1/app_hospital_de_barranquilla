@@ -5,6 +5,7 @@ from wtforms import TextField, PasswordField, StringField, SelectField, SubmitFi
 from wtforms.fields.html5 import EmailField, DateField
 from wtforms.validators import InputRequired, DataRequired, EqualTo, Length
 from wtforms.widgets.core import TextArea
+from db import seleccion
 
 # Set your classes here.
 
@@ -48,6 +49,7 @@ class RegisterFormPac(FlaskForm):
 
 
 class RegisterFormMed(FlaskForm):
+
     name = StringField(
         'Nombres', validators=[DataRequired(), Length(min=6, max=25)]
     )
@@ -133,16 +135,41 @@ class DashBoardMedico(FlaskForm):
 
 
 class CitaForm(FlaskForm):
+    #Preparar consulta
+    sqlmed = f"SELECT nombres, apellidos FROM Médico"
+    sqlesp = f"SELECT especialidad FROM Especialidades"
+    sqlhora = f"SELECT horario FROM Horario"
+    sqltipoid = f"SELECT Tipo FROM TipoId"
+    #Ejecutar SQL
+    resmed = seleccion(sqlmed)
+    resesp = seleccion(sqlesp)
+    reshora = seleccion(sqlhora)
+    restipoid = seleccion(sqltipoid)
+    dataMedico = []
+    dataHora = []
+    dataTipoId = []
+    dataEsp = []
+    i = 0
+    while i < len(resmed):       
+        dataMedico.append(resmed[i][0])
+        i += 1
+    i = 0
+    while i < len(reshora):       
+        dataHora.append(reshora[i][0])
+        i += 1
+    i = 0
+    while i < len(restipoid):       
+        dataTipoId.append(restipoid[i][0])
+        i += 1
+    while i < len(resesp):       
+        dataEsp.append(resesp[i][0])
+        i += 1
+
     tipoid = SelectField(u'Tipo de identificación ',
-                         choices=[('C.C'), ('T.I'), ('T.E')])
-    id = TextField('No. ID', validators=[
-                   DataRequired(message='Se requiere el ID')])
-    medico = SelectField(u'Medico ', choices=[
-                         ('Daniel R.'), ('Lorena P.'), ('Katiana A.')])
-    especialidad = SelectField(u'Especialidad ', choices=[
-                               ('General'), ('Odontología'), ('Pediatría')])
-    time = SelectField(u'Hora de atención', choices=[
-                       ('9:00'), ('12:30'), ('16:00')])
+                         choices=dataTipoId)
+    medico = SelectField(u'Medico ', choices=dataMedico)
+    especialidad = SelectField(u'Especialidad ', choices=dataEsp)
+    time = SelectField(u'Hora de atención', choices=dataHora)
     paciente = TextField('Nombre', validators=[DataRequired(
         message='Se requiere nombre del paciente'), Length(min=2, max=40)])
     apellido = TextField('Apellido', validators=[DataRequired(
@@ -152,6 +179,7 @@ class CitaForm(FlaskForm):
     email = TextField('Correo electrónico', validators=[DataRequired(
         message='Se requiere el correo electrónico'), Length(min=2, max=40)])
     comentario = TextAreaField("TextArea")
+    valoracion = TextAreaField("TextArea")
     fecha = DateField('Fecha', validators=[
                       DataRequired(message='Se requiere la fecha')])
 
