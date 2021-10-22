@@ -68,9 +68,9 @@ def home():
     return render_template('pages/placeholder.home.html')
 
 
-@app.route('/about')
-def about():
-    return render_template('pages/placeholder.about.html')
+@app.route('/privacy')
+def privacy():
+    return render_template('pages/placeholder.privacy.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])

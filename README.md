@@ -74,7 +74,7 @@ Preview the skeleton app here - [http://www.flaskboilerplate.com/](http://www.fl
     │   ├── form.html
     │   └── main.html
     └── pages
-        ├── placeholder.about.html
+        ├── placeholder.privacy.html
         └── placeholder.home.html
 ```
 

@@ -62,7 +62,6 @@
                 <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('lista') }}">Registro de citas</a></li>
               </ul>
             </li>
-            <!-- <li {% if request.endpoint == 'about' %} class="active" {% endif %}><a href="{{ url_for('about') }}">About</a></li> -->
             
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown">Servicios <b class="caret"></b></a>
@@ -86,8 +85,6 @@
                 <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('lista') }}">Búsqueda de registros</a></li>
               </ul>
             </li>
-            <!-- <li {% if request.endpoint == 'about' %} class="active" {% endif %}><a href="{{ url_for('about') }}">About</a></li> -->
-            
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown">Servicios <b class="caret"></b></a>
               <ul class="dropdown-menu">
@@ -111,8 +108,6 @@
                 <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('lista') }}">Mis citas</a></li>
               </ul>
             </li>
-            <!-- <li {% if request.endpoint == 'about' %} class="active" {% endif %}><a href="{{ url_for('about') }}">About</a></li> -->
-            
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown">Servicios <b class="caret"></b></a>
               <ul class="dropdown-menu">
@@ -167,9 +162,13 @@
 
   </div>
   <div id="footer">
-    <div class="container">
-      <p>Ministerio de Salud &copy; Todos los derechos reservados</p>
-      {% block footer %}{% endblock %}
+    <div class="collapse navbar-collapse">
+      <div class="nav navbar-nav">
+                <p >Ministerio de Salud &copy; Todos los derechos reservados</p></div>
+        {% block footer %}
+        <div class="nav navbar-nav pull-right">
+        <p {% if request.endpoint == 'privacy' %} class="active" {% endif %}>Conozca nuestra <a href="{{ url_for('privacy') }}">Política de Privacidad</a></p></div>{% endblock %}
+      </div>
     </div>
   </div>
   <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
