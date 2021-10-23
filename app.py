@@ -479,25 +479,71 @@ def perfil():
             if mailUsuario == None or len(mailUsuario) == 0 or not email_valido(mailUsuario):
                 flash('ERROR: Debe suministrar un email válido')
                 swerror = True
-            # if pwd == None or len(pwd) == 0 or not pass_valido(pwd):
-            #     flash('ERROR: Debe suministrar una clave válida')
-            #     swerror = True
             if not swerror:
-                # Preparar el query -- Paramétrico
-                sql2 = f"UPDATE Paciente set mail = %s where usuario = %s"
-                # Ejecutar la consulta
-                # pwd = generate_password_hash(pwd)
-                res2 = accion(sql2, (mailUsuario, usuario))
                 sql = f"SELECT mail, usuario, clave FROM Paciente WHERE usuario='{usuario}'"
                 # Ejecutar la consulta
                 res = seleccion(sql)
                 # Proceso los resultados
+                # Preparar el query -- Paramétrico
+                sql2 = f"UPDATE Paciente set mail = ? where usuario = ?"
+                # Ejecutar la consulta
+                # pwd = generate_password_hash(pwd)
+                res2 = accion(sql2, (mailUsuario, usuario))
+                if res2 == 0:
+                    flash('ERROR: No se pudieron almacenar los datos, reintente')
+                else:
+                    flash('INFO: Los datos fueron almacenados satisfactoriamente')
+        elif request.form.get('action2') == 'Actualizar usuario':
+            newusr = escape(request.form['usr'])
+            # Validar los datos
+            swerror = False
+            if newusr == None or len(newusr) == 0 or not pass_valido(newusr):
+                flash('ERROR: Debe suministrar una clave válida')
+                swerror = True
+            if not swerror:
+                sql = f"SELECT mail, usuario, clave FROM Paciente WHERE usuario='{usuario}'"
+                # Ejecutar la consulta
+                res = seleccion(sql)
+                # Proceso los resultados
+                # Preparar el query -- Paramétrico
+                sql2 = f"UPDATE Paciente set usuario = ? where usuario = ?"
+                # Ejecutar la consulta
+                # pwd = generate_password_hash(pwd)
+                res2 = accion(sql2, (newusr, usuario))
+                if res2 == 0:
+                    flash('ERROR: No se pudieron almacenar los datos, reintente')
+                else:
+                    session['usr'] = newusr
+                    flash('INFO: Los datos fueron almacenados satisfactoriamente')
+        elif request.form.get('action3') == 'Actualizar contraseña':
+            newpwd = escape(request.form['pwd'])
+            confirm = escape(request.form['confirm'])
+            swerror = False
+            sql = f"SELECT mail, usuario, clave FROM Paciente WHERE usuario='{usuario}'"
+            # Ejecutar la consulta
+            res = seleccion(sql)
+            # Validar los datos
+            if newpwd == None or len(newpwd) == 0 or not pass_valido(newpwd):
+                flash('ERROR: Debe suministrar una clave válida')
+                swerror = True
+            if confirm == None or len(confirm) == 0 or not pass_valido(confirm):
+                flash('ERROR: Debe suministrar una verificación de clave válida')
+                swerror = True
+            if newpwd != confirm:
+                flash('ERROR: La clave y la confirmación no coinciden')
+                swerror = True
+            if not swerror:
+                # Proceso los resultados
+                # Preparar el query -- Paramétrico
+                sql2 = f"UPDATE Paciente set clave = ? where usuario = ?"
+                # Ejecutar la consulta
+                pwd = generate_password_hash(newpwd)
+                res2 = accion(sql2, (pwd, usuario))
                 if res2 == 0:
                     flash('ERROR: No se pudieron almacenar los datos, reintente')
                 else:
                     flash('INFO: Los datos fueron almacenados satisfactoriamente')
         return render_template('forms/perfil.html', form=frm, data=res)
-
     # elif session['rol'] == 2:
     #     # Preparar la consulta
     #     sql = f'SELECT mail, usuario, clave FROM Medico WHERE usuario = {usuario}'
