@@ -37,15 +37,14 @@
           <td>{{item.fecha}}</td>
           <td>
             <img
-              id="edit{{index}}"
-              onclick="edit({{item.index}})"
+              id="view{{index}}"
+              onclick="view({{item.id}})"
               src="/static/img/view.png"
               alt=""
               style="width: 33px; margin-right: 12px; cursor: pointer"
             />
             <img
               id="delete{{index}}"
-              onclick="delete_form({{index}})"
               src="/static/img/deleted-logo.png"
               alt=""
               style="width: 23px; cursor: pointer"

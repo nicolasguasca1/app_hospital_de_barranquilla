@@ -170,48 +170,14 @@ function add_data()
         mk_table();
     }
 }
-function edit(index)
+function view(index)
 { 
     document.getElementById("dark").style.background = "rgba(0, 0, 0, .7)";
     document.getElementById("dark").style.visibility = "visible";
-    console.log("edit");
+    console.log("view");
     wedit_(index);
 }
 
-function delete_form(index)
-{
-    document.getElementById("dark").style.background = "rgba(0, 0, 0, .7)";
-    document.getElementById("dark").style.visibility = "visible";
-    console.log("delete");
-    let del = document.getElementById("w-edit");
-    let out = `<div style="width: 21rem; margin: auto; text-align: right;">
-                    <img id="close" src="/static/img/close-icon.png" alt="" style="width: 23px; cursor: pointer;">
-               </div">
-               <div style="width: 21rem; margin: auto;">
-                    <div style="text-align:left;background-color:white;padding:1rem;background-clip: border-box; border: 1px solid rgba(0,0,0,.125); border-radius: .25rem;">
-                        <div id="row">
-                            <label>Desea eliminar la Cita: #${index+1}</label>
-                        </div>
-                        <div id="row">
-                            <div id="col">    
-                                <button id="delete_btn" class="btn btn-default form-control">Eliminar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>`;
-    del.innerHTML = out;
-    document.getElementById("close").addEventListener("click", ()=>close_());
-    document.getElementById("delete_btn").addEventListener("click", ()=>delete_(index));
-}
-
-function delete_(index)
-{
-    console.log("index:"+index);
-    data.splice(index, 1);
-    alert("datos eliminados");
-    close_();
-    mk_table();
-}
 function close_()
 {
     document.getElementById("w-edit").innerHTML = "";
@@ -237,7 +203,7 @@ function wedit_(index)
 function mk_table()
 {
     document.getElementById("add").addEventListener("click" ,function(e)
-            {
+    {
                 document.getElementById("dark").style.background = "rgba(0, 0, 0, .7)";
                 document.getElementById("dark").style.visibility = "visible";
                 e.preventDefault();
@@ -247,11 +213,130 @@ function mk_table()
                     success:function(response)
                     {
                         document.getElementById("w-edit").innerHTML = response;
+                        rquestEspeci();
                         document.getElementById("close").addEventListener("click", ()=>close_());
                     }
                 });
     });
-        
+}
 
+function rquestFecha()
+{
+    let nmedico = document.getElementById("nmedico").value;
+    let nombres = nmedico.split(" ");
+    console.log(nombres);
+    $.ajax({
+        type:'GET',
+        url:'/citasFormRequest',
+        data:{
+                jsdata1: nombres[0],
+                jsdata2: nombres[1],
+                jsdata3: 2},
+        success:function(response)
+        {            
+            let data = response;
+            
+            let temp = ""
+            for(let i = 0; i < data.length; i++)
+                temp += `<option value = '${data[i].horario}'>${data[i].horario}</option>`;
+            document.getElementById("horario").innerHTML = temp; 
+            rquestIdMedico();          
+        }
+    });
+}
+function rquestIdMedico()
+{
+    let nmedico = document.getElementById("nmedico").value;
+    let nombres = nmedico.split(" ");
+
+    $.ajax({
+        type:'GET',
+        url:'/citasFormRequest',
+        data:{jsdata1: nombres[0],
+              jsdata2: nombres[1],
+              jsdata3: 4},
+        success:function(response)
+        {            
+            let data = response;
+            if(data[0].found != "false")
+            {
+                document.getElementById("idm").value = data[0].idmedico;                
+            }
+            else
+            {
+                console.log("no encontrado");
+                document.getElementById("idm").value = "";
+            }
+        }
+    });
+}
+
+function rquestPaciente()
+{
+    let id = document.getElementById("id_paciente").value;
+    $.ajax({
+        type:'GET',
+        url:'/citasFormRequest',
+        data:{jsdata1: id,
+              jsdata3: 3},
+        success:function(response)
+        {            
+            let data = response;
+            if(data[0].found != "false")
+            {
+                document.getElementById("tipoid").value = data[0].tipoid;
+                document.getElementById("paciente").value = data[0].paciente;
+                document.getElementById("apellido").value = data[0].apellido;
+                document.getElementById("email").value = data[0].email;
+            }
+            else
+            {
+                console.log("no encontrado");
+                document.getElementById("tipoid").value = "";
+                document.getElementById("paciente").value = "";
+                document.getElementById("apellido").value = "";
+                document.getElementById("email").value = "";
+            }
+        }
+    });
+}
+function rquestEspeci()
+{
+    let especialidad = document.getElementById("especialidad").value;
+    $.ajax({
+        type:'GET',
+        url:'/citasFormRequest',
+        data:{jsdata1: especialidad,
+              jsdata3: 1},
+        success:function(response)
+        {            
+            let data = response;
+            if(data[0].found != "false")
+            {
+                let temp = ""
+                for(let i = 0; i < data.length; i++)
+                    temp += `<option value = '${data[i].nombres+" "+data[i].apellidos}'>${data[i].nombres+" "+data[i].apellidos}</option>`;
+                document.getElementById("nmedico").innerHTML = temp;
+                rquestFecha();
+                rquestIdMedico();
+            }
+            else
+            {
+                console.log("no entrado");
+                document.getElementById("nmedico").innerHTML = "";
+                document.getElementById("horario").innerHTML = "";
+                document.getElementById("idm").value = "";
+            }
+        }
+    });
+}
+
+function updateCita(index)
+{
+    console.log("update");
+}
+function getPaciente()
+{
+    console.log("getPaciente");
 }
 document.addEventListener("load", mk_table());
