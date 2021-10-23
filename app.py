@@ -464,25 +464,18 @@ def perfil():
             frm = Perfil()
         return render_template('forms/perfil.html', form=frm, titulo=tit, data=res)
     else:
-        # Recuperar datos del usuario de la sesion
-        # Recuperar los datos del formulario
-        # Esta forma permite validar las entradas
         if request.form.get('action1') == 'Actualizar correo electrónico':
-            # usr = escape(request.form['usr'])
             mailUsuario = escape(request.form['mailUsuario'])
             # pwd = escape(request.form['pwd'])
             # Validar los datos
             swerror = False
-            # if usr == None or len(usr) == 0 or not login_valido(usr):
-            #     flash('ERROR: Debe suministrar un usuario válido ')
-            #     swerror = True
+            sql = f"SELECT mail, usuario, clave FROM Paciente WHERE usuario='{usuario}'"
+            # Ejecutar la consulta
+            res = seleccion(sql)
             if mailUsuario == None or len(mailUsuario) == 0 or not email_valido(mailUsuario):
                 flash('ERROR: Debe suministrar un email válido')
                 swerror = True
             if not swerror:
-                sql = f"SELECT mail, usuario, clave FROM Paciente WHERE usuario='{usuario}'"
-                # Ejecutar la consulta
-                res = seleccion(sql)
                 # Proceso los resultados
                 # Preparar el query -- Paramétrico
                 sql2 = f"UPDATE Paciente set mail = ? where usuario = ?"
@@ -495,15 +488,14 @@ def perfil():
                     flash('INFO: Los datos fueron almacenados satisfactoriamente')
         elif request.form.get('action2') == 'Actualizar usuario':
             newusr = escape(request.form['usr'])
-            # Validar los datos
             swerror = False
-            if newusr == None or len(newusr) == 0 or not pass_valido(newusr):
-                flash('ERROR: Debe suministrar una clave válida')
+            sql = f"SELECT mail, usuario, clave FROM Paciente WHERE usuario='{usuario}'"
+            # Ejecutar la consulta
+            res = seleccion(sql)
+            if newusr == None or len(newusr) == 0 or not login_valido(newusr):
+                flash('ERROR: Debe suministrar un usuario válido ')
                 swerror = True
             if not swerror:
-                sql = f"SELECT mail, usuario, clave FROM Paciente WHERE usuario='{usuario}'"
-                # Ejecutar la consulta
-                res = seleccion(sql)
                 # Proceso los resultados
                 # Preparar el query -- Paramétrico
                 sql2 = f"UPDATE Paciente set usuario = ? where usuario = ?"
