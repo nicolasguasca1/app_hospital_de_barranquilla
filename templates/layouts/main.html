@@ -56,17 +56,9 @@
           {% if session.rol == '1' %}
           <ul class="nav navbar-nav">
             <li class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown">Dashboard Administrativo <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <!-- <li {% if request.endpoint == 'vistacitas' %} class="active"  {% endif %}><a href="{{ url_for('vistacitas') }}">Pedir cita</a></li> -->
-                <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('lista') }}">Registro de citas</a></li>
-              </ul>
-            </li>
-            
-            <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown">Servicios <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><a>Otras acciones futuras</a></li>
+                <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('lista') }}">Gestión de citas</a></li>
                 <li class="divider"></li>
                 <li class="dropdown-header">Mi cuenta</li>
                 <li {% if request.endpoint == 'perfilpac' %} class="active"  {% endif %}><a href="{{ url_for('perfilpac') }}">Mi perfil</a></li>
@@ -78,17 +70,18 @@
           <!-- SE MUESTRA SI EL ROL CORRESPONDE A UN MÉDICO -->
           {% if session.rol == '2' %}
           <ul class="nav navbar-nav">
-            <li class="dropdown">
+            <!-- <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown">Dashboard Administrativo <b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('pacientes') }}">Gestión de pacientes</a></li>
                 <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('lista') }}">Búsqueda de registros</a></li>
               </ul>
-            </li>
+            </li> -->
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown">Servicios <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><a>Otras acciones futuras</a></li>
+                <!-- <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('pacientes') }}">Gestión de pacientes</a></li> -->
+                <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('lista') }}">Gestión de citas</a></li>
                 <li class="divider"></li>
                 <li class="dropdown-header">Mi cuenta</li>
                 <li {% if request.endpoint == 'perfilmed' %} class="active"  {% endif %}><a href="{{ url_for('perfilmed') }}">Mi perfil</a></li>
@@ -103,10 +96,11 @@
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown">Dashboard Administrativo <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('dashboardmedico') }}">Gestión de Medicos</a></li>
-                <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('dashboardpaciente') }}">Gestión de Pacientes</a></li>
-                <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('vistaBusquedas') }}">Búsqueda de registros</a></li>
-                <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('lista') }}">Mis citas</a></li>
+                <li {% if request.endpoint == 'dashboardmedico' %} class="active"  {% endif %}><a href="{{ url_for('dashboardmedico') }}">Gestión de Medicos</a></li>
+                <li {% if request.endpoint == 'dashboardpaciente' %} class="active"  {% endif %}><a href="{{ url_for('dashboardpaciente') }}">Gestión de Pacientes</a></li>
+                <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('lista') }}">Gestión de citas</a></li>
+                <li {% if request.endpoint == 'vistaBusquedas' %} class="active"  {% endif %}><a href="{{ url_for('vistaBusquedas') }}">Búsqueda de registros</a></li>
+                
               </ul>
             </li>
             <li class="dropdown">
