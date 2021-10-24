@@ -1,0 +1,128 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Gestión de médicos{% endblock %} 
+{% block content %}
+
+<br />
+<br />
+<form
+  action="/vistapaciente/"
+  method="post"
+  style="
+    padding: 1rem;
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
+    background-color: #fcfcfc;
+  "
+>  <h3>Gestión de Pacientes</h3>
+  <div class="row" style="padding: 1rem">
+    <div class="form-group">
+      <div class="col-sm-2" style="text-align: right">
+        {{ form.selTipId(class_ = 'form-control')}}
+      </div>
+      <div class="col-sm-4">
+        {{ form.txtNroDoc(class_ = 'form-control first-input last-input',
+        placeholder=form.txtNroDoc.label.text, required = true)}}
+      </div>
+      <div class="col-sm-2">
+        <button type="submit" class="btn btn-primary btn-block">
+          Buscar
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="row" style="padding: 1rem">
+    <div class="form-group">
+      <label class="col-sm-2 control-label" style="text-align: right"
+        >{{form.TxtNombres.label.text}}</label
+      >
+      <div class="col-sm-4">
+        {{ form.TxtNombres(class_ = 'form-control', required = true)}}
+      </div>
+      <label class="col-sm-2 control-label" style="text-align: right"
+        >{{form.TxtApellidos.label.text}}</label
+      >
+      <div class="col-sm-4">
+        {{ form.TxtApellidos(class_ = 'form-control', required = true)}}
+      </div>
+    
+    </div>
+  </div>
+  <div class="row" style="padding: 1rem">
+    <div class="form-group">
+      <label class="col-sm-2 control-label" style="text-align: right"
+        >{{form.DateFecha.label.text}}</label
+      >
+      <div class="col-sm-4">
+        {{ form.DateFecha(class_ = 'form-control', style='width:48%;')}}
+      </div>
+      <label class="col-sm-2 control-label" style="text-align: right">
+        {{form.selSexo.label.text}}</label>
+      <div class="col-sm-4">
+        {{ form.selSexo(class_ = 'form-control', required = true)}}
+      </div>
+      <label class="col-sm-2 control-label" style="text-align: right">
+        {{form.selGrupoRh.label.text}}</label>
+      <div class="col-sm-4">
+        {{ form.selGrupoRh(class_ = 'form-control', required = true)}}
+      </div>
+      <label class="col-sm-2 control-label" style="text-align: right">
+        {{form.TxtNroCel.label.text}}</label>
+      <div class="col-sm-4">
+        {{ form.TxtNroCel(class_ = 'form-control', required = true)}}
+      </div>
+    </div>
+  </div>
+  <div class="row" style="padding: 1rem">
+    <div class="form-group">
+      <label class="col-sm-3 control-label">Datos de autenticación</label>
+    </div>
+  </div>
+  <div class="row" style="padding: 1rem">
+    <div class="form-group">
+      <label class="col-sm-2 control-label" style="text-align: right"
+        >{{form.txtUsuario.label.text}}</label
+      >
+      <div class="col-sm-4">
+        {{ form.txtUsuario(class_ = 'form-control', required = true)}}
+      </div>
+      <label class="col-sm-2 control-label" style="text-align: right"
+        >{{form.PwdClave.label.text}}</label
+      >
+      <div class="col-sm-4">
+        {{ form.PwdClave(class_ = 'form-control', required = true)}}
+      </div>
+    </div>
+  </div>
+  <div class="row" style="padding: 1rem">
+    <div class="form-group">
+      <label class="col-sm-2 control-label" style="text-align: right"
+        >{{form.mailUsuario.label.text}}</label
+      >
+      <div class="col-sm-4">
+        {{ form.mailUsuario(class_ = 'form-control', required = true)}}
+      </div>
+    </div>
+  </div>
+  <div class="row" style="padding: 1rem">
+    <div class="form-group">
+      <div class="col-sm-2">
+        <button type="submit" class="btn btn-primary btn-block">Crear Registro</button>
+      </div>
+      <div class="col-sm-2">
+        <button type="submit" class="btn btn-primary btn-block">Actualizar</button>
+      </div>
+      <div class="col-sm-2">
+        <button type="submit" class="btn btn-primary btn-block">
+          Eliminar
+        </button>
+      </div>
+      <div class="col-sm-2">
+        <button type="submit" class="btn btn-primary btn-block">
+          Notificar
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock %}

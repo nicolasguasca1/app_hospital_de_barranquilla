@@ -103,7 +103,8 @@
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown">Dashboard Administrativo <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('dashboard') }}">Gestión de usuarios</a></li>
+                <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('dashboardmedico') }}">Gestión de Medicos</a></li>
+                <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('dashboardpaciente') }}">Gestión de Pacientes</a></li>
                 <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('vistaBusquedas') }}">Búsqueda de registros</a></li>
                 <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('lista') }}">Mis citas</a></li>
               </ul>
