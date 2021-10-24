@@ -5,7 +5,7 @@
         <div style="text-align: right;">
             <img id="close" src="/static/img/close-icon.png" alt="" style="width: 23px; cursor: pointer;">
         </div>
-        <form id="citas-form"  method="post" action="/citasForm" style="padding: 1rem; background-clip: border-box; border: 1px solid rgba(0, 0, 0, 0.125); border-radius: 0.25rem; background-color: #fcfcfc;">
+        <form id="citas-form"  method="post" action="/citasForm"  style="padding: 1rem; background-clip: border-box; border: 1px solid rgba(0, 0, 0, 0.125); border-radius: 0.25rem; background-color: #fcfcfc;">
             <div class="row" style="padding: 1rem">
                 <div class="form-group">
                   <label class="col-sm-4 control-label" style="text-align: left">
@@ -17,30 +17,35 @@
                     <div class="col-sm-4">
                         <label class="control-label" style="text-align: left">{{form.especialidad.label.text}}</label>
                         <div style="text-align: right">
-                            {{form.especialidad(class_ = 'form-control', required = true)}}
+                            {{form.especialidad(class_ = 'form-control', required = true, id = 'especialidad', onchange = 'rquestEspeci()')}}
                         </div>
-                    </div>
+                    </div> 
+                    <div class="col-sm-4">
+                        <label class="control-label" style="text-align: left">{{form.idm.label.text}}</label>
+                        <div style="text-align: right">
+                            {{form.idm(class_ = 'form-control', required = true)}}
+                        </div>
+                    </div>   
                     <div class="col-sm-4">
                         <label class="control-label" style="text-align: left">{{form.medico.label.text}}</label>
                         <div style="text-align: right">
-                            {{form.medico(class_ = 'form-control', required = true)}}
+                            {{form.medico(class_ = 'form-control', required = true, id ='nmedico', onchange = 'rquestFecha()')}}
                         </div>
-                    </div>
+                    </div>                
+                </div>
+            </div>
+            <div class="row" style="padding: 1rem;">
+                <div class="form-group">    
                     <div class="col-sm-4">
                         <label class="control-label" style="text-align: left">{{form.fecha.label.text}}</label>
                         <div style="text-align: right">
                             {{form.fecha(class_ = 'form-control', required = true)}}
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row" style="padding: 1rem;">
-                <div class="form-group">
-                    
+                    </div>                
                     <div class="col-sm-4">
                         <label class="control-label" style="text-align: left">{{form.time.label.text}}</label>
                         <div style="text-align: right">
-                            {{form.time(class_ = 'form-control', required = true)}}
+                            {{form.time(class_ = 'form-control', required = true, id = 'horario')}}
                         </div>
                     </div>
                 </div>
@@ -53,23 +58,23 @@
             <div class="row" style="padding: 1rem;">
                 <div class="form-group">
                     <div class="col-sm-4">
-                        <label class="control-label" style="text-align: left">{{form.tipoid.label.text}}</label>
-                        <div style="text-align: right">
-                            {{form.tipoid(class_ = 'form-control', required = true)}}
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
                         <label class="control-label" style="text-align: left">{{form.id_paciente.label.text}}</label>
                         <div style="text-align: right">
-                            {{form.id_paciente(class_ = 'form-control', required = true)}}
+                            {{form.id_paciente(class_ = 'form-control', required = true, onkeyup = 'rquestPaciente()')}}
+                        </div>                        
+                    </div>    
+                    <div class="col-sm-4">
+                        <label class="control-label" style="text-align: left">{{form.tipoid.label.text}}</label>
+                        <div style="text-align: right">
+                            {{form.tipoid(class_ = 'form-control', required = true, disabled = 'true')}}
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <label class="control-label" style="text-align: left">{{form.paciente.label.text}}</label>
                         <div style="text-align: right">
-                            {{form.paciente(class_ = 'form-control', required = true)}}
+                            {{form.paciente(class_ = 'form-control', required = true, disabled = 'true')}}
                         </div>
-                    </div>
+                    </div>              
                 </div>
             </div>
             <div class="row" style="padding: 1rem;">
@@ -77,13 +82,13 @@
                     <div class="col-sm-4">
                         <label class="control-label" style="text-align: left">{{form.apellido.label.text}}</label>
                         <div style="text-align: right">
-                            {{form.apellido(class_ = 'form-control', required = true)}}
+                            {{form.apellido(class_ = 'form-control', required = true, disabled = 'true')}}
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <label class="control-label" style="text-align: left">{{form.email.label.text}}</label>
                         <div style="text-align: right">
-                            {{form.email(class_ = 'form-control', required = true)}}
+                            {{form.email(class_ = 'form-control', required = true, disabled = 'true')}}
                         </div>
                     </div>
                 </div>

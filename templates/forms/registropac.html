@@ -1,12 +1,6 @@
-{% extends 'layouts/form.html' %} {% block title %}Registro{% endblock %} {%
+{% extends 'layouts/main.html' %} {% block title %}Registro{% endblock %} {%
 block content %}
 <form method="post" class="form">
-  <h3 class="form-heading">
-    Registro de pacientes
-    <a href="{{ url_for('home') }}" title="Back to homepage"
-      ><i class="fa fa-home pull-right"></i
-    ></a>
-  </h3>
   <p class="lead">
     Para tener un control exhaustivo de la interacción médico-paciente y su
     relación con el hospital, es necesario obtener algunos datos. Rellene el

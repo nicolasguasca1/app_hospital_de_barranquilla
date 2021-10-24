@@ -136,46 +136,31 @@ class DashBoardMedico(FlaskForm):
 
 class CitaForm(FlaskForm):
     #Preparar consulta
-    sqlmed = f"SELECT nombres, apellidos FROM Médico"
+    #traer especialidades de la DB
     sqlesp = f"SELECT especialidad FROM Especialidades"
-    sqlhora = f"SELECT horario FROM Horario"
-    sqltipoid = f"SELECT Tipo FROM TipoId"
-    #Ejecutar SQL
-    resmed = seleccion(sqlmed)
+    #traer id de pacientes
     resesp = seleccion(sqlesp)
-    reshora = seleccion(sqlhora)
-    restipoid = seleccion(sqltipoid)
-    dataMedico = []
-    dataHora = []
-    dataTipoId = []
+    
     dataEsp = []
+    
     i = 0
-    while i < len(resmed):       
-        dataMedico.append(str(resmed[i][0])+" "+str(resmed[i][1]))
-        i += 1
-    i = 0
-    while i < len(reshora):       
-        dataHora.append(reshora[i][0])
-        i += 1
-    i = 0
-    while i < len(restipoid):       
-        dataTipoId.append(restipoid[i][0])
-        i += 1
     while i < len(resesp):       
         dataEsp.append(resesp[i][0])
         i += 1
 
-    tipoid = SelectField(u'Tipo de identificación ',
-                         choices=dataTipoId)
-    medico = SelectField(u'Medico ', choices=dataMedico)
-    especialidad = SelectField(u'Especialidad ', choices=dataEsp)
-    time = SelectField(u'Hora de atención', choices=dataHora)
+    medico = SelectField(u'Medico')
+    idm = TextField('ID', validators=[DataRequired(
+        message='Se requiere ID'), Length(min=2, max=40)])
+    especialidad = SelectField(u'Especialidad', choices=dataEsp)
+    time = SelectField(u'Hora de atención')
     paciente = TextField('Nombre', validators=[DataRequired(
-        message='Se requiere nombre del paciente'), Length(min=2, max=40)])
+        message='Se requiere el nombre'), Length(min=2, max=40)])
     apellido = TextField('Apellido', validators=[DataRequired(
         message='Se requiere apellido del paciente'), Length(min=2, max=40)])
-    id_paciente = TextField(
-        'No ID', [DataRequired(message='Se requiere la clave')])
+    tipoid = TextField('Tipo de ID', validators=[DataRequired(
+        message='Se requiere el id'), Length(min=2, max=40)])    
+    id_paciente = TextField('ID', validators=[DataRequired(
+            message='Se requiere el id'), Length(min=2, max=40)])
     email = TextField('Correo electrónico', validators=[DataRequired(
         message='Se requiere el correo electrónico'), Length(min=2, max=40)])
     comentario = TextAreaField("TextArea")
