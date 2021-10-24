@@ -223,7 +223,7 @@ function mk_table()
 function rquestFecha()
 {
     let nmedico = document.getElementById("nmedico").value;
-    let nombres = nmedico.split(" ");
+    let nombres = nmedico.split("-");
     console.log(nombres);
     $.ajax({
         type:'GET',
@@ -247,7 +247,7 @@ function rquestFecha()
 function rquestIdMedico()
 {
     let nmedico = document.getElementById("nmedico").value;
-    let nombres = nmedico.split(" ");
+    let nombres = nmedico.split("-");
 
     $.ajax({
         type:'GET',
@@ -315,7 +315,7 @@ function rquestEspeci()
             {
                 let temp = ""
                 for(let i = 0; i < data.length; i++)
-                    temp += `<option value = '${data[i].nombres+" "+data[i].apellidos}'>${data[i].nombres+" "+data[i].apellidos}</option>`;
+                    temp += `<option value = '${data[i].nombres+"-"+data[i].apellidos}'>${data[i].nombres+" "+data[i].apellidos}</option>`;
                 document.getElementById("nmedico").innerHTML = temp;
                 rquestFecha();
                 rquestIdMedico();
