@@ -2,7 +2,7 @@
 # Imports
 #----------------------------------------------------------------------------#
 
-from flask import Flask, render_template, request, session, flash, redirect, url_for
+from flask import Flask, render_template, request, session, flash, redirect, url_for, jsonify
 # from flask.ext.sqlalchemy import SQLAlchemy
 import logging
 from logging import Formatter, FileHandler
