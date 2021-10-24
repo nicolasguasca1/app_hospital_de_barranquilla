@@ -319,11 +319,11 @@ def vistaCita():
             datos = {
                 "id": rescita[0][7],
                 "descrip": rescita[0][1],
-                "paciente": respac[0][0]+" "+respac[0][1],
+                "paciente": str(respac[0][0])+" "+str(respac[0][1]),
                 "idp": rescita[0][0],
-                "doctor": resmed[0][0]+" "+resmed[0][1],
+                "doctor": str(resmed[0][0])+" "+str(resmed[0][1]),
                 "idd": rescita[0][2],
-                "fecha": rescita[0][3]+" "+rescita[0][4],
+                "fecha": str(rescita[0][3])+" "+str(rescita[0][4]),
                 "comentario": rescita[0][5],
                 "valoracion": rescita[0][6],
                 "rol": rol
@@ -352,12 +352,12 @@ def lista():
                     temp = {
                         "index": i+1,
                         "descrip": rescita[i][1],
-                        "paciente": respac[0][0]+" "+respac[0][1],
+                        "paciente": str(respac[0][0])+" "+str(respac[0][1]),
                         "idp": rescita[i][0],
                         "id": rescita[i][7],
-                        "doctor": resmed[0][0]+" "+resmed[0][1],
+                        "doctor": str(resmed[0][0])+" "+str(resmed[0][1]),
                         "idd": rescita[i][2],
-                        "fecha": rescita[i][3]+" "+rescita[i][4],
+                        "fecha": str(rescita[i][3])+" "+str(rescita[i][4]),
                         "comentario": rescita[i][5],
                         "valoracion": rescita[i][6]
                     }
@@ -384,12 +384,12 @@ def lista():
                     temp = {
                         "index": i+1,
                         "descrip": rescita[i][1],
-                        "paciente": respac[0][0]+" "+respac[0][1],
+                        "paciente": str(respac[0][0])+" "+str(respac[0][1]),
                         "idp": rescita[i][0],
                         "id": rescita[i][7],
-                        "doctor": resmed[0][0]+" "+resmed[0][1],
+                        "doctor": str(resmed[0][0])+" "+str(resmed[0][1]),
                         "idd": rescita[i][2],
-                        "fecha": rescita[i][3]+" "+rescita[i][4],
+                        "fecha": str(rescita[i][3])+" "+str(rescita[i][4]),
                         "comentario": rescita[i][5],
                         "valoracion": rescita[i][6]
                     }
