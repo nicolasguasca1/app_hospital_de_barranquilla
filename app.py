@@ -2,7 +2,7 @@
 # Imports
 #----------------------------------------------------------------------------#
 
-from flask import Flask, render_template, request, session, flash, redirect, url_for
+from flask import Flask, render_template, request, session, flash, redirect, url_for, jsonify
 # from flask.ext.sqlalchemy import SQLAlchemy
 import logging
 from logging import Formatter, FileHandler
@@ -68,9 +68,9 @@ def home():
     return render_template('pages/placeholder.home.html')
 
 
-@app.route('/about')
-def about():
-    return render_template('pages/placeholder.about.html')
+@app.route('/privacy')
+def privacy():
+    return render_template('pages/placeholder.privacy.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -80,16 +80,6 @@ def login():
     form = LoginForm(request.form)
     if request.method == 'GET':
         return render_template('forms/login.html', form=form)
-    # elif form.btn():
-    #     user = get_user(form.usr.data)
-    #     myUser = User(user.id.data,user.name.data,user.usr.data,user.pwd.data,user.isAdmin.data)
-    #     if user is not None and myUser.check_password(form.pwd.data):
-    #         login_user(user)
-    #         next_page = request.args.get('next')
-    #         if not next_page or url_parse(next_page) .netloc != '':
-    #             next_page = url_for('pages/placeholder.home.html')
-    #         return redirect(next_page)
-    #     return render_template('forms/login.html', form=form)
     else:
         # Recuperar los datos
         usr = escape(form.usr.data.strip())
@@ -224,9 +214,77 @@ def registropac():
 
 @app.route('/registromed', methods=['GET', 'POST'])
 def registromed():
+    medform = RegisterFormMed(request.form)
     if request.method == 'GET':
-        medform = RegisterFormMed(request.form)
-    return render_template('forms/registromed.html', form=medform)
+        return render_template('forms/registromed.html', form=medform)
+    else:
+        # Recuperar los datos del formulario
+        name = escape(request.form['name'])
+        lastname = escape(request.form['lastname'])
+        tipoid = escape(request.form['tipoid'])
+        id = escape(request.form['id'])
+        specialty = escape(request.form['specialty'])
+        birthdate = escape(request.form['birthdate'])
+        sex = escape(request.form['sex'])
+        rh = escape(request.form['rh'])
+        modalidad = escape(request.form['modalidad'])
+        email = escape(request.form['email'])
+        professionalId = escape(request.form['professionalId'])
+        phonenumber = escape(request.form['phonenumber'])
+        username = escape(request.form['username'])
+        password = escape(request.form['password'])
+        confirm = escape(request.form['confirm'])
+        role = 2
+        # Validar los datos
+        swerror = False
+        if name == None or len(name) == 0:
+            flash('ERROR: Debe suministrar el nombre del medico')
+            swerror = True
+        if lastname == None or len(lastname) == 0:
+            flash('ERROR: Debe suministrar el apellido del medico')
+            swerror = True
+        if tipoid == None or len(tipoid) == 0:
+            flash('ERROR: Debe suministrar el tipo de documento')
+            swerror = True
+        if id == None or len(id) == 0:
+            flash('ERROR: Debe suministrar un numero de identificación')
+            swerror = True
+        if specialty == None or len(specialty) == 0:
+            flash('ERROR: Debe suministrar la especialidad del médico')
+            swerror = True
+        if modalidad == None or len(modalidad) == 0:
+            flash('ERROR: Debe suministrar la jornada de trabajo del médico')
+            swerror = True
+        if username == None or len(username) == 0 or not login_valido(username):
+            flash('ERROR: Debe suministrar un usuario válido ')
+            swerror = True
+        if email == None or len(email) == 0 or not email_valido(email):
+            flash('ERROR: Debe suministrar un email válido')
+            swerror = True
+        if password == None or len(password) == 0 or not pass_valido(password):
+            flash('ERROR: Debe suministrar una clave válida')
+            swerror = True
+        if confirm == None or len(confirm) == 0 or not pass_valido(confirm):
+            flash('ERROR: Debe suministrar una verificación de clave válida')
+            swerror = True
+        if password != confirm:
+            flash('ERROR: La clave y la confirmación no coinciden')
+            swerror = True
+        if not swerror:
+            # Preparar la consulta
+            pwd = generate_password_hash(password)  # Cifrar la clave
+            sql = 'INSERT INTO Médico(nombres,apellidos,tipoId,NumeroId,idespecialidad,fechaNacimiento,sexo,grupoSanguineo,modalidad,mail,tarjetaProfesional,teléfono,usuario,clave,idrol) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
+            res = accion(sql, (name, lastname, tipoid, id, specialty, birthdate, sex,
+                         rh, modalidad, email, professionalId, phonenumber, username, pwd, role))
+            # Verificar resultados
+            if res == 0:
+                flash('ERROR: No se pudo insertar el registro')
+            else:
+                flash(
+                    'Atualización: Datos grabados con exito. Para acceder ingrese sus credenciales.')
+                return redirect(url_for('login'))
+
+        return render_template('forms/registromed.html', form=medform)
 
 
 @app.route('/forgot')
@@ -235,13 +293,190 @@ def forgot():
     return render_template('forms/forgot.html', form=form)
 
 
-@app.route('/lista/')
+@app.route('/wedit', methods=['GET', 'POST'])
+def vistaCita():
+    if session:
+        if session['rol'] == '1':
+            rol = session['rol']
+        elif session['rol'] == '2':
+            rol = session['rol']
+        else:
+            rol = session['rol']
+
+        if request.method == 'GET':
+            jsdata = request.args.get('jsdata')
+            print("jsdata: "+jsdata)
+
+            # Preparar la consulta
+            sqlcita = f"SELECT idpaciente, especialidad, idmedico, horario, fecha, comentarios, valoracion, id FROM Cita WHERE id = '{jsdata}'"
+            # Ejecutar la consulta
+            rescita = seleccion(sqlcita)
+
+            sqlmed = f"SELECT nombres, apellidos FROM Médico WHERE idmedico = '{rescita[0][2]}'"
+            sqlpac = f"SELECT nombres, apellidos FROM Paciente WHERE idpaciente = '{rescita[0][0]}'"
+            resmed = seleccion(sqlmed)
+            respac = seleccion(sqlpac)
+            datos = {
+                "id": rescita[0][7],
+                "descrip": rescita[0][1],
+                "paciente": respac[0][0]+" "+respac[0][1],
+                "idp": rescita[0][0],
+                "doctor": resmed[0][0]+" "+resmed[0][1],
+                "idd": rescita[0][2],
+                "fecha": rescita[0][3]+" "+rescita[0][4],
+                "comentario": rescita[0][5],
+                "valoracion": rescita[0][6],
+                "rol": rol
+            }
+
+            return render_template('pages/wedit.html', data=datos)
+    else:
+        return render_template('pages/invalid.html')
+@app.route('/lista/', methods=['GET', 'POST'])
 def lista():
     if session:
-        return render_template('pages/lista.html')
+        if request.method == 'GET':
+            if session["rol"] != '1':
+                datos = []
+                # Preparar la consulta
+                sqlcita = f"SELECT idpaciente, especialidad, idmedico, horario, fecha, comentarios, valoracion, id FROM Cita"
+                # Ejecutar la consulta
+                rescita = seleccion(sqlcita)
+
+                i = 0
+                while i < len(rescita):
+                    sqlmed = f"SELECT nombres, apellidos FROM Médico WHERE idmedico = '{rescita[i][2]}'"
+                    sqlpac = f"SELECT nombres, apellidos FROM Paciente WHERE idpaciente = '{rescita[i][0]}'"
+                    resmed = seleccion(sqlmed)
+                    respac = seleccion(sqlpac)
+                    temp = {
+                        "index": i+1,
+                        "descrip": rescita[i][1],
+                        "paciente": respac[0][0]+" "+respac[0][1],
+                        "idp": rescita[i][0],
+                        "id": rescita[i][7],
+                        "doctor": resmed[0][0]+" "+resmed[0][1],
+                        "idd": rescita[i][2],
+                        "fecha": rescita[i][3]+" "+rescita[i][4],
+                        "comentario": rescita[i][5],
+                        "valoracion": rescita[i][6]
+                    }
+                    datos.append(temp)
+                    i += 1
+                return render_template('pages/lista.html', data=datos)
+            else:
+                datos = []
+                # Preparar la consulta
+                sqlpac = f"SELECT idpaciente FROM Paciente WHERE usuario = '{session['usr']}'"
+                #Ejecutar la consulta
+                respac = seleccion(sqlpac)
+                #Preparar la consulta
+                sqlcita = f"SELECT idpaciente, especialidad, idmedico, horario, fecha, comentarios, valoracion, id FROM Cita WHERE idpaciente = '{respac[0][0]}'"
+                # Ejecutar la consulta
+                rescita = seleccion(sqlcita)
+
+                i = 0
+                while i < len(rescita):
+                    sqlmed = f"SELECT nombres, apellidos FROM Médico WHERE idmedico = '{rescita[i][2]}'"
+                    sqlpac = f"SELECT nombres, apellidos FROM Paciente WHERE idpaciente = '{rescita[i][0]}'"
+                    resmed = seleccion(sqlmed)
+                    respac = seleccion(sqlpac)
+                    temp = {
+                        "index": i+1,
+                        "descrip": rescita[i][1],
+                        "paciente": respac[0][0]+" "+respac[0][1],
+                        "idp": rescita[i][0],
+                        "id": rescita[i][7],
+                        "doctor": resmed[0][0]+" "+resmed[0][1],
+                        "idd": rescita[i][2],
+                        "fecha": rescita[i][3]+" "+rescita[i][4],
+                        "comentario": rescita[i][5],
+                        "valoracion": rescita[i][6]
+                    }
+                    datos.append(temp)
+                    i += 1
+                return render_template('pages/lista.html', data=datos)
     else:
         return render_template('pages/invalid.html')
 
+@app.route('/citasFormRequest', methods=['GET', 'POST'])
+def citasRequest():
+    if request.method == 'GET':
+        jsdata3 = request.args.get('jsdata3')
+        data = []
+        if(jsdata3 == '1'):
+            jsdata1 = request.args.get('jsdata1')
+            # Preparar la consulta
+            sql = f"SELECT nombres, apellidos, modalidad FROM Médico WHERE idespecialidad = '{jsdata1}'"
+            # Ejecutar la consulta
+            res = seleccion(sql)
+            
+            if res:
+                i = 0
+                while i < len(res):
+                    temp = {"nombres": res[i][0],
+                            "apellidos": res[i][1],
+                            "modalidad": res[i][2],
+                            "found": "true"}
+                    i += 1
+                    data.append(temp)    
+            else:
+                data = [{"found": "false"}]
+        elif(jsdata3 == '2'):
+            jsdata1 = request.args.get('jsdata1')
+            jsdata2 = request.args.get('jsdata2')
+            # Preparar la consulta
+            sql = f"SELECT modalidad FROM Médico WHERE nombres = '{jsdata1}' and apellidos = '{jsdata2}'"
+            # Ejecutar la consulta
+            res = seleccion(sql)
+            # Preparar la consulta
+            sqlhora = f"SELECT horario FROM Horario WHERE modalidad = '{res[0][0]}'"
+            # Ejecutar la consulta
+            reshora = seleccion(sqlhora)
+            if reshora:
+                i = 0
+                while i < len(reshora):
+                    temp = {
+                        "horario": reshora[i][0],
+                        "modalidad": res[0][0]
+                    }
+                    data.append(temp)
+                    i += 1
+        elif(jsdata3 == '3'):
+            jsdata1 = request.args.get('jsdata1')            
+            # Preparar la consulta
+            sql = f"SELECT nombres, Apellidos, tipoId, mail FROM Paciente WHERE NumeroId LIKE '{jsdata1}'"
+            # Ejecutar la consulta
+            res = seleccion(sql)
+            
+            if res:
+                temp = {
+                        "tipoid": res[0][2],
+                        "paciente": res[0][0],
+                        "apellido": res[0][1],
+                        "email": res[0][3],
+                        "found": "true"
+                    }
+                data.append(temp)
+            else:
+                data = [{"found": "false"}]
+        elif(jsdata3 == '4'):
+            jsdata1 = request.args.get('jsdata1')
+            jsdata2 = request.args.get('jsdata2')            
+            # Preparar la consulta
+            sql = f"SELECT numeroId FROM Médico WHERE nombres = '{jsdata1}' and apellidos = '{jsdata2}'"
+            # Ejecutar la consulta
+            res = seleccion(sql)
+            
+            if res:
+                temp = {
+                        "idmedico": res[0][0],
+                        "found": "true"
+                    }
+                data.append(temp)
+            else:
+                data = [{"found": "false"}]
+    return jsonify(data)
 
 @app.route('/dashboard')
 # @login_required
@@ -267,9 +502,34 @@ def dashboard():
 @app.route('/citasForm', methods=['GET', 'POST'])
 # Con el condicional se aseguran de que la vista se renderiza solo si el usuario está logueado
 def citas():
-    if request.method == 'POST':
+    if request.method == 'GET':
         form = CitaForm(request.form)
         return render_template('forms/citasForm.html', form=form)
+    elif request.method == 'POST':
+        # Recuperar los datos del formulario
+        idp = escape(request.form['id_paciente'])
+        especialidad = escape(request.form['especialidad'])        
+        idm = escape(request.form['idm'])
+        hora = escape(request.form['time'])
+        fecha = escape(request.form['fecha'])
+        comentario = escape(request.form['comentario'])
+        valoracion = escape(request.form['valoracion'])
+        # Preparar la consulta
+        #Recuperar Ids de BD
+        sqlidmed = f"SELECT idmedico FROM Médico WHERE numeroId = '{idm}'"
+        sqlidpac = f"SELECT idpaciente FROM Paciente WHERE NumeroId = '{idp}'"
+        residmed = seleccion(sqlidmed)
+        residpac = seleccion(sqlidpac)
+        # Preparar la consulta
+        sql = "INSERT INTO Cita(idpaciente, especialidad, idmedico, horario, fecha, comentarios, valoracion) VALUES (?,?,?,?,?,?,?)"
+        res = accion(sql, (residpac[0][0], especialidad, residmed[0][0],
+                     hora, fecha, comentario, valoracion))
+        # Verificar resultados
+        if res == 0:
+            flash('ERROR: No se pudo insertar el registro')
+        else:
+            flash('Atualización: Datos grabados con exito en la BD.')
+        return redirect(url_for('lista'))
 
 # rutas del dashboard administrativo
 
@@ -308,8 +568,8 @@ def get():
 # RUTA VÁLIDA SOLO PARA PACIENTES POR EL MOMENTO
 
 
-@app.route('/perfil/', methods=['GET', 'POST'])
-def perfil():
+@app.route('/perfilpac/', methods=['GET', 'POST'])
+def perfilpac():
     frm = Perfil(request.form)
     usuario = session['usr']
     if request.method == 'GET':
@@ -328,93 +588,258 @@ def perfil():
             frm = Perfil()
         return render_template('forms/perfil.html', form=frm, titulo=tit, data=res)
     else:
-        # Recuperar datos del usuario de la sesion
-        # Recuperar los datos del formulario
-        # Esta forma permite validar las entradas
         if request.form.get('action1') == 'Actualizar correo electrónico':
-            # usr = escape(request.form['usr'])
             mailUsuario = escape(request.form['mailUsuario'])
             # pwd = escape(request.form['pwd'])
             # Validar los datos
             swerror = False
-            # if usr == None or len(usr) == 0 or not login_valido(usr):
-            #     flash('ERROR: Debe suministrar un usuario válido ')
-            #     swerror = True
+            sql = f"SELECT mail, usuario, clave FROM Paciente WHERE usuario='{usuario}'"
+            # Ejecutar la consulta
+            res = seleccion(sql)
             if mailUsuario == None or len(mailUsuario) == 0 or not email_valido(mailUsuario):
                 flash('ERROR: Debe suministrar un email válido')
                 swerror = True
-            # if pwd == None or len(pwd) == 0 or not pass_valido(pwd):
-            #     flash('ERROR: Debe suministrar una clave válida')
-            #     swerror = True
             if not swerror:
+                # Proceso los resultados
                 # Preparar el query -- Paramétrico
-                sql2 = f"UPDATE Paciente set mail = %s where usuario = %s"
+                sql2 = f"UPDATE Paciente set mail = ? where usuario = ?"
                 # Ejecutar la consulta
                 # pwd = generate_password_hash(pwd)
                 res2 = accion(sql2, (mailUsuario, usuario))
-                sql = f"SELECT mail, usuario, clave FROM Paciente WHERE usuario='{usuario}'"
-                # Ejecutar la consulta
-                res = seleccion(sql)
+                if res2 == 0:
+                    flash('ERROR: No se pudieron almacenar los datos, reintente')
+                else:
+                    flash('INFO: Los datos fueron almacenados satisfactoriamente')
+        elif request.form.get('action2') == 'Actualizar usuario':
+            newusr = escape(request.form['usr'])
+            swerror = False
+            sql = f"SELECT mail, usuario, clave FROM Paciente WHERE usuario='{usuario}'"
+            # Ejecutar la consulta
+            res = seleccion(sql)
+            if newusr == None or len(newusr) == 0 or not login_valido(newusr):
+                flash('ERROR: Debe suministrar un usuario válido ')
+                swerror = True
+            if not swerror:
                 # Proceso los resultados
+                # Preparar el query -- Paramétrico
+                sql2 = f"UPDATE Paciente set usuario = ? where usuario = ?"
+                # Ejecutar la consulta
+                # pwd = generate_password_hash(pwd)
+                res2 = accion(sql2, (newusr, usuario))
+                if res2 == 0:
+                    flash('ERROR: No se pudieron almacenar los datos, reintente')
+                else:
+                    session['usr'] = newusr
+                    flash('INFO: Los datos fueron almacenados satisfactoriamente')
+        elif request.form.get('action3') == 'Actualizar contraseña':
+            newpwd = escape(request.form['pwd'])
+            confirm = escape(request.form['confirm'])
+            swerror = False
+            sql = f"SELECT mail, usuario, clave FROM Paciente WHERE usuario='{usuario}'"
+            # Ejecutar la consulta
+            res = seleccion(sql)
+            # Validar los datos
+            if newpwd == None or len(newpwd) == 0 or not pass_valido(newpwd):
+                flash('ERROR: Debe suministrar una clave válida')
+                swerror = True
+            if confirm == None or len(confirm) == 0 or not pass_valido(confirm):
+                flash('ERROR: Debe suministrar una verificación de clave válida')
+                swerror = True
+            if newpwd != confirm:
+                flash('ERROR: La clave y la confirmación no coinciden')
+                swerror = True
+            if not swerror:
+                # Proceso los resultados
+                # Preparar el query -- Paramétrico
+                sql2 = f"UPDATE Paciente set clave = ? where usuario = ?"
+                # Ejecutar la consulta
+                pwd = generate_password_hash(newpwd)
+                res2 = accion(sql2, (pwd, usuario))
                 if res2 == 0:
                     flash('ERROR: No se pudieron almacenar los datos, reintente')
                 else:
                     flash('INFO: Los datos fueron almacenados satisfactoriamente')
         return render_template('forms/perfil.html', form=frm, data=res)
 
-    # elif session['rol'] == 2:
-    #     # Preparar la consulta
-    #     sql = f'SELECT mail, usuario, clave FROM Medico WHERE usuario = {usuario}'
-    #     # Ejecutar la consulta
-    #     res = seleccion(sql)
-    #     # Proceso los resultados
-    #     if len(res) == 0:
-    #         tit = f"No se encontraron datos para : {session['usr']}"
-    #     else:
-    #         tit = f"Se muestran los datos para : {session['usr']}"
-    #     return render_template('forms/perfil.html', form=frm, titulo=tit, data=res)
-    # elif session['rol'] == 3:
-    #     # Preparar la consulta
-    #     sql = f'SELECT mail, usuario, clave FROM Superusuario WHERE usuario = {usuario}'
-    #     # Ejecutar la consulta
-    #     res = seleccion(sql)
-    #     # Proceso los resultados
-    #     if len(res) == 0:
-    #         tit = f"No se encontraron datos para : {session['usr']}"
-    #     else:
-    #         tit = f"Se muestran los datos para : {session['usr']}"
-    #     return render_template('forms/perfil.html', form=frm, titulo=tit, data=res)
-    # return render_template('forms/perfil.html', form=frm)
-    # else:
-    #     # Recuperar datos del usuario de la sesion
-    #     # Recuperar los datos del formulario
-    #     # Esta forma permite validar las entradas
-    #     usr = escape(request.form['usr'])
-    #     mailUsuario = escape(request.form['mailUsuario'])
-    #     pwd = escape(request.form['pwd'])
-    #     # Validar los datos
-    #     swerror = False
-    #     if usr == None or len(usr) == 0 or not login_valido(usr):
-    #         flash('ERROR: Debe suministrar un usuario válido ')
-    #         swerror = True
-    #     if mailUsuario == None or len(mailUsuario) == 0 or not email_valido(mailUsuario):
-    #         flash('ERROR: Debe suministrar un email válido')
-    #         swerror = True
-    #     if pwd == None or len(pwd) == 0 or not pass_valido(pwd):
-    #         flash('ERROR: Debe suministrar una clave válida')
-    #         swerror = True
-    #     if not swerror:
-    #         # Preparar el query -- Paramétrico
-    #         sql = "INSERT INTO usuario(usuario, correo, clave) VALUES(?, ?, ?)"
-    #         # Ejecutar la consulta
-    #         pwd = generate_password_hash(pwd)
-    #         res = accion(sql, (usr, mailUsuario, pwd))
-    #         # Proceso los resultados
-    #         if res == 0:
-    #             flash('ERROR: No se pudieron almacenar los datos, reintente')
-    #         else:
-    #             flash('INFO: Los datos fueron almacenados satisfactoriamente')
-    #     return render_template('mensajes.html', data=res)
+
+@app.route('/perfilmed/', methods=['GET', 'POST'])
+def perfilmed():
+    frm = Perfil(request.form)
+    usuario = session['usr']
+    if request.method == 'GET':
+        sql = f"SELECT mail, usuario, clave FROM Médico WHERE usuario='{usuario}'"
+        # Ejecutar la consulta
+        res = seleccion(sql)
+        # Proceso los resultados
+        if len(res) == 0:
+            tit = f"No se encontraron datos para : {session['usr']}"
+        else:
+            tit = f"Se muestran los datos para : {session['usr']}"
+            frm = Perfil()
+        return render_template('forms/perfil.html', form=frm, titulo=tit, data=res)
+    else:
+        if request.form.get('action1') == 'Actualizar correo electrónico':
+            mailUsuario = escape(request.form['mailUsuario'])
+            # pwd = escape(request.form['pwd'])
+            # Validar los datos
+            swerror = False
+            sql = f"SELECT mail, usuario, clave FROM Médico WHERE usuario='{usuario}'"
+            # Ejecutar la consulta
+            res = seleccion(sql)
+            if mailUsuario == None or len(mailUsuario) == 0 or not email_valido(mailUsuario):
+                flash('ERROR: Debe suministrar un email válido')
+                swerror = True
+            if not swerror:
+                # Proceso los resultados
+                # Preparar el query -- Paramétrico
+                sql2 = f"UPDATE Médico set mail = ? where usuario = ?"
+                # Ejecutar la consulta
+                # pwd = generate_password_hash(pwd)
+                res2 = accion(sql2, (mailUsuario, usuario))
+                if res2 == 0:
+                    flash('ERROR: No se pudieron almacenar los datos, reintente')
+                else:
+                    flash('INFO: Los datos fueron almacenados satisfactoriamente')
+        elif request.form.get('action2') == 'Actualizar usuario':
+            newusr = escape(request.form['usr'])
+            swerror = False
+            sql = f"SELECT mail, usuario, clave FROM Médico WHERE usuario='{usuario}'"
+            # Ejecutar la consulta
+            res = seleccion(sql)
+            if newusr == None or len(newusr) == 0 or not login_valido(newusr):
+                flash('ERROR: Debe suministrar un usuario válido ')
+                swerror = True
+            if not swerror:
+                # Proceso los resultados
+                # Preparar el query -- Paramétrico
+                sql2 = f"UPDATE Médico set usuario = ? where usuario = ?"
+                # Ejecutar la consulta
+                # pwd = generate_password_hash(pwd)
+                res2 = accion(sql2, (newusr, usuario))
+                if res2 == 0:
+                    flash('ERROR: No se pudieron almacenar los datos, reintente')
+                else:
+                    session['usr'] = newusr
+                    flash('INFO: Los datos fueron almacenados satisfactoriamente')
+        elif request.form.get('action3') == 'Actualizar contraseña':
+            newpwd = escape(request.form['pwd'])
+            confirm = escape(request.form['confirm'])
+            swerror = False
+            sql = f"SELECT mail, usuario, clave FROM Médico WHERE usuario='{usuario}'"
+            # Ejecutar la consulta
+            res = seleccion(sql)
+            # Validar los datos
+            if newpwd == None or len(newpwd) == 0 or not pass_valido(newpwd):
+                flash('ERROR: Debe suministrar una clave válida')
+                swerror = True
+            if confirm == None or len(confirm) == 0 or not pass_valido(confirm):
+                flash('ERROR: Debe suministrar una verificación de clave válida')
+                swerror = True
+            if newpwd != confirm:
+                flash('ERROR: La clave y la confirmación no coinciden')
+                swerror = True
+            if not swerror:
+                # Proceso los resultados
+                # Preparar el query -- Paramétrico
+                sql2 = f"UPDATE Médico set clave = ? where usuario = ?"
+                # Ejecutar la consulta
+                pwd = generate_password_hash(newpwd)
+                res2 = accion(sql2, (pwd, usuario))
+                if res2 == 0:
+                    flash('ERROR: No se pudieron almacenar los datos, reintente')
+                else:
+                    flash('INFO: Los datos fueron almacenados satisfactoriamente')
+        return render_template('forms/perfil.html', form=frm, data=res)
+
+
+@app.route('/perfiladmin/', methods=['GET', 'POST'])
+def perfiladmin():
+    frm = Perfil(request.form)
+    usuario = session['usr']
+    if request.method == 'GET':
+        sql = f"SELECT mail, usuario, clave FROM Superusuario WHERE usuario='{usuario}'"
+        # Ejecutar la consulta
+        res = seleccion(sql)
+        # Proceso los resultados
+        if len(res) == 0:
+            tit = f"No se encontraron datos para : {session['usr']}"
+        else:
+            tit = f"Se muestran los datos para : {session['usr']}"
+            frm = Perfil()
+        return render_template('forms/perfil.html', form=frm, titulo=tit, data=res)
+    else:
+        if request.form.get('action1') == 'Actualizar correo electrónico':
+            mailUsuario = escape(request.form['mailUsuario'])
+            # pwd = escape(request.form['pwd'])
+            # Validar los datos
+            swerror = False
+            sql = f"SELECT mail, usuario, clave FROM Superusuario WHERE usuario='{usuario}'"
+            # Ejecutar la consulta
+            res = seleccion(sql)
+            if mailUsuario == None or len(mailUsuario) == 0 or not email_valido(mailUsuario):
+                flash('ERROR: Debe suministrar un email válido')
+                swerror = True
+            if not swerror:
+                # Proceso los resultados
+                # Preparar el query -- Paramétrico
+                sql2 = f"UPDATE Superusuario set mail = ? where usuario = ?"
+                # Ejecutar la consulta
+                # pwd = generate_password_hash(pwd)
+                res2 = accion(sql2, (mailUsuario, usuario))
+                if res2 == 0:
+                    flash('ERROR: No se pudieron almacenar los datos, reintente')
+                else:
+                    flash('INFO: Los datos fueron almacenados satisfactoriamente')
+        elif request.form.get('action2') == 'Actualizar usuario':
+            newusr = escape(request.form['usr'])
+            swerror = False
+            sql = f"SELECT mail, usuario, clave FROM Superusuario WHERE usuario='{usuario}'"
+            # Ejecutar la consulta
+            res = seleccion(sql)
+            if newusr == None or len(newusr) == 0 or not login_valido(newusr):
+                flash('ERROR: Debe suministrar un usuario válido ')
+                swerror = True
+            if not swerror:
+                # Proceso los resultados
+                # Preparar el query -- Paramétrico
+                sql2 = f"UPDATE Superusuario set usuario = ? where usuario = ?"
+                # Ejecutar la consulta
+                # pwd = generate_password_hash(pwd)
+                res2 = accion(sql2, (newusr, usuario))
+                if res2 == 0:
+                    flash('ERROR: No se pudieron almacenar los datos, reintente')
+                else:
+                    session['usr'] = newusr
+                    flash('INFO: Los datos fueron almacenados satisfactoriamente')
+        elif request.form.get('action3') == 'Actualizar contraseña':
+            newpwd = escape(request.form['pwd'])
+            confirm = escape(request.form['confirm'])
+            swerror = False
+            sql = f"SELECT mail, usuario, clave FROM Superusuario WHERE usuario='{usuario}'"
+            # Ejecutar la consulta
+            res = seleccion(sql)
+            # Validar los datos
+            if newpwd == None or len(newpwd) == 0 or not pass_valido(newpwd):
+                flash('ERROR: Debe suministrar una clave válida')
+                swerror = True
+            if confirm == None or len(confirm) == 0 or not pass_valido(confirm):
+                flash('ERROR: Debe suministrar una verificación de clave válida')
+                swerror = True
+            if newpwd != confirm:
+                flash('ERROR: La clave y la confirmación no coinciden')
+                swerror = True
+            if not swerror:
+                # Proceso los resultados
+                # Preparar el query -- Paramétrico
+                sql2 = f"UPDATE Superusuario set clave = ? where usuario = ?"
+                # Ejecutar la consulta
+                pwd = generate_password_hash(newpwd)
+                res2 = accion(sql2, (pwd, usuario))
+                if res2 == 0:
+                    flash('ERROR: No se pudieron almacenar los datos, reintente')
+                else:
+                    flash('INFO: Los datos fueron almacenados satisfactoriamente')
+        return render_template('forms/perfil.html', form=frm, data=res)
 
 
 @app.route('/vistaBusquedas/', methods=['GET', 'POST'])

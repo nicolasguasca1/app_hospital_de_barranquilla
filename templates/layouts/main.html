@@ -58,11 +58,10 @@
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown">Dashboard Administrativo <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li {% if request.endpoint == 'vistacitas' %} class="active"  {% endif %}><a href="{{ url_for('vistacitas') }}">Pedir cita</a></li>
+                <!-- <li {% if request.endpoint == 'vistacitas' %} class="active"  {% endif %}><a href="{{ url_for('vistacitas') }}">Pedir cita</a></li> -->
                 <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('lista') }}">Registro de citas</a></li>
               </ul>
             </li>
-            <!-- <li {% if request.endpoint == 'about' %} class="active" {% endif %}><a href="{{ url_for('about') }}">About</a></li> -->
             
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown">Servicios <b class="caret"></b></a>
@@ -70,7 +69,7 @@
                 <li><a>Otras acciones futuras</a></li>
                 <li class="divider"></li>
                 <li class="dropdown-header">Mi cuenta</li>
-                <li {% if request.endpoint == 'perfil' %} class="active"  {% endif %}><a href="{{ url_for('perfil') }}">Perfil de usuario</a></li>
+                <li {% if request.endpoint == 'perfilpac' %} class="active"  {% endif %}><a href="{{ url_for('perfilpac') }}">Mi perfil</a></li>
                 <li><a>Otros servicios futuros</a></li>
               </ul>
             </li>
@@ -86,15 +85,13 @@
                 <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('lista') }}">Búsqueda de registros</a></li>
               </ul>
             </li>
-            <!-- <li {% if request.endpoint == 'about' %} class="active" {% endif %}><a href="{{ url_for('about') }}">About</a></li> -->
-            
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown">Servicios <b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li><a>Otras acciones futuras</a></li>
                 <li class="divider"></li>
                 <li class="dropdown-header">Mi cuenta</li>
-                <li {% if request.endpoint == 'perfil' %} class="active"  {% endif %}><a href="{{ url_for('perfil') }}">Perfil de usuario</a></li>
+                <li {% if request.endpoint == 'perfilmed' %} class="active"  {% endif %}><a href="{{ url_for('perfilmed') }}">Mi perfil</a></li>
                 <li><a>Otros servicios futuros</a></li>
               </ul>
             </li>
@@ -111,15 +108,13 @@
                 <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('lista') }}">Mis citas</a></li>
               </ul>
             </li>
-            <!-- <li {% if request.endpoint == 'about' %} class="active" {% endif %}><a href="{{ url_for('about') }}">About</a></li> -->
-            
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown">Servicios <b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li><a>Otras acciones futuras</a></li>
                 <li class="divider"></li>
                 <li class="dropdown-header">Mi cuenta</li>
-                <li {% if request.endpoint == 'perfil' %} class="active"  {% endif %}><a href="{{ url_for('perfil') }}">Perfil de usuario</a></li>
+                <li {% if request.endpoint == 'perfiladmin' %} class="active"  {% endif %}><a href="{{ url_for('perfiladmin') }}">Mi perfil</a></li>
                 <li><a>Otros servicios futuros</a></li>
               </ul>
             </li>
@@ -131,9 +126,9 @@
           </ul>
           {% else %}
           <ul class="nav navbar-nav pull-right">
-            <li><a href="{{ url_for('registromed') }}">Registro médico</a></li>
-            <li><a href="{{ url_for('registropac') }}">Registro paciente</a></li>
-            <li><a href="{{ url_for('login') }}">Ingresar</a></li>
+            <li {% if request.endpoint == 'registromed' %} class="active"  {% endif %}><a href="{{ url_for('registromed') }}">Registro médico</a></li>
+            <li {% if request.endpoint == 'registropac' %} class="active"  {% endif %}><a href="{{ url_for('registropac') }}">Registro paciente</a></li>
+            <li {% if request.endpoint == 'login' %} class="active"  {% endif %}><a href="{{ url_for('login') }}">Ingresar</a></li>
           </ul>
           {% endif %}
         </div><!--/.nav-collapse -->
@@ -167,14 +162,19 @@
 
   </div>
   <div id="footer">
-    <div class="container">
-      <p>Ministerio de Salud &copy; Todos los derechos reservados</p>
-      {% block footer %}{% endblock %}
+    <div class="collapse navbar-collapse">
+      <div class="nav navbar-nav">
+                <p >Ministerio de Salud &copy; Todos los derechos reservados</p></div>
+        {% block footer %}
+        <div class="nav navbar-nav pull-right">
+        <p {% if request.endpoint == 'privacy' %} class="active" {% endif %}>Conozca nuestra <a href="{{ url_for('privacy') }}">Política de Privacidad</a></p></div>{% endblock %}
+      </div>
     </div>
   </div>
-  {% block detail %}{% endblock %}
   <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script type="text/javascript" src="/static/js/libs/jquery-1.11.1.min.js"><\/script>')</script>
+  {% block detail %}{% endblock %}
+  
   <script type="text/javascript" src="/static/js/libs/bootstrap-3.1.1.min.js" defer></script>
   <script type="text/javascript" src="/static/js/plugins.js" defer></script>
   <script type="text/javascript" src="/static/js/script.js" defer></script>
