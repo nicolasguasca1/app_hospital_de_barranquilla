@@ -69,7 +69,7 @@
                 <li><a>Otras acciones futuras</a></li>
                 <li class="divider"></li>
                 <li class="dropdown-header">Mi cuenta</li>
-                <li {% if request.endpoint == 'perfil' %} class="active"  {% endif %}><a href="{{ url_for('perfil') }}">Perfil de usuario</a></li>
+                <li {% if request.endpoint == 'perfilpac' %} class="active"  {% endif %}><a href="{{ url_for('perfilpac') }}">Mi perfil</a></li>
                 <li><a>Otros servicios futuros</a></li>
               </ul>
             </li>
@@ -91,7 +91,7 @@
                 <li><a>Otras acciones futuras</a></li>
                 <li class="divider"></li>
                 <li class="dropdown-header">Mi cuenta</li>
-                <li {% if request.endpoint == 'perfil' %} class="active"  {% endif %}><a href="{{ url_for('perfil') }}">Perfil de usuario</a></li>
+                <li {% if request.endpoint == 'perfilmed' %} class="active"  {% endif %}><a href="{{ url_for('perfilmed') }}">Mi perfil</a></li>
                 <li><a>Otros servicios futuros</a></li>
               </ul>
             </li>
@@ -114,7 +114,7 @@
                 <li><a>Otras acciones futuras</a></li>
                 <li class="divider"></li>
                 <li class="dropdown-header">Mi cuenta</li>
-                <li {% if request.endpoint == 'perfil' %} class="active"  {% endif %}><a href="{{ url_for('perfil') }}">Perfil de usuario</a></li>
+                <li {% if request.endpoint == 'perfiladmin' %} class="active"  {% endif %}><a href="{{ url_for('perfiladmin') }}">Mi perfil</a></li>
                 <li><a>Otros servicios futuros</a></li>
               </ul>
             </li>
