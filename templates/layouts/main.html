@@ -103,7 +103,8 @@
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown">Dashboard Administrativo <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('dashboard') }}">Gestión de usuarios</a></li>
+                <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('dashboardmedico') }}">Gestión de Medicos</a></li>
+                <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('dashboardpaciente') }}">Gestión de Pacientes</a></li>
                 <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('vistaBusquedas') }}">Búsqueda de registros</a></li>
                 <li {% if request.endpoint == 'lista' %} class="active"  {% endif %}><a href="{{ url_for('lista') }}">Mis citas</a></li>
               </ul>
@@ -155,7 +156,6 @@
           <p class="pull-left"><a href="{{ url_for('forgot') }}">Forgot Password?</a></p>
           <p class="pull-right"><a href="{{ url_for('registropac') }}">Registro paciente</a></p>
           <input type="submit" value="Submit" class="btn btn-primary btn-lg btn-block" disabled>
-          <p>You must add database as well as Flask-Login to enable user management. See the <a href="http://www.realpython.com">Real Python</a> course for more info!</p>
         </form>
       {% endblock %}
     </main>

@@ -478,10 +478,10 @@ def citasRequest():
                 data = [{"found": "false"}]
     return jsonify(data)
 
-@app.route('/dashboard')
+@app.route('/dashboard/medico')
 # @login_required
 # Con el condicional se aseguran de que la vista se renderiza solo si el usuario está logueado
-def dashboard():
+def dashboardmedico():
     # usr_id = 'usr_id' in session
     # if usr_id:
     form = DashBoardMedico(request.form)
@@ -498,6 +498,72 @@ def dashboard():
     # else:
     #     return render_template('pages/invalid.html')
 
+
+@app.route('/dashboard/paciente')
+# @login_required
+# Con el condicional se aseguran de que la vista se renderiza solo si el usuario está logueado
+def dashboardpaciente():
+    # usr_id = 'usr_id' in session
+    # if usr_id:
+    form = DashBoardPaciente(request.form)
+    return render_template('forms/dashboard-paciente.html', form=form)
+    # elif session['usr_id'] == 'testmed123':
+    #     form = DashBoardPaciente(request.form)
+    #     return render_template('forms/dashboard-paciente.html', form=form)
+    # elif session['usr_id'] == 'testadmin123':
+    #     form = DashBoardAdmin(request.form)
+    #     return render_template('forms/dashboard-admin.html', form=form)
+    # elif session['usr_id'] == 'testmed123':
+    #     form = DashBoardMedico(request.form)
+    #     return render_template('forms/dashboard-medico.html', form=form)
+    # else:
+    #     return render_template('pages/invalid.html')
+
+
+@app.route('/consultamedico', methods=['GET', 'POST'])
+# @login_required
+# Con el condicional se aseguran de que la vista se renderiza solo si el usuario está logueado
+def consultamedico():
+    # usr_id = 'usr_id' in session
+    # if usr_id:
+    #prepara la consulta
+    frm = DashBoardMedico(request.form)
+    tipoid = escape(request.form['tipoid'])
+    txtNroDoc = escape(request.form['id'])
+
+    sql = f"SELECT nombres,apellidos,idespecialidad,teléfono,usuario,mail, clave,modalidad FROM Médico WHERE tipoId = '{tipoid}' and numeroId = '{txtNroDoc}'"
+    #sql = "SELECT nombres,apellidos,idespecialidad,teléfono,usuario,mail, clave FROM Médico WHERE tipoId = 'Cédula de extranjería' and numeroId = '453534534'"
+
+
+    # Ejecutar la consulta
+    res = seleccion(sql)
+    # Proceso los resultados
+    if len(res) != 0:
+        #session.clear()
+        session['tipoid'] = tipoid
+        session['txtNroDoc'] = txtNroDoc
+        session['nombres'] = res[0][0]
+        session['apellidos'] = res[0][1]
+        session['especialidad'] = res[0][2]
+        session['telefono'] = res[0][3]
+        session['usuario'] = res[0][4]
+        session['mail'] = res[0][5]
+        session['modalidad'] = res[0][6]
+        session['found'] = True
+    else:
+        session['nombres'] = ""
+        session['apellidos'] = ""
+        session['especialidad'] = ""
+        session['telefono'] = ""
+        session['usuario'] = ""
+        session['mail'] = ""
+        session['modalidad'] = ""
+        #session.clear()
+        session['found'] = False
+        flash('ERROR: Médico no existe, debe registrarlo')
+    return redirect(url_for('dashboardmedico'))
+    #return render_template('forms/dashboard-medico.html', form=frm)
+ 
 
 @app.route('/citasForm', methods=['GET', 'POST'])
 # Con el condicional se aseguran de que la vista se renderiza solo si el usuario está logueado
@@ -550,6 +616,12 @@ def pacientes():
 @app.route('/vistamedico/', methods=['GET', 'POST'])
 def vistamedico():
     frm = DashBoardMedico()
+    if request.method == 'GET':
+        return render_template('forms/dashboard-medico.html', form=frm)
+
+@app.route('/vistapaciente/', methods=['GET', 'POST'])
+def vistapaciente():
+    frm = DashBoardPaciente()
     if request.method == 'GET':
         return render_template('forms/dashboard-medico.html', form=frm)
 

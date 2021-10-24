@@ -1,7 +1,30 @@
-{% extends 'forms/DashboardAdmin.html' %} {% block cuerpo %}
+{% extends 'layouts/main.html' %}
+{% block title %}Gestión de médicos{% endblock %} 
+{% block content %}
+
 <br />
 <br />
-<form
+<h3>Gestión de Médicos</h3>
+<form action = "/consultamedico" method ="post">
+<div class="row" style="padding: 1rem">
+    <div class="form-group">
+      <div class="col-sm-2" style="text-align: right">
+        {{ form.tipoid(class_ = 'form-control')}}
+      </div>
+      <div class="col-sm-4">
+        {{ form.id(class_ = 'form-control first-input last-input',
+        placeholder=form.id.label.text, required = true,value = session['txtNroDoc'])}}
+      </div>
+      <div class="col-sm-2">
+        <button type="submit" class="btn btn-primary btn-block">
+          Buscar
+        </button>
+      </div>
+    </div>
+  </div>
+  </form>
+
+  <form
   action="/vistamedico/"
   method="post"
   style="
@@ -14,28 +37,17 @@
 >
   <div class="row" style="padding: 1rem">
     <div class="form-group">
-      <div class="col-sm-2" style="text-align: right">
-        {{ form.tipoid(class_ = 'form-control')}}
-      </div>
-      <div class="col-sm-4">
-        {{ form.id(class_ = 'form-control first-input last-input',
-        placeholder=form.id.label.text, required = true)}}
-      </div>
-    </div>
-  </div>
-  <div class="row" style="padding: 1rem">
-    <div class="form-group">
       <label class="col-sm-2 control-label" style="text-align: right"
         >{{form.name.label.text}}</label
       >
       <div class="col-sm-4">
-        {{ form.name(class_ = 'form-control', required = true)}}
+        {{ form.name(class_ = 'form-control', required = true, value = session['nombres'])}}
       </div>
       <label class="col-sm-2 control-label" style="text-align: right"
         >{{form.last.label.text}}</label
       >
       <div class="col-sm-4">
-        {{ form.last(class_ = 'form-control', required = true)}}
+        {{ form.last(class_ = 'form-control', required = true, value = session['apellidos'])}}
       </div>
     </div>
   </div>
@@ -45,13 +57,13 @@
         >{{form.especialidad.label.text}}</label
       >
       <div class="col-sm-4">
-        {{ form.especialidad(class_ = 'form-control', style='width:48%;')}}
+        {{ form.especialidad(class_ = 'form-control',value = session['especialidad'],  style='width:48%;')}}
       </div>
       <label class="col-sm-2 control-label" style="text-align: right"
         >{{form.phone.label.text}}</label
       >
       <div class="col-sm-4">
-        {{ form.phone(class_ = 'form-control', required = true)}}
+        {{ form.phone(class_ = 'form-control', required = true,value = session['telefono'])}}
       </div>
     </div>
   </div>
@@ -76,7 +88,7 @@
         >{{form.user.label.text}}</label
       >
       <div class="col-sm-4">
-        {{ form.user(class_ = 'form-control', required = true)}}
+        {{ form.user(class_ = 'form-control', required = true, value = session['usuario'])}}
       </div>
       <label class="col-sm-2 control-label" style="text-align: right"
         >{{form.password.label.text}}</label
@@ -92,33 +104,27 @@
         >{{form.email.label.text}}</label
       >
       <div class="col-sm-4">
-        {{ form.email(class_ = 'form-control', required = true)}}
+        {{ form.email(class_ = 'form-control', required = true, value = session['usuario'])}}
       </div>
     </div>
   </div>
   <div class="row" style="padding: 1rem">
     <div class="form-group">
       <div class="col-sm-2">
-        <button type="submit" class="btn btn-primary btn-block">Reserva</button>
+        <button type="submit" class="btn btn-primary btn-block" {% if session['found'] %} disabled = True {%endif%}>Crear Registro</button>
       </div>
       <div class="col-sm-2">
-        <button type="submit" class="btn btn-primary btn-block">Editar</button>
+        <button type="submit" class="btn btn-primary btn-block" {% if not session['found'] %} disabled = True {%endif%}>Actualizar</button>
       </div>
       <div class="col-sm-2">
-        <button type="submit" class="btn btn-primary btn-block">
+        <button type="submit" class="btn btn-primary btn-block" {% if not session['found'] %} disabled = True {%endif%}>
           Eliminar
         </button>
       </div>
       <div class="col-sm-2">
-        <button type="submit" class="btn btn-primary btn-block">
+        <button type="submit" class="btn btn-primary btn-block" {% if not session['found'] %} disabled = True {%endif%}>
           Notificar
         </button>
-      </div>
-      <div class="col-sm-2"></div>
-      <div>
-        <div class="col-sm-2" style="text-align: right">
-          <button type="submit" class="btn btn-primary btn-block">Salir</button>
-        </div>
       </div>
     </div>
   </div>
