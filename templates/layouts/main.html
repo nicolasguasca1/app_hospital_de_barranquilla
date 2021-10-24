@@ -126,9 +126,9 @@
           </ul>
           {% else %}
           <ul class="nav navbar-nav pull-right">
-            <li><a href="{{ url_for('registromed') }}">Registro médico</a></li>
-            <li><a href="{{ url_for('registropac') }}">Registro paciente</a></li>
-            <li><a href="{{ url_for('login') }}">Ingresar</a></li>
+            <li {% if request.endpoint == 'registromed' %} class="active"  {% endif %}><a href="{{ url_for('registromed') }}">Registro médico</a></li>
+            <li {% if request.endpoint == 'registropac' %} class="active"  {% endif %}><a href="{{ url_for('registropac') }}">Registro paciente</a></li>
+            <li {% if request.endpoint == 'login' %} class="active"  {% endif %}><a href="{{ url_for('login') }}">Ingresar</a></li>
           </ul>
           {% endif %}
         </div><!--/.nav-collapse -->
