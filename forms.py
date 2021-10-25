@@ -110,20 +110,40 @@ class ForgotForm(FlaskForm):
 
 
 class DashBoardMedico(FlaskForm):
+    sqlesp = f"SELECT especialidad FROM Especialidades"
+    sqltipoid = f"SELECT Tipo FROM TipoId"
+    sqlmod = f"SELECT modalidad FROM Modalidades"
+    resmod = seleccion(sqlmod)
+    restipoid = seleccion(sqltipoid)
+    resesp = seleccion(sqlesp)
+    dataEsp = []
+    datamod = []
+    dataTipoId = []
+    i = 0
+    while i < len(resmod):       
+        datamod.append(resmod[i][0])
+        i += 1
+    i = 0
+    while i < len(restipoid):       
+        dataTipoId.append(restipoid[i][0])
+        i += 1
+    i = 0
+    while i < len(resesp):       
+          dataEsp.append(resesp[i][0])
+          i += 1
+
     tipoid = SelectField(u'Tipo de identificación ',
-                         choices=[('C.C'), ('T.I'), ('T.E')])
+                         choices=dataTipoId)
     id = StringField('No. ID', validators=[
                      DataRequired(message='Se requiere el ID')])
     name = StringField('Nombres', validators=[
                        DataRequired(message='Se requiere el nombre')])
     last = StringField('Apellidos', validators=[DataRequired(
         message='Se requiere el apellido'), Length(min=2, max=40)])
-    especialidad = SelectField(u'Especialidad ', choices=[
-                               ('General'), ('Odontología'), ('Pediatría')])
+    especialidad = SelectField(u'Especialidad ', choices=dataEsp)
     phone = StringField('Telefono', validators=[DataRequired(
         message='Se requiere el teléfono'), Length(min=2, max=40)])
-    time = SelectField(u'Hora de atención', choices=[
-                       ('9:00'), ('12:30'), ('16:00')])
+    time = SelectField(u'Jornada de trabajo', choices=datamod)
     user = StringField('Usuario', validators=[DataRequired(
         message='Se requiere nombre de usuario'), Length(min=2, max=40)])
     password = PasswordField(
@@ -171,9 +191,10 @@ class CitaForm(FlaskForm):
 # Clase del formulario dashboard paciente
 
 
-class Paciente(FlaskForm):
+class DashBoardPaciente(FlaskForm):
     selTipId = SelectField(u'Tipo de Identificación', choices=[(
-        'cc', 'Cedula'), ('pp', 'Pasaporte'), ('ti', 'Tarjeta Identidad')])
+        'Cédula de ciudadanía'), ('Pasaporte'), ('Tarjeta de identidad'), ('Cédula de extranjería')])
+
     txtNroDoc = TextField(
         'Nro. documento*', validators=[InputRequired(message='Digite el Nro de documento')])
     TxtNombres = TextField(
