@@ -223,15 +223,18 @@ function mk_table()
 function rquestFecha()
 {
     let nmedico = document.getElementById("nmedico").value;
+    let fecha = document.getElementById("fecha").value;
     let nombres = nmedico.split("-");
-    console.log(nombres);
+    console.log(fecha);
     $.ajax({
         type:'GET',
         url:'/citasFormRequest',
         data:{
                 jsdata1: nombres[0],
                 jsdata2: nombres[1],
-                jsdata3: 2},
+                jsdata3: 2,
+                jsdata4: fecha
+            },
         success:function(response)
         {            
             let data = response;

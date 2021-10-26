@@ -16,7 +16,8 @@ from werkzeug.urls import url_parse
 from werkzeug.security import check_password_hash, generate_password_hash
 from utils import login_valido, pass_valido, email_valido
 from db import accion, seleccion
-
+import datetime
+from datetime import datetime
 
 #----------------------------------------------------------------------------#
 # App Config.
@@ -311,7 +312,13 @@ def vistaCita():
             sqlcita = f"SELECT idpaciente, especialidad, idmedico, horario, fecha, comentarios, valoracion, id FROM Cita WHERE id = '{jsdata}'"
             # Ejecutar la consulta
             rescita = seleccion(sqlcita)
-
+            fecha_split = str(rescita[0][4]).split("-")
+            fecha_cita = datetime(int(fecha_split[0]), int(fecha_split[1]), int(fecha_split[2]))
+            fecha_hoy = datetime.now()#fecha de hoy
+            if (fecha_cita < fecha_hoy):
+                ontime = 1
+            else:
+                ontime = 0
             sqlmed = f"SELECT nombres, apellidos FROM Médico WHERE idmedico = '{rescita[0][2]}'"
             sqlpac = f"SELECT nombres, apellidos FROM Paciente WHERE idpaciente = '{rescita[0][0]}'"
             resmed = seleccion(sqlmed)
@@ -326,7 +333,8 @@ def vistaCita():
                 "fecha": str(rescita[0][3])+" "+str(rescita[0][4]),
                 "comentario": rescita[0][5],
                 "valoracion": rescita[0][6],
-                "rol": rol
+                "rol": rol,
+                "ontime": ontime
             }
 
             return render_template('pages/wedit.html', data=datos)
@@ -336,10 +344,42 @@ def vistaCita():
 def lista():
     if session:
         if request.method == 'GET':
-            if session["rol"] != '1':
+            if session["rol"] == '3':
                 datos = []
                 # Preparar la consulta
                 sqlcita = f"SELECT idpaciente, especialidad, idmedico, horario, fecha, comentarios, valoracion, id FROM Cita"
+                # Ejecutar la consulta
+                rescita = seleccion(sqlcita)
+
+                i = 0
+                while i < len(rescita):
+                    sqlmed = f"SELECT nombres, apellidos FROM Médico WHERE idmedico = '{rescita[i][2]}'"
+                    sqlpac = f"SELECT nombres, apellidos FROM Paciente WHERE idpaciente = '{rescita[i][0]}'"
+                    resmed = seleccion(sqlmed)
+                    respac = seleccion(sqlpac)
+                    temp = {
+                        "index": i+1,
+                        "descrip": rescita[i][1],
+                        "paciente": str(respac[0][0])+" "+str(respac[0][1]),
+                        "idp": rescita[i][0],
+                        "id": rescita[i][7],
+                        "doctor": str(resmed[0][0])+" "+str(resmed[0][1]),
+                        "idd": rescita[i][2],
+                        "fecha": str(rescita[i][3])+" | "+str(rescita[i][4]),
+                        "comentario": rescita[i][5],
+                        "valoracion": rescita[i][6]
+                    }
+                    datos.append(temp)
+                    i += 1
+                return render_template('pages/lista.html', data=datos)
+            elif session["rol"] == '2':
+                datos = []
+                # Preparar la consulta
+                sqlpac = f"SELECT idmedico FROM Médico WHERE usuario = '{session['usr']}'"
+                #Ejecutar la consulta
+                respac = seleccion(sqlpac)
+                #Preparar la consulta
+                sqlcita = f"SELECT idpaciente, especialidad, idmedico, horario, fecha, comentarios, valoracion, id FROM Cita WHERE idmedico = '{respac[0][0]}'"
                 # Ejecutar la consulta
                 rescita = seleccion(sqlcita)
 
@@ -425,22 +465,42 @@ def citasRequest():
         elif(jsdata3 == '2'):
             jsdata1 = request.args.get('jsdata1')
             jsdata2 = request.args.get('jsdata2')
-            # Preparar la consulta
-            sql = f"SELECT modalidad FROM Médico WHERE nombres = '{jsdata1}' and apellidos = '{jsdata2}'"
+            jsdata4 = request.args.get('jsdata4')#fecha seleccionada
+            fecha_hoy = str(datetime.now().strftime('%Y-%m-%d'))#fecha de hoy
+            
+            # Preparar la consulta modalidad del medico
+            sql = f"SELECT modalidad, idmedico FROM Médico WHERE nombres = '{jsdata1}' and apellidos = '{jsdata2}'"
             # Ejecutar la consulta
             res = seleccion(sql)
-            # Preparar la consulta
+            #consultar horarios de citas del medico en la fecha seleccionada
+            if(jsdata4 != ""):
+                sqlcita = f"SELECT horario FROM Cita WHERE idmedico = '{res[0][1]}' and fecha = '{jsdata4}'"
+            else:
+                sqlcita = f"SELECT horario FROM Cita WHERE idmedico = '{res[0][1]}' and fecha = '{fecha_hoy}'"
+            print(sqlcita)
+            rescita = seleccion(sqlcita)
+            print(rescita)
+            # Preparar la consulta horarios segun modalidad
             sqlhora = f"SELECT horario FROM Horario WHERE modalidad = '{res[0][0]}'"
             # Ejecutar la consulta
             reshora = seleccion(sqlhora)
             if reshora:
                 i = 0
+                sw = 0
                 while i < len(reshora):
-                    temp = {
-                        "horario": reshora[i][0],
-                        "modalidad": res[0][0]
-                    }
-                    data.append(temp)
+                    if rescita:
+                        j = 0
+                        while j < len(rescita):
+                            if(rescita[j][0] == reshora[i][0]):
+                                sw = 1
+                            j += 1
+                    if(sw == 0):
+                        temp = {
+                            "horario": reshora[i][0],
+                            "modalidad": res[0][0]
+                        }
+                        data.append(temp)
+                    sw = 0
                     i += 1
         elif(jsdata3 == '3'):
             jsdata1 = request.args.get('jsdata1')            
