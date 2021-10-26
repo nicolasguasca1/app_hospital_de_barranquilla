@@ -147,9 +147,14 @@ class DashBoardMedico(FlaskForm):
     user = StringField('Usuario', validators=[DataRequired(
         message='Se requiere nombre de usuario'), Length(min=2, max=40)])
     password = PasswordField(
-        'Contraseña', [DataRequired(message='Se requiere la clave')])
+        'Contraseña')
     email = TextField('Correo electrónico', validators=[DataRequired(
         message='Se requiere el correo electrónico'), Length(min=2, max=40)])
+    CreateRegMed = SubmitField('Crear Registro')
+    UpdateRegMed = SubmitField('Actualizar')
+    DeleteRegMed = SubmitField('Eliminar')
+    SearchRegMed = SubmitField('Buscar')
+    RecoveryRegMed = SubmitField('Recuperar')
 
 # Clase del formulario crear cita
 
@@ -244,6 +249,7 @@ class Cita(FlaskForm):
     mailUsuario = EmailField(
         'Email *', validators=[InputRequired(message='Digite el correo electrónico')])
     Comentarios = TextAreaField('Comentarios')
+   
     btnReg = SubmitField('Reservar')
     btnEditar = SubmitField('Editar')
     btnEliminar = SubmitField('Eliminar')
