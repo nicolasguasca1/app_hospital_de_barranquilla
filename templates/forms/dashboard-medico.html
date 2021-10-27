@@ -20,7 +20,7 @@ background-color: #fcfcfc;
       <div class="col-sm-4">
         {{ form.id(class_ = 'form-control first-input last-input',
         placeholder=form.id.label.text, required = true,value = session['txtNroDoc'])}}
-        {%if session['activo']%} ACTIVO {%elif not session['activo']%} INACTIVO {%elif not session['found'] %}" "{%endif%}
+        <!-- {%if session['activo']%} ACTIVO {%elif not session['activo']%} INACTIVO {%elif not session['found'] %}" "{%endif%} -->
       </div>
       <div class="col-sm-2">
         <button 

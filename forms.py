@@ -12,10 +12,10 @@ from db import seleccion
 
 class RegisterFormPac(FlaskForm):
     name = StringField(
-        'Nombres', validators=[DataRequired(), Length(min=6, max=25)]
+        'Nombres *', validators=[DataRequired(), Length(min=6, max=25)]
     )
     lastname = StringField(
-        'Apellidos', validators=[DataRequired(), Length(min=6, max=25)]
+        'Apellidos *', validators=[DataRequired(), Length(min=6, max=25)]
     )
     tipoid = SelectField(u'Tipo de identificación ', choices=[(
         'Cédula de ciudadanía'), ('Pasaporte'), ('Tarjeta de identidad'), ('Cédula de extranjería')])
@@ -32,10 +32,10 @@ class RegisterFormPac(FlaskForm):
         'Número de teléfono', validators=[DataRequired(), Length(min=6, max=25)]
     )
     email = StringField(
-        'Correo electrónico', validators=[DataRequired(), Length(min=6, max=40)]
+        'micorreo@ejemplo.com', validators=[DataRequired(), Length(min=6, max=40)]
     )
     username = StringField(
-        'Defina un nombre de usuario', validators=[DataRequired(), Length(min=6, max=25)]
+        'miusuarioejemplo', validators=[DataRequired(), Length(min=6, max=25)]
     )
     password = PasswordField(
         'Defina una contraseña', validators=[DataRequired(), Length(min=6, max=40)]
@@ -120,17 +120,17 @@ class DashBoardMedico(FlaskForm):
     datamod = []
     dataTipoId = []
     i = 0
-    while i < len(resmod):       
+    while i < len(resmod):
         datamod.append(resmod[i][0])
         i += 1
     i = 0
-    while i < len(restipoid):       
+    while i < len(restipoid):
         dataTipoId.append(restipoid[i][0])
         i += 1
     i = 0
-    while i < len(resesp):       
-          dataEsp.append(resesp[i][0])
-          i += 1
+    while i < len(resesp):
+        dataEsp.append(resesp[i][0])
+        i += 1
 
     tipoid = SelectField(u'Tipo de identificación ',
                          choices=dataTipoId)
@@ -158,21 +158,21 @@ class DashBoardMedico(FlaskForm):
 
 
 class CitaForm(FlaskForm):
-    #Preparar consulta
-    #traer especialidades de la DB
+    # Preparar consulta
+    # traer especialidades de la DB
     sqlesp = f"SELECT especialidad FROM Especialidades"
-    
-    #traer id de pacientes
+
+    # traer id de pacientes
     resesp = seleccion(sqlesp)
-    
+
     dataEsp = []
     i = 0
-    while i < len(resesp):       
+    while i < len(resesp):
         dataEsp.append(resesp[i][0])
         i += 1
 
     medico = SelectField(u'Medico')
-    idm = TextField('ID', validators=[DataRequired(
+    idm = TextField('ID Médico', validators=[DataRequired(
         message='Se requiere ID'), Length(min=2, max=40)])
     especialidad = SelectField(u'Especialidad', choices=dataEsp)
     time = SelectField(u'Hora de atención')
@@ -181,9 +181,9 @@ class CitaForm(FlaskForm):
     apellido = TextField('Apellido', validators=[DataRequired(
         message='Se requiere apellido del paciente'), Length(min=2, max=40)])
     tipoid = TextField('Tipo de ID', validators=[DataRequired(
-        message='Se requiere el id'), Length(min=2, max=40)])    
-    id_paciente = TextField('ID', validators=[DataRequired(
-            message='Se requiere el id'), Length(min=2, max=40)])
+        message='Se requiere el id'), Length(min=2, max=40)])
+    id_paciente = TextField('ID Paciente', validators=[DataRequired(
+        message='Se requiere el id'), Length(min=2, max=40)])
     email = TextField('Correo electrónico', validators=[DataRequired(
         message='Se requiere el correo electrónico'), Length(min=2, max=40)])
     fecha = DateField('Fecha', validators=[
@@ -204,19 +204,19 @@ class DashBoardPaciente(FlaskForm):
     datasex = []
     dataTipoId = []
     #i = 0
-    #while i < len(resgrh):       
+    # while i < len(resgrh):
     #    datagrh.append(resgrh[i][0])
     #    i += 1
     i = 0
-    while i < len(restipoid):       
+    while i < len(restipoid):
         dataTipoId.append(restipoid[i][0])
         i += 1
     i = 0
-    while i < len(ressex):       
-          datasex.append(ressex[i][0])
-          i += 1
+    while i < len(ressex):
+        datasex.append(ressex[i][0])
+        i += 1
 
-    selTipId = SelectField(u'Tipo de Identificación', choices = dataTipoId )
+    selTipId = SelectField(u'Tipo de Identificación', choices=dataTipoId)
 
     txtNroDoc = TextField(
         'Nro. documento*', validators=[InputRequired(message='Digite el Nro de documento')])
@@ -227,16 +227,16 @@ class DashBoardPaciente(FlaskForm):
     TxtNroCel = TextField(
         ' Nro Celular *', validators=[InputRequired(message='Digite nro Celular')])
     DateFecha = DateField('Fecha de Nacimiento', format='%Y-%m-%d')
-    selSexo = SelectField(u'Genero', choices= datasex)
+    selSexo = SelectField(u'Genero', choices=datasex)
     selGrupoRh = SelectField(u'Grupo Sanguineo', choices=[
-                             ('A+', 'A+'), ('A-', 'A-'),('B+', 'B+'),('B-', 'B-'), ('O+', 'O+'),('O-', 'O-'),('AB+','AB+'),('AB-','AB-')])
+                             ('A+', 'A+'), ('A-', 'A-'), ('B+', 'B+'), ('B-', 'B-'), ('O+', 'O+'), ('O-', 'O-'), ('AB+', 'AB+'), ('AB-', 'AB-')])
     txtUsuario = TextField(
         'Usuario *', validators=[InputRequired(message='Ingrese Usuario')])
     PwdClave = PasswordField(
         'Contraseña *')
     mailUsuario = EmailField(
         'Email *', validators=[InputRequired(message='Digite el correo electrónico')])
-    
+
     CreateRegPac = SubmitField('Crear Registro')
     UpdateRegPac = SubmitField('Actualizar')
     DeleteRegPac = SubmitField('Eliminar')
@@ -268,7 +268,7 @@ class Cita(FlaskForm):
     mailUsuario = EmailField(
         'Email *', validators=[InputRequired(message='Digite el correo electrónico')])
     Comentarios = TextAreaField('Comentarios')
-   
+
     btnReg = SubmitField('Reservar')
     btnEditar = SubmitField('Editar')
     btnEliminar = SubmitField('Eliminar')

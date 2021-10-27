@@ -208,7 +208,7 @@ def registropac():
                 flash('ERROR: No se pudo insertar el registro')
             else:
                 flash(
-                    'Atualización: Datos grabados con exito. Para acceder ingrese sus credenciales.')
+                    'Actualización: Datos grabados con exito. Para acceder ingrese sus credenciales.')
                 return redirect(url_for('login'))
 
         return render_template('forms/registropac.html', form=pacform)
@@ -285,7 +285,7 @@ def registromed():
                 flash('ERROR: No se pudo insertar el registro')
             else:
                 flash(
-                    'Atualización: Datos grabados con exito. Para acceder ingrese sus credenciales.')
+                    'Actualización: Datos grabados con exito. Para acceder ingrese sus credenciales.')
                 return redirect(url_for('login'))
 
         return render_template('forms/registromed.html', form=medform)
@@ -647,7 +647,7 @@ def dashboardmedico():
                             flash('ERROR: No se pudo insertar el registro')
                         else:
                             flash(
-                                'Atualización: Datos grabados con exito.')
+                                'Actualización: Datos grabados con exito.')
                     return render_template('forms/dashboard-medico.html', form=form)
 
                 elif request.form.get('updbtn') == 'Actualizar':
@@ -858,7 +858,7 @@ def dashboardpaciente():
                             flash('ERROR: No se pudo insertar el registro')
                         else:
                             flash(
-                                'Atualización: Datos grabados con exito.')
+                                'Actualización: Datos grabados con exito.')
                     return render_template('forms/dashboard-paciente.html', form=form)
 
                 if request.form.get('updbtn') == 'Actualizar':
@@ -1027,7 +1027,7 @@ def citas():
         if res == 0:
             flash('ERROR: No se pudo insertar el registro')
         else:
-            flash('Atualización: Datos grabados con exito en la BD.')
+            flash('Actualización: Datos grabados con exito en la BD.')
         return redirect(url_for('lista'))
 
 # rutas del dashboard administrativo
