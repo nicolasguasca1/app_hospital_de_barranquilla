@@ -39,7 +39,7 @@
                     <div class="col-sm-4">
                         <label class="control-label" style="text-align: left">{{form.fecha.label.text}}</label>
                         <div style="text-align: right">
-                            {{form.fecha(class_ = 'form-control', required = true)}}
+                            {{form.fecha(class_ = 'form-control', required = true, onchange = 'rquestFecha()')}}
                         </div>
                     </div>                
                     <div class="col-sm-4">
@@ -95,16 +95,6 @@
             </div>
             <div class="row" style="padding: 1rem;">
                 <div class="form-group">
-                    <div class="col-sm-4">
-                        <div style="text-align: right">
-                            {{form.comentario(class_ = 'form-control', placeholder='Comentarios')}}
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div style="text-align: right">
-                            {{form.valoracion(class_ = 'form-control', placeholder='Valoración')}}
-                        </div>
-                    </div>
                     <div class="col-sm-2">
                         <button type="submit" class="btn btn-primary btn-block">Guardar</button>
                     </div>                    

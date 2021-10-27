@@ -1,0 +1,22 @@
+<br>
+<br>
+<div class="col-sm-4"></div>
+<div class="col-sm-4">
+    <div style="text-align: right;">
+            <img id="close" src="/static/img/close-icon.png" alt="" style="width: 23px; cursor: pointer;">
+    </div>
+    <form action="/borrarCita" method="post" style="background-color: white; padding: 2rem; border-radius: .5rem;">
+        <div class="row" style="padding: 1rem">
+            <div class="form-group">
+                <label class="control-label w-100"><p>Desea eliminar la cita: </p><strong>{{data}}</strong></label>
+                <input type="text" name="data" id="data" class="form-control" value="{{data}}" style="visibility: collapse;">
+            </div>
+        </div>
+        <div class="row" style="padding: 1rem">
+            <div class="form-group">
+                <button type="submit"class="btn btn-primary btn-block">Borrar</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="col-sm-4"></div>

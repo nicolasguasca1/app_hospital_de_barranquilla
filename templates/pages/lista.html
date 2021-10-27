@@ -23,7 +23,7 @@
           <th scope="col">Descripción</th>
           <th scope="col">Paciente</th>
           <th scope="col">Doctor</th>
-          <th scope="col">Fecha/Hora</th>
+          <th scope="col">Hora/Fecha</th>
           <th></th>
         </tr>
       </thead>
@@ -45,6 +45,7 @@
             />
             <img
               id="delete{{index}}"
+              onclick="deleteBtn({{item.id}})"
               src="/static/img/deleted-logo.png"
               alt=""
               style="width: 23px; cursor: pointer"
@@ -55,12 +56,14 @@
       </tbody>
     </table>
     <div>
+      {% if session.rol == '1' %}
       <img
         id="add"
         src="/static/img/add-logo.png"
         alt=""
         style="width: 30px; cursor: pointer"
       />
+      {% endif%}
     </div>
   </div>
 </div>
