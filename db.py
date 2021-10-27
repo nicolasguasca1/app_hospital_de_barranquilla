@@ -24,3 +24,13 @@ def accion(sql, datos) -> int:
     except Exception:
         res = 0
     return res
+def borrar(sql) -> int:
+   #borra una fila en la base datos
+    try:
+        with sqlite3.connect(URL_DB) as con:
+            cur = con.cursor()
+            res = cur.execute(sql).fetchall
+            con.commit()
+    except Exception:
+        res = 0
+    return res

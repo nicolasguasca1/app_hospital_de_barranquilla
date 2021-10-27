@@ -34,7 +34,11 @@
 <!-- /scripts -->
 
 </head>
+{% if session.rol == '1'%}
+<body onload="mk_table()">
+{% else %}
 <body>
+{% endif%}
   <!-- Wrap all page content here -->
   <div id="wrap">
     <!-- Fixed navbar -->

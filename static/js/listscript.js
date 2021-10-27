@@ -225,7 +225,6 @@ function rquestFecha()
     let nmedico = document.getElementById("nmedico").value;
     let fecha = document.getElementById("fecha").value;
     let nombres = nmedico.split("-");
-    console.log(fecha);
     $.ajax({
         type:'GET',
         url:'/citasFormRequest',
@@ -273,7 +272,34 @@ function rquestIdMedico()
         }
     });
 }
+/*function delete_cita(id)
+{
+    $.ajax({
+        type:'POST',
+        url:'/borrarCita',
+        data:{jsdata: id},
+        success:function(response)
+        {    
+            close_();  
+        }
+    });      
+}*/
 
+function deleteBtn(id)
+{
+    document.getElementById("dark").style.background = "rgba(0, 0, 0, .7)";
+    document.getElementById("dark").style.visibility = "visible";
+    $.ajax({
+            type:'GET',
+            url:'/borrarcitasForm',
+            data:{jsdata: id},
+            success:function(response)
+            {
+                document.getElementById("w-edit").innerHTML = response;
+                document.getElementById("close").addEventListener("click", ()=>close_());
+            }
+    });
+}
 function rquestPaciente()
 {
     let id = document.getElementById("id_paciente").value;
@@ -342,4 +368,4 @@ function getPaciente()
 {
     console.log("getPaciente");
 }
-document.addEventListener("load", mk_table());
+//document.addEventListener("load", mk_table());

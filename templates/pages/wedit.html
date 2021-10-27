@@ -27,7 +27,16 @@
                 border: 1px solid rgba(0,0,0,.125);
                 border-radius: .25rem; padding: 0.5rem;">
                 {% if data.rol == '1' and data.ontime == 1 %}
+                    {% if data.valoracion == "" %}
+                    <select id="valoracion">
+                        <option value="Malo">Malo</option>
+                        <option value="Regular">Regular</option>
+                        <option value="Bueno">Bueno</option>
+                        <option value="Excelente">Excelente</option>
+                    </select>
+                    {% else%}
                     <textarea id ="valoracion">{{data.valoracion}}</textarea>
+                    {% endif%}
                 {% else %}
                     <textarea id ="valoracion" disabled>{{data.valoracion}}</textarea>
                 {% endif %}

@@ -163,11 +163,11 @@ class CitaForm(FlaskForm):
     #Preparar consulta
     #traer especialidades de la DB
     sqlesp = f"SELECT especialidad FROM Especialidades"
+    
     #traer id de pacientes
     resesp = seleccion(sqlesp)
     
     dataEsp = []
-    
     i = 0
     while i < len(resesp):       
         dataEsp.append(resesp[i][0])
@@ -188,8 +188,6 @@ class CitaForm(FlaskForm):
             message='Se requiere el id'), Length(min=2, max=40)])
     email = TextField('Correo electrónico', validators=[DataRequired(
         message='Se requiere el correo electrónico'), Length(min=2, max=40)])
-    comentario = TextAreaField("TextArea")
-    valoracion = TextAreaField("TextArea")
     fecha = DateField('Fecha', validators=[
                       DataRequired(message='Se requiere la fecha')])
 

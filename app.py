@@ -15,7 +15,7 @@ from flask_login import LoginManager, login_user, UserMixin
 from werkzeug.urls import url_parse
 from werkzeug.security import check_password_hash, generate_password_hash
 from utils import login_valido, pass_valido, email_valido
-from db import accion, seleccion
+from db import accion, borrar, seleccion
 import datetime
 from datetime import datetime
 
@@ -310,11 +310,19 @@ def vistaCita():
 
             # Preparar la consulta
             sqlcita = f"SELECT idpaciente, especialidad, idmedico, horario, fecha, comentarios, valoracion, id FROM Cita WHERE id = '{jsdata}'"
+            sqlval = f"SELECT Valoracion FROM Valoraciones"
             # Ejecutar la consulta
             rescita = seleccion(sqlcita)
+            resval = seleccion(sqlval)
             fecha_split = str(rescita[0][4]).split("-")
             fecha_cita = datetime(int(fecha_split[0]), int(fecha_split[1]), int(fecha_split[2]))
             fecha_hoy = datetime.now()#fecha de hoy
+            dataVal = []
+            i = 0
+            while i < len(resval):       
+                dataVal.append(resval[i][0])
+                i += 1
+
             if (fecha_cita < fecha_hoy):
                 ontime = 1
             else:
@@ -439,6 +447,24 @@ def lista():
     else:
         return render_template('pages/invalid.html')
 
+@app.route('/borrarCita', methods=['GET', 'POST'])
+def borrarCita():
+    if request.method == 'POST':
+        jsdata = request.form['data']
+        print(jsdata)
+        sql = f"DELETE FROM Cita WHERE id = '{jsdata}'"
+        res = borrar(sql)
+        if res == 0:
+            flash('ERROR: No se pudo borrar el registro')
+        else:
+            flash("El registro se ha borrado")
+        return redirect(url_for('lista'))
+
+@app.route('/borrarcitasForm', methods=['GET'])
+def borrarForm():
+    if request.method == 'GET':
+        jsdata = request.args.get('jsdata')
+        return render_template('forms/borrarCitaForm.html', data=jsdata)
 @app.route('/citasFormRequest', methods=['GET', 'POST'])
 def citasRequest():
     if request.method == 'GET':
@@ -849,8 +875,8 @@ def citas():
         idm = escape(request.form['idm'])
         hora = escape(request.form['time'])
         fecha = escape(request.form['fecha'])
-        comentario = escape(request.form['comentario'])
-        valoracion = escape(request.form['valoracion'])
+        comentario = ""
+        valoracion = ""
         # Preparar la consulta
         #Recuperar Ids de BD
         sqlidmed = f"SELECT idmedico FROM Médico WHERE numeroId = '{idm}'"
