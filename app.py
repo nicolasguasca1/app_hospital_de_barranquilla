@@ -584,6 +584,15 @@ def dashboardmedico():
         if session.get('rol') == '3':
             form = DashBoardMedico(request.form)
             if request.method == 'GET':
+                session['tipoid'] = ""
+                session['txtNroDoc'] = ""
+                session['nombres'] = "" 
+                session['apellidos'] = ""
+                session['mail'] = ""
+                session['telefono'] = ""
+                session['usuario'] = ""
+                session['clave'] = ""
+                session['found'] = False
                 return render_template('forms/dashboard-medico.html', form=form)
             else:
                 if request.form.get('regbtn') == 'Crear Registro':
@@ -617,8 +626,7 @@ def dashboardmedico():
                         flash('ERROR: Debe suministrar la especialidad del médico')
                         swerror = True
                     if modalidad == None or len(modalidad) == 0:
-                        flash(
-                            'ERROR: Debe suministrar la jornada de trabajo del médico')
+                        flash('ERROR: Debe suministrar la jornada de trabajo del médico')
                         swerror = True
                     if username == None or len(username) == 0 or not login_valido(username):
                         flash('ERROR: Debe suministrar un usuario válido ')
@@ -629,19 +637,11 @@ def dashboardmedico():
                     if password == None or len(password) == 0 or not pass_valido(password):
                         flash('ERROR: Debe suministrar una clave válida')
                         swerror = True
-                    # if confirm == None or len(confirm) == 0 or not pass_valido(confirm):
-                    #    flash('ERROR: Debe suministrar una verificación de clave válida')
-                    #    swerror = True
-                    # if password != confirm:
-                    #    flash('ERROR: La clave y la confirmación no coinciden')
-                    #    swerror = True
                     if not swerror:
                         # Preparar la consulta
-                        pwd = generate_password_hash(
-                            password)  # Cifrar la clave
+                        pwd = generate_password_hash(password)  # Cifrar la clave
                         sql = 'INSERT INTO Médico(nombres,apellidos,tipoId,NumeroId,idespecialidad,modalidad,mail,teléfono,usuario,clave,idrol) VALUES(?,?,?,?,?,?,?,?,?,?,?)'
-                        res = accion(sql, (name, lastname, tipoid, id, specialty,
-                                           modalidad, email, phonenumber, username, pwd, role))
+                        res = accion(sql, (name, lastname, tipoid, id, specialty,modalidad,email,phonenumber,username,pwd,role))
                         # Verificar resultados
                         if res == 0:
                             flash('ERROR: No se pudo insertar el registro')
@@ -650,7 +650,7 @@ def dashboardmedico():
                                 'Atualización: Datos grabados con exito.')
                     return render_template('forms/dashboard-medico.html', form=form)
 
-                if request.form.get('updbtn') == 'Actualizar':
+                elif request.form.get('updbtn') == 'Actualizar':
                     name = escape(request.form['name'])
                     lastname = escape(request.form['last'])
                     tipoid = escape(request.form['tipoid'])
@@ -681,53 +681,30 @@ def dashboardmedico():
                         flash('ERROR: Debe suministrar la especialidad del médico')
                         swerror = True
                     if modalidad == None or len(modalidad) == 0:
-                        flash(
-                            'ERROR: Debe suministrar la jornada de trabajo del médico')
+                        flash('ERROR: Debe suministrar la jornada de trabajo del médico')
                         swerror = True
-                    if username == None or len(username) == 0 or not login_valido(username):
-                        flash('ERROR: Debe suministrar un usuario válido ')
-                        swerror = True
-                    if email == None or len(email) == 0 or not email_valido(email):
-                        flash('ERROR: Debe suministrar un email válido')
-                        swerror = True
-                    if password == None or len(password) == 0 or not pass_valido(password):
-                        flash('ERROR: Debe suministrar una clave válida')
-                        swerror = True
-                    # if confirm == None or len(confirm) == 0 or not pass_valido(confirm):
-                    #    flash('ERROR: Debe suministrar una verificación de clave válida')
-                    #    swerror = True
-                    # if password != confirm:
-                    #    flash('ERROR: La clave y la confirmación no coinciden')
-                    #    swerror = True
                     if not swerror:
                         # Preparar la consulta
-                        pwd = generate_password_hash(
-                            password)  # Cifrar la clave
+                        pwd = generate_password_hash(password)  # Cifrar la clave
                         sql2 = f"UPDATE Médico set nombres = ?,apellidos = ?, tipoId = ?,NumeroId=?,idespecialidad=?,modalidad=?,mail=?,teléfono=?,usuario=?,clave=?,idrol=?  where idmedico = ?"
                         # Ejecutar la consulta
-                        # pwd = generate_password_hash(pwd)
-                        res2 = accion(sql2, (name, lastname, tipoid, id, specialty, modalidad,
-                                             email, phonenumber, username, pwd, role, session['idmed']))
+                        res2 = accion(sql2, (name, lastname, tipoid, id, specialty,modalidad,email,phonenumber,username,pwd,role,session['idmed']))
                         if res2 == 0:
-                            flash(
-                                'ERROR: No se pudieron almacenar los datos, reintente')
+                            flash('ERROR: No se pudieron almacenar los datos, reintente')
                         else:
-                            flash(
-                                'INFO: Los datos fueron actualizados satisfactoriamente')
+                            flash('INFO: Los datos fueron actualizados satisfactoriamente')
                     return render_template('forms/dashboard-medico.html', form=form)
 
-                if request.form.get('srchbtn') == 'Buscar':
+                elif request.form.get('srchbtn') == 'Buscar':
                     tipoid = escape(request.form['tipoid'])
                     txtNroDoc = escape(request.form['id'])
 
                     sql = f"SELECT nombres,apellidos,idespecialidad,teléfono,usuario,mail, clave,modalidad,idmedico,Estado FROM Médico WHERE tipoId = '{tipoid}' and numeroId = '{txtNroDoc}'"
-                    #sql = "SELECT nombres,apellidos,idespecialidad,teléfono,usuario,mail, clave FROM Médico WHERE tipoId = 'Cédula de extranjería' and numeroId = '453534534'"
-
                     # Ejecutar la consulta
                     res = seleccion(sql)
                     # Proceso los resultados
                     if len(res) != 0:
-                        # session.clear()
+                        #session.clear()
                         session['tipoid'] = tipoid
                         session['txtNroDoc'] = txtNroDoc
                         session['nombres'] = res[0][0]
@@ -742,8 +719,8 @@ def dashboardmedico():
                         if Estado == "ACTIVO":
                             session['activo'] = True
                         else:
-                            session['activo'] = False
-                        session['found'] = True
+                            session['activo'] = False    
+                            session['found'] = True
                     else:
                         session['tipoid'] = tipoid
                         session['txtNroDoc'] = txtNroDoc
@@ -754,86 +731,45 @@ def dashboardmedico():
                         session['usuario'] = ""
                         session['mail'] = ""
                         session['modalidad'] = ""
-                        # session.clear()
                         session['found'] = False
                         flash('ERROR: Médico no existe, debe registrarlo')
                     return render_template('forms/dashboard-medico.html', form=form)
 
-                if request.form.get('delbtn') == 'Eliminar':
+                elif request.form.get('delbtn') == 'Eliminar':
                     name = escape(request.form['name'])
                     lastname = escape(request.form['last'])
                     tipoid = escape(request.form['tipoid'])
                     id = escape(request.form['id'])
                     specialty = escape(request.form['especialidad'])
                     modalidad = escape(request.form['time'])
-                    email = escape(request.form['email'])
-                    phonenumber = escape(request.form['phone'])
-                    username = escape(request.form['user'])
-                    password = escape(request.form['password'])
-                    #confirm = escape(request.form['confirm'])
                     role = 2
                     # Validar los datos
                     swerror = False
-                    if name == None or len(name) == 0:
-                        flash('ERROR: Debe suministrar el nombre del medico')
-                        swerror = True
-                    if lastname == None or len(lastname) == 0:
-                        flash('ERROR: Debe suministrar el apellido del medico')
-                        swerror = True
                     if tipoid == None or len(tipoid) == 0:
                         flash('ERROR: Debe suministrar el tipo de documento')
                         swerror = True
                     if id == None or len(id) == 0:
                         flash('ERROR: Debe suministrar un numero de identificación')
                         swerror = True
-                    if specialty == None or len(specialty) == 0:
-                        flash('ERROR: Debe suministrar la especialidad del médico')
-                        swerror = True
-                    if modalidad == None or len(modalidad) == 0:
-                        flash(
-                            'ERROR: Debe suministrar la jornada de trabajo del médico')
-                        swerror = True
-                    if username == None or len(username) == 0 or not login_valido(username):
-                        flash('ERROR: Debe suministrar un usuario válido ')
-                        swerror = True
-                    if email == None or len(email) == 0 or not email_valido(email):
-                        flash('ERROR: Debe suministrar un email válido')
-                        swerror = True
                     if not swerror:
                         sql3 = f"UPDATE Médico set Estado = ? where idmedico = ?"
-                        Estado = "INACTIVO"
+                        state = "INACTIVO"
                         # Ejecutar la consulta
-                        res2 = accion(sql3, (Estado, session['idmed']))
+                        res2 = accion(sql3, (state,session['idmed']))
                         if res2 == 0:
-                            flash(
-                                'ERROR: No se pudieron Eliminar los datos, reintente')
+                            flash('ERROR: No se pudieron Eliminar los datos, reintente')
                         else:
                             session['activo'] = False
-                            flash(
-                                'INFO: Los datos fueron Eliminados satisfactoriamente')
+                            flash('INFO: Los datos fueron Eliminados satisfactoriamente')
                     return render_template('forms/dashboard-medico.html', form=form)
 
                 if request.form.get('recvbtn') == 'Recuperar':
-                    name = escape(request.form['name'])
-                    lastname = escape(request.form['last'])
                     tipoid = escape(request.form['tipoid'])
                     id = escape(request.form['id'])
                     specialty = escape(request.form['especialidad'])
                     modalidad = escape(request.form['time'])
-                    email = escape(request.form['email'])
-                    phonenumber = escape(request.form['phone'])
-                    username = escape(request.form['user'])
-                    password = escape(request.form['password'])
-                    #confirm = escape(request.form['confirm'])
-                    role = 2
                     # Validar los datos
                     swerror = False
-                    if name == None or len(name) == 0:
-                        flash('ERROR: Debe suministrar el nombre del medico')
-                        swerror = True
-                    if lastname == None or len(lastname) == 0:
-                        flash('ERROR: Debe suministrar el apellido del medico')
-                        swerror = True
                     if tipoid == None or len(tipoid) == 0:
                         flash('ERROR: Debe suministrar el tipo de documento')
                         swerror = True
@@ -844,27 +780,18 @@ def dashboardmedico():
                         flash('ERROR: Debe suministrar la especialidad del médico')
                         swerror = True
                     if modalidad == None or len(modalidad) == 0:
-                        flash(
-                            'ERROR: Debe suministrar la jornada de trabajo del médico')
-                        swerror = True
-                    if username == None or len(username) == 0 or not login_valido(username):
-                        flash('ERROR: Debe suministrar un usuario válido ')
-                        swerror = True
-                    if email == None or len(email) == 0 or not email_valido(email):
-                        flash('ERROR: Debe suministrar un email válido')
+                        flash('ERROR: Debe suministrar la jornada de trabajo del médico')
                         swerror = True
                     if not swerror:
                         sql3 = f"UPDATE Médico set Estado = ? where idmedico = ?"
-                        Estado = "ACTIVO"
+                        state = "ACTIVO"
                         # Ejecutar la consulta
-                        res2 = accion(sql3, (Estado, session['idmed']))
+                        res2 = accion(sql3, (state,session['idmed']))
                         if res2 == 0:
-                            flash(
-                                'ERROR: No se pudieron Eliminar los datos, reintente')
+                            flash('ERROR: No se pudieron Eliminar los datos, reintente')
                         else:
                             session['activo'] = True
-                            flash(
-                                'INFO: Los datos fueron Recuperados satisfactoriamente')
+                            flash('INFO: Los datos fueron Recuperados satisfactoriamente')
                 return render_template('forms/dashboard-medico.html', form=form)
         else:
             return render_template('pages/invalid.html')
@@ -872,25 +799,195 @@ def dashboardmedico():
         return render_template('errors/no_logueado.html')
 
 
-@app.route('/dashboard/paciente')
+@app.route('/dashboard/paciente' , methods=['GET', 'POST'])
 # @login_required
 # Con el condicional se aseguran de que la vista se renderiza solo si el usuario está logueado
+
 def dashboardpaciente():
     if session:
         if session.get('rol') == '3':
             form = DashBoardPaciente(request.form)
-            return render_template('forms/dashboard-paciente.html', form=form)
-            # elif session['usr_id'] == 'testmed123':
-            #     form = DashBoardPaciente(request.form)
-            #     return render_template('forms/dashboard-paciente.html', form=form)
-            # elif session['usr_id'] == 'testadmin123':
-            #     form = DashBoardAdmin(request.form)
-            #     return render_template('forms/dashboard-admin.html', form=form)
-            # elif session['usr_id'] == 'testmed123':
-            #     form = DashBoardMedico(request.form)
-            #     return render_template('forms/dashboard-medico.html', form=form)
-            # else:
-            #     return render_template('pages/invalid.html')
+            if request.method == 'GET':
+                session['tipoid'] = ""
+                session['txtNroDoc'] = ""
+                session['nombres'] = ""
+                session['apellidos'] = ""
+                session['telefono'] = ""
+                session['usuario'] = ""
+                session['mail'] = ""
+                session['found'] = False
+                return render_template('forms/dashboard-paciente.html', form=form)
+            else:
+                if request.form.get('regbtn') == 'Crear Registro':
+                    name = escape(request.form['TxtNombres'])
+                    lastname = escape(request.form['TxtApellidos'])
+                    tipoid = escape(request.form['selTipId'])
+                    id = escape(request.form['txtNroDoc'])
+                    birthday = escape(request.form['DateFecha'])
+                    genero = escape(request.form['selSexo'])
+                    rhgrup = escape(request.form['selGrupoRh'])
+                    email = escape(request.form['mailUsuario'])
+                    phonenumber = escape(request.form['TxtNroCel'])
+                    username = escape(request.form['txtUsuario'])
+                    password = escape(request.form['PwdClave'])
+                    role = 2
+                    # Validar los datos
+                    swerror = False
+                    if name == None or len(name) == 0:
+                        flash('ERROR: Debe suministrar el nombre del paciente')
+                        swerror = True
+                    if tipoid == None or len(tipoid) == 0:
+                        flash('ERROR: Debe suministrar el tipo de documento')
+                        swerror = True
+                    if id == None or len(id) == 0:
+                        flash('ERROR: Debe suministrar un numero de identificación')
+                        swerror = True
+                    if username == None or len(username) == 0 or not login_valido(username):
+                        flash('ERROR: Debe suministrar un usuario válido ')
+                        swerror = True
+                    if email == None or len(email) == 0 or not email_valido(email):
+                        flash('ERROR: Debe suministrar un email válido')
+                        swerror = True
+                    if not swerror:
+                        # Preparar la consulta
+                        pwd = generate_password_hash(password)  # Cifrar la clave
+                        sql = 'INSERT INTO Paciente(nombres,apellidos,tipoId,NumeroId,fechaNacimiento,sexo,grupoSanguineo,mail,telefono,usuario,clave,idrol) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)'
+                        res = accion(sql, (name, lastname, tipoid, id, birthday,genero,rhgrup,email,phonenumber,username,pwd,role))
+                        # Verificar resultados
+                        if res == 0:
+                            flash('ERROR: No se pudo insertar el registro')
+                        else:
+                            flash(
+                                'Atualización: Datos grabados con exito.')
+                    return render_template('forms/dashboard-paciente.html', form=form)
+
+                if request.form.get('updbtn') == 'Actualizar':
+                    name = escape(request.form['TxtNombres'])
+                    lastname = escape(request.form['TxtApellidos'])
+                    tipoid = escape(request.form['selTipId'])
+                    id = escape(request.form['txtNroDoc'])
+                    birthday = escape(request.form['DateFecha'])
+                    genero = escape(request.form['selSexo'])
+                    rhgrup = escape(request.form['selGrupoRh'])
+                    email = escape(request.form['mailUsuario'])
+                    phonenumber = escape(request.form['TxtNroCel'])
+                    username = escape(request.form['txtUsuario'])
+                    password = escape(request.form['PwdClave'])
+                    role = 1
+                    # Validar los datos
+                    swerror = False
+                    if name == None or len(name) == 0:
+                        flash('ERROR: Debe suministrar el nombre del paciente')
+                        swerror = True
+                    if tipoid == None or len(tipoid) == 0:
+                        flash('ERROR: Debe suministrar el tipo de documento')
+                        swerror = True
+                    if id == None or len(id) == 0:
+                        flash('ERROR: Debe suministrar un numero de identificación')
+                        swerror = True
+                    if not swerror:
+                        # Preparar la consulta
+                        sql2 = f"UPDATE Paciente set nombres=?,apellidos=?,tipoId=?,NumeroId=?,fechaNacimiento=?,sexo=?,grupoSanguineo = ?,mail=?,telefono=?,usuario=?,idrol=?  where idpaciente = ?"
+                        # Ejecutar la consulta
+                        res2 = accion(sql2, (name, lastname, tipoid, id, birthday,genero,rhgrup,email,phonenumber,username,role,session['idpac']))
+                        if res2 == 0:
+                            flash('ERROR: No se pudieron almacenar los datos, reintente')
+                        else:
+                            flash('INFO: Los datos fueron actualizados satisfactoriamente')
+                    return render_template('forms/dashboard-paciente.html', form=form)
+
+                if request.form.get('srchbtn') == 'Buscar':
+                    tipoid = escape(request.form['selTipId'])
+                    txtNroDoc = escape(request.form['txtNroDoc'])
+
+                    sql = f"SELECT nombres,apellidos,fechaNacimiento,sexo,grupoSanguineo,mail,telefono,usuario,clave,idpaciente,Estado FROM Paciente WHERE tipoId = '{tipoid}' and numeroId = '{txtNroDoc}'"
+                    # Ejecutar la consulta
+                    res = seleccion(sql)
+                    # Proceso los resultados
+                    if len(res) != 0:
+                        #session.clear()
+                        session['tipoid'] = tipoid
+                        session['txtNroDoc'] = txtNroDoc
+                        session['nombres'] = res[0][0]
+                        session['apellidos'] = res[0][1]
+                        session['DateFecha'] = res[0][2]
+                        session['selSexo'] = res[0][3]
+                        session['selGrupoRh'] = res[0][4]
+                        session['mail'] = res[0][5]
+                        session['telefono'] = res[0][6]
+                        session['usuario'] = res[0][7]
+                        session['clave'] = res[0][8]
+                        session['idpac'] = res[0][9]
+                        Estado = res[0][10]
+                        if Estado == "ACTIVO":
+                            session['activo'] = True
+                        else:
+                            session['activo'] = False    
+                        session['found'] = True
+                    else:
+                        session['tipoid'] = tipoid
+                        session['txtNroDoc'] = txtNroDoc
+                        session['nombres'] = "" 
+                        session['apellidos'] = ""
+                        session['DateFecha'] = ""
+                        session['selSexo'] = ""
+                        session['selGrupoRh'] = ""
+                        session['mail'] = ""
+                        session['telefono'] = ""
+                        session['usuario'] = ""
+                        session['clave'] = ""
+                        session['found'] = False
+                        flash('ERROR: Paciente no existe, debe registrarlo')
+                    return render_template('forms/dashboard-paciente.html', form=form)
+
+                if request.form.get('delbtn') == 'Eliminar':
+                    name = escape(request.form['TxtNombres'])
+                    lastname = escape(request.form['TxtApellidos'])
+                    tipoid = escape(request.form['selTipId'])
+                    id = escape(request.form['txtNroDoc'])
+                    role = 1
+                    # Validar los datos
+                    swerror = False
+                    if tipoid == None or len(tipoid) == 0:
+                        flash('ERROR: Debe suministrar el tipo de documento')
+                        swerror = True
+                    if id == None or len(id) == 0:
+                        flash('ERROR: Debe suministrar un numero de identificación')
+                        swerror = True
+                    if not swerror:
+                        sql3 = f"UPDATE Paciente set Estado = ? where idpaciente = ?"
+                        state = "INACTIVO"
+                        # Ejecutar la consulta
+                        res2 = accion(sql3, (state,session['idpac']))
+                        if res2 == 0:
+                            flash('ERROR: No se pudieron Eliminar los datos, reintente')
+                        else:
+                            session['activo'] = False
+                            flash('INFO: Los datos fueron Eliminados satisfactoriamente')
+                    return render_template('forms/dashboard-paciente.html', form=form)
+
+                if request.form.get('recvbtn') == 'Recuperar':
+                    tipoid = escape(request.form['selTipId'])
+                    id = escape(request.form['txtNroDoc'])
+                    # Validar los datos
+                    swerror = False
+                    if tipoid == None or len(tipoid) == 0:
+                        flash('ERROR: Debe suministrar el tipo de documento')
+                        swerror = True
+                    if id == None or len(id) == 0:
+                        flash('ERROR: Debe suministrar un numero de identificación')
+                        swerror = True
+                    if not swerror:
+                        sql3 = f"UPDATE Paciente set Estado = ? where idpaciente = ?"
+                        state = "ACTIVO"
+                        # Ejecutar la consulta
+                        res2 = accion(sql3, (state,session['idpac']))
+                        if res2 == 0:
+                            flash('ERROR: No se pudieron Eliminar los datos, reintente')
+                        else:
+                            session['activo'] = True
+                            flash('INFO: Los datos fueron Recuperados satisfactoriamente')
+                return render_template('forms/dashboard-paciente.html', form=form)
         else:
             return render_template('pages/invalid.html')
     else:

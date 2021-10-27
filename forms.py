@@ -140,14 +140,12 @@ class DashBoardMedico(FlaskForm):
                        DataRequired(message='Se requiere el nombre')])
     last = StringField('Apellidos', validators=[DataRequired(
         message='Se requiere el apellido'), Length(min=2, max=40)])
-    especialidad = SelectField(u'Especialidad ', choices=dataEsp)
-    phone = StringField('Telefono', validators=[DataRequired(
-        message='Se requiere el teléfono'), Length(min=2, max=40)])
+    especialidad = SelectField(u'Especialidad actual: ', choices=dataEsp)
+    phone = StringField('Telefono')
     time = SelectField(u'Jornada de trabajo', choices=datamod)
     user = StringField('Usuario', validators=[DataRequired(
         message='Se requiere nombre de usuario'), Length(min=2, max=40)])
-    password = PasswordField(
-        'Contraseña')
+    password = PasswordField('Contraseña')
     email = TextField('Correo electrónico', validators=[DataRequired(
         message='Se requiere el correo electrónico'), Length(min=2, max=40)])
     CreateRegMed = SubmitField('Crear Registro')
@@ -195,8 +193,30 @@ class CitaForm(FlaskForm):
 
 
 class DashBoardPaciente(FlaskForm):
-    selTipId = SelectField(u'Tipo de Identificación', choices=[(
-        'Cédula de ciudadanía'), ('Pasaporte'), ('Tarjeta de identidad'), ('Cédula de extranjería')])
+
+    #sqlgrh = f"SELECT descripcion FROM Grupo Sanguineo"
+    sqltipoid = f"SELECT Tipo FROM TipoId"
+    sqlsex = f"SELECT descripcion FROM Sexo"
+    #resgrh = seleccion(sqlgrh)
+    restipoid = seleccion(sqltipoid)
+    ressex = seleccion(sqlsex)
+    #datagrh = []
+    datasex = []
+    dataTipoId = []
+    #i = 0
+    #while i < len(resgrh):       
+    #    datagrh.append(resgrh[i][0])
+    #    i += 1
+    i = 0
+    while i < len(restipoid):       
+        dataTipoId.append(restipoid[i][0])
+        i += 1
+    i = 0
+    while i < len(ressex):       
+          datasex.append(ressex[i][0])
+          i += 1
+
+    selTipId = SelectField(u'Tipo de Identificación', choices = dataTipoId )
 
     txtNroDoc = TextField(
         'Nro. documento*', validators=[InputRequired(message='Digite el Nro de documento')])
@@ -207,21 +227,22 @@ class DashBoardPaciente(FlaskForm):
     TxtNroCel = TextField(
         ' Nro Celular *', validators=[InputRequired(message='Digite nro Celular')])
     DateFecha = DateField('Fecha de Nacimiento', format='%Y-%m-%d')
-    selSexo = SelectField(u'Genero', choices=[
-                          ('M', 'Masculino'), ('F', 'Femenino'), ('O', 'Otro')])
+    selSexo = SelectField(u'Genero', choices= datasex)
     selGrupoRh = SelectField(u'Grupo Sanguineo', choices=[
-                             ('A+', 'A+'), ('A-', 'A-'), ('O+', 'O+')])
+                             ('A+', 'A+'), ('A-', 'A-'),('B+', 'B+'),('B-', 'B-'), ('O+', 'O+'),('O-', 'O-'),('AB+','AB+'),('AB-','AB-')])
     txtUsuario = TextField(
         'Usuario *', validators=[InputRequired(message='Ingrese Usuario')])
     PwdClave = PasswordField(
-        'Contraseña *', validators=[InputRequired(message='Se requiere la clave')])
+        'Contraseña *')
     mailUsuario = EmailField(
         'Email *', validators=[InputRequired(message='Digite el correo electrónico')])
-    btnReg = SubmitField('Registrar')
-    btnEditar = SubmitField('Editar')
-    btnEliminar = SubmitField('Eliminar')
-    btnNotificar = SubmitField('Notificar')
-    btnSalir = SubmitField('Salir')
+    
+    CreateRegPac = SubmitField('Crear Registro')
+    UpdateRegPac = SubmitField('Actualizar')
+    DeleteRegPac = SubmitField('Eliminar')
+    SearchRegPac = SubmitField('Buscar')
+    RecoveryRegPac = SubmitField('Recuperar')
+
 
 # Clase del formulario dashboard Cita
 

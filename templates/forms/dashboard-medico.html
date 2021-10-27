@@ -20,6 +20,7 @@ background-color: #fcfcfc;
       <div class="col-sm-4">
         {{ form.id(class_ = 'form-control first-input last-input',
         placeholder=form.id.label.text, required = true,value = session['txtNroDoc'])}}
+        {%if session['activo']%} ACTIVO {%elif not session['activo']%} INACTIVO {%elif not session['found'] %}" "{%endif%}
       </div>
       <div class="col-sm-2">
         <button 
@@ -72,22 +73,21 @@ background-color: #fcfcfc;
   <div class="row" style="padding: 1rem">
     <div class="form-group">
       <label class="col-sm-2 control-label" style="text-align: right"
-        >{{form.especialidad.label.text}}</label>
+        >{{form.especialidad.label.text}} {{ session['especialidad']}} </label>
       <div class="col-sm-4">
-        {{ form.especialidad(class_ = 'form-control',value = session['especialidad'],  style='width:48%;')}}
+        {{ form.especialidad(class_ = 'form-control', value = session['especialidad'],  style='width:48%;')}}
       </div>
       <label class="col-sm-2 control-label" style="text-align: right">
         {{form.phone.label.text}}</label>
       <div class="col-sm-4">
-        {{ form.phone(class_ = 'form-control', required = true,value = session['telefono'])}}
+        {{ form.phone(class_ = 'form-control',value = session['telefono'])}}
       </div>
     </div>
   </div>
   <div class="row" style="padding: 1rem">
     <div class="form-group">
       <label class="col-sm-2 control-label" style="text-align: right"
-        >{{form.time.label.text}}</label
-      >
+        >{{form.time.label.text}} {{session['modalidad']}}</label>
       <div class="col-sm-4">
         {{ form.time(class_ = 'form-control', style='width:48%;')}}
       </div>
@@ -110,7 +110,7 @@ background-color: #fcfcfc;
         >{{form.password.label.text}}</label
       >
       <div class="col-sm-4">
-        {{ form.password(class_ = 'form-control', required = true)}}
+        {{ form.password(class_ = 'form-control')}}
       </div>
     </div>
   </div>
@@ -120,7 +120,7 @@ background-color: #fcfcfc;
         >{{form.email.label.text}}</label
       >
       <div class="col-sm-4">
-        {{ form.email(class_ = 'form-control', required = true, value = session['mail'])}}
+        {{ form.email(class_ = 'form-control',value = session['mail'])}}
       </div>
     </div>
   </div>
@@ -131,6 +131,7 @@ background-color: #fcfcfc;
           type="submit"
           name = "regbtn"
           id = "regbtn"
+          onclick  = "{ form.CreateRegMed() }"
           value = "Crear Registro"
           class="btn btn-primary btn-block" {% if session['found'] %} disabled = True {%endif%}>
           Crear Registro
