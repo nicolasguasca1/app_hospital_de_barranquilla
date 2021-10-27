@@ -17,9 +17,9 @@
                 border: 1px solid rgba(0,0,0,.125);
                 border-radius: .25rem; padding: 0.5rem;">
                 {% if data.rol == '2'and data.ontime == 1 %}
-                    <textarea id="comentario">{{data.comentario}}</textarea>
+                    <textarea class="form-control" id="comentario">{{data.comentario}}</textarea>
                 {% else %}
-                    <textarea id="comentario" disabled>{{data.comentario}}</textarea>
+                    <textarea class="form-control" id="comentario" disabled>{{data.comentario}}</textarea>
                 {% endif %}
             </div>
             <p>Valoración:</p>
@@ -28,23 +28,23 @@
                 border-radius: .25rem; padding: 0.5rem;">
                 {% if data.rol == '1' and data.ontime == 1 %}
                     {% if data.valoracion == "" %}
-                    <select id="valoracion">
+                    <select class="form-control" id="valoracion">
                         <option value="Malo">Malo</option>
                         <option value="Regular">Regular</option>
                         <option value="Bueno">Bueno</option>
                         <option value="Excelente">Excelente</option>
                     </select>
                     {% else%}
-                    <textarea id ="valoracion">{{data.valoracion}}</textarea>
+                    <textarea class="form-control" id ="valoracion">{{data.valoracion}}</textarea>
                     {% endif%}
                 {% else %}
-                    <textarea id ="valoracion" disabled>{{data.valoracion}}</textarea>
+                    <textarea class="form-control" id ="valoracion" disabled>{{data.valoracion}}</textarea>
                 {% endif %}
             </div>
             {% if data.rol != '3' and data.ontime == 1 %}
                 <div id="update" style="width: 60%; margin: auto;height: 20px; background: blue; margin-top: 1.5rem; color: white;text-align: center; cursor: pointer;" onclick="updateCita({{data.id}})">Actualizar</div>
             {% else %}
-                <div id="update" style="width: 60%; margin: auto;height: 20px; background: rgb(135, 135, 250); margin-top: 1.5rem; color: white;text-align: center;">Actualizar</div>
+                <div id="update" class="btn btn-primary btn-block" style="width: 60%; margin: auto;height: 20px; background: rgb(135, 135, 250); margin-top: 1.5rem; color: white;text-align: center;">Actualizar</div>
             {% endif %}
         </div>
         <div style="padding: 1rem;"> 

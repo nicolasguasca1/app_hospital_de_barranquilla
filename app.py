@@ -902,7 +902,11 @@ def dashboardpaciente():
 def citas():
     if request.method == 'GET':
         form = CitaForm(request.form)
-        return render_template('forms/citasForm.html', form=form)
+        # Preparar la consulta
+        sqlpac = f"SELECT NumeroId FROM Paciente WHERE usuario = '{session['usr']}'"
+        # Ejecutar la consulta
+        respac = seleccion(sqlpac)
+        return render_template('forms/citasForm.html', form=form, idp=respac[0][0])
     elif request.method == 'POST':
         # Recuperar los datos del formulario
         idp = escape(request.form['id_paciente'])

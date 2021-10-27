@@ -202,21 +202,19 @@ function wedit_(index)
 
 function mk_table()
 {
-    document.getElementById("add").addEventListener("click" ,function(e)
-    {
-                document.getElementById("dark").style.background = "rgba(0, 0, 0, .7)";
-                document.getElementById("dark").style.visibility = "visible";
-                e.preventDefault();
-                $.ajax({
-                    type:'GET',
-                    url:'/citasForm',
-                    success:function(response)
-                    {
-                        document.getElementById("w-edit").innerHTML = response;
-                        rquestEspeci();
-                        document.getElementById("close").addEventListener("click", ()=>close_());
-                    }
-                });
+    document.getElementById("dark").style.background = "rgba(0, 0, 0, .7)";
+    document.getElementById("dark").style.visibility = "visible";
+    
+    $.ajax({
+        type:'GET',
+        url:'/citasForm',
+        success:function(response)
+        {
+            document.getElementById("w-edit").innerHTML = response;
+            rquestEspeci();
+            rquestPaciente();
+            document.getElementById("close").addEventListener("click", ()=>close_());
+        }
     });
 }
 
