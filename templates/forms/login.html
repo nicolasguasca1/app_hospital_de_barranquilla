@@ -1,7 +1,10 @@
 {% extends 'layouts/main.html' %} {% block title %}Ingreso{% endblock %} {%
 block content %}
-<body class="text-center">
+<div style="padding: 1rem;">
+<div class="col-sm-4"></div>
+<div class="col-sm-4">
   <form method="post" class="form">
+    <div style="margin: auto; width: 20%;">
     <img
       class="mb-4"
       src="../../static/img/logoSalud.png"
@@ -9,6 +12,7 @@ block content %}
       width="72"
       height="72"
     />
+    </div>
     <h1 class="form-heading">Inicio de sesión</h1>
     <h6>Introduzca sus credenciales</h6>
     <h4 class="form-group">
@@ -36,5 +40,7 @@ block content %}
       onClick="{ form.btn() }"
     />
   </form>
-</body>
+</div>
+<div class="col-sm-4"></div>
+</div>
 {% endblock %}
