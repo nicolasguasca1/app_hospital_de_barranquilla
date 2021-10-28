@@ -34,11 +34,7 @@
 <!-- /scripts -->
 
 </head>
-{% if session.rol == '1'%}
-<body onload="mk_table()">
-{% else %}
 <body>
-{% endif%}
   <!-- Wrap all page content here -->
   <div id="wrap">
     <!-- Fixed navbar -->
@@ -151,13 +147,14 @@
     </main>
 
   </div>
+
   <div id="footer">
-    <div class="collapse navbar-collapse">
-      <div class="nav navbar-nav">
-                <p >Ministerio de Salud &copy; Todos los derechos reservados</p></div>
+    <div class="collapse navbar-collapse my-5 pt-5 text-muted text-small">
+      <div class="nav navbar-nav ">
+                <p class="mb-1">Ministerio de Salud &copy; Todos los derechos reservados</p></div>
         {% block footer %}
         <div class="nav navbar-nav pull-right">
-        <p {% if request.endpoint == 'privacy' %} class="active" {% endif %}>Conozca nuestra <a href="{{ url_for('privacy') }}">Política de Privacidad</a></p></div>{% endblock %}
+        <p class="mb-1 active">Conozca nuestra <a href="{{ url_for('privacy') }}">Política de Privacidad</a></p></div>{% endblock %}
       </div>
     </div>
   </div>

@@ -1,141 +1,221 @@
 {% extends 'layouts/main.html' %} {% block title %}Registro{% endblock %} {%
 block content %}
-<form method="post" class="form">
-  <p class="lead">
+
+<div class="container">
+  <div class="py-5 text-center">
+    <img class="d-flex mx-auto mb-4" src="../../static/img/paciente.jpg" alt="" height="245">
+    <h2>Formulario de Registro</h2>
+    <p class="lead">
     Para tener un control exhaustivo de la interacción médico-paciente y su
     relación con el hospital, es necesario obtener algunos datos. Rellene el
     siguiente formulario y pulse "Registro". Pulsando el botón de registro usted
     acepta nuestra política de privacidad y sus datos quedan consignados en la
     base de datos general del Hospital.
-  </p>
-  <h4 class="form-group">
-    {{ form.name(class_ = 'form-control first-input', placeholder =
-    form.name.label.text, required = true, autofocus = true) }}
-  </h4>
-  <h4 class="form-group">
-    {{ form.lastname(class_ = 'form-control first-input', placeholder =
-    form.lastname.label.text, required = true, autofocus = true) }}
-  </h4>
-  <h6 class="form-group">
-    <p>Tipo de identificación</p>
-    {{ form.tipoid(class_ = 'form-control first-input', placeholder =
-    form.tipoid.label.text, required = true, autofocus = true) }}
-  </h6>
-  <h4 class="form-group">
-    {{ form.id(class_ = 'form-control first-input', placeholder =
-    form.id.label.text, required = true, autofocus = true) }}
-  </h4>
-
-  <h6 class="form-group">
-    <p>Fecha de nacimiento</p>
-    {{ form.birthdate(class_ = 'form-control', placeholder =
-    form.birthdate.label.text, required = true) }}
-  </h6>
-  <h6 class="form-group">
-    <p>Sexo</p>
-    {{ form.sex(class_ = 'form-control', placeholder = form.sex.label.text,
-    required = true) }}
-  </h6>
-  <h6 class="form-group">
-    <p>Grupo Sanguíneo</p>
-    {{ form.rh(class_ = 'form-control', placeholder = form.rh.label.text,
-    required = true) }}
-  </h6>
-  <h4 class="form-group">
-    {{ form.email(class_ = 'form-control', placeholder = form.email.label.text,
-    required = true) }}
-  </h4>
-  <h4 class="form-group">
-    {{ form.phonenumber(class_ = 'form-control', placeholder =
-    form.phonenumber.label.text, required = true) }}
-  </h4>
-  <h4 class="form-group">
-    {{ form.username(class_ = 'form-control', placeholder =
-    form.username.label.text, required = true) }}
-  </h4>
-  <h4 class="form-group">
-    {{ form.password(class_ = 'form-control', placeholder =
-    form.password.label.text, required = true) }}
-  </h4>
-  <h4 class="form-group">
-    {{ form.confirm(class_ = 'form-control last-input', placeholder =
-    form.confirm.label.text, required = true) }}
-  </h4>
-
-  <p>
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" required>
-      <label class="form-check-label" for="invalidCheck2">
-        Acepto los términos y condiciones
-      </label>
-    </div>
-      <p>
-        <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-           terminos y condiciones 
-        </a>
-      </p>
-      <div class="collapse" id="collapseExample">
-        <div class="card card-body" style="text-align: justify; font-size: 18px;">
-          <center>
-          <h3> <strong> Terminos y condiciones </strong></h3>
-        </center>
-          <p>
-            La Política de Privacidad del Paciente del Hospital General De Barranquilla      
-            busca direccionar todas las acciones del hospital con el fin de lograr la    
-            prestación del servicio bajo condiciones que permitan el control y mitigación   
-            de los riesgos propios de la atención en salud y logren un sistema de salud en  
-            forma segura y altamente confiable. Estas acciones serán direccionadas por el 
-            Comité de Calidad del Hospital.
-          </p>
-          <p>
-            En la junta directiva del Hospital General De Barranquilla somos respetuosos  
-            de los datos personales de los titulares, y buscamos informar de manera  
-            suficiente a las personas sobre los derechos que tienen en su calidad de  
-            titulares de la información, como es el de conocer, actualizar y rectificar o  
-            suprimir sus datos personales frente a la entidad en su condición de  
-            responsable del tratamiento y en los términos de ley. Así mismo el hospital  
-            velará por el uso adecuado del tratamiento al cual serán sometidos los datos  
-            personales y finalidad de los mismos de todos sus usuarios, niños, niñas y/o  
-            adolescentes, enmarcados siempre dentro del cumplimiento de la misión  
-            institucional como prestador de servicios de salud, y demás funciones  
-            administrativas, constitucionales y legales de la Entidad.  
-          </p>
-          <p>
-            Tratamiento: Los datos personales proporcionados al Hospital por los 
-            diferentes canales de atención dispuestos por la entidad, de pacientes, 
-            estudiantes, trabajadores, contratistas, y demás usuarios, serán objeto de 
-            tratamiento de recolección, almacenamiento, uso, actualización, rectificación, 
-            circulación o supresión, según lo amerite cada caso, bajo el cumplimiento de 
-            la constitución y la ley. Finalidad: Los datos personales, dispuestos en las 
-            bases de datos, serán usados para la finalidad específica para la que fueron 
-            suministrados, enmarcados dentro del cumplimiento de la misión institucional 
-            como prestador de servicios de salud, y en el cumplimiento de las demás 
-            funciones administrativas, constitucionales y legales de la Entidad. Comité de 
-            Antitrámites y de Gobierno en Línea Todas las personas que intervengan en el 
-            tratamiento de datos personales en el Hospital que no tengan la naturaleza de 
-            datos públicos están obligadas a garantizar la reserva de la información, 
-            inclusive después de finalizada su relación con alguna de las labores que 
-            comprende el tratamiento, pudiendo sólo realizar suministro o comunicación de 
-            datos personales cuando ello corresponda al desarrollo de las actividades 
-            autorizadas en la Entidad, las normas de protección de datos personales y en 
-            los términos de la misma. El Hospital General De Barranquilla a través del 
-            comité de antitrámites y de Gobierno en línea velará por el uso adecuado del 
-            tratamiento y finalidad de los datos personales de todos sus usuarios, así 
-            como también de los niños, niñas o adolescentes. 
-          </p> <br> <br>
-        </div>
-      </div>
     </p>
+  </div>
 
-  <p class="pull-left">
-    Si ya se encuentra registrado pulse
-    <a href="{{ url_for('login') }}">Ingresar</a>
-  </p>
-  <input
-    type="submit"
-    value="Registrar"
-    class="btn btn-primary btn-lg btn-block"
-  />
-</form>
+  <div class="row">
+    <div class="col-md-4 order-md-2 mb-4">
+      <h4 class="d-flex justify-content-between align-items-center mb-3">
+      <span class="text-muted">Información importante</span>
+      </h4>
+      <ul class="list-group mb-3">
+        <li class="list-group-item d-flex justify-content-between lh-condensed">
+          <div>
+            <h6 class="my-0">Horarios de atención</h6>
+            <small class="text-muted">Mañana</small>
+          </div>
+          <span class="text-muted">8:00h - 13:00h</span>
+          <div>
+            <small class="text-muted">Tarde</small>
+          </div>
+          <span class="text-muted">14:00h - 19:00h</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between lh-condensed">
+          <div>
+            <h6 class="my-0">Tiempo máximo por cita</h6>
+            <small class="text-muted">Se aconseja llegar con 10 minutos de antelación para evitar retrasos</small>
+          </div>
+          <span class="text-muted">30 minutos</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+          <span>Una vez registrado, el principal canal de comunicación para consultas e inquietudes sobre el sistema de información del hospital es</span>
+          <strong> su correo electrónico.</strong>
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-8 order-md-1">
+      <hr class="mb-4">
+      <h4 class="mb-3">Datos personales <span class="text-muted small">(Campos obligatorios marcados con *)</span> </h4>
+      <form method="post" class="needs-validation" novalidate>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <br>
+            {{ form.name(class_ = 'form-control first-input', placeholder =
+    form.name.label.text, required = true, autofocus = true) }}
+            <br>
+          </div>
+          <div class="col-md-6 mb-3">
+            <br>
+            {{ form.lastname(class_ = 'form-control first-input', placeholder =
+    form.lastname.label.text, required = true, autofocus = true) }}
+            <br>
+          </div>
+        </div>
+        <div clarr="row">
+          <div class="col-md-5 mb-3">
+            <label for="address">Tipo de identificación *</label>
+            {{ form.tipoid(class_ = 'form-control first-input', placeholder =
+      form.tipoid.label.text, required = true, autofocus = true) }}
+            <br>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="address2">Número de identificación * </label>
+            {{ form.id(class_ = 'form-control first-input', placeholder =
+      form.id.label.text, required = true, autofocus = true) }}
+          </div>
+          <div class="col-md-3 mb-3">
+              <label for="country">Fecha de nacimiento</label>
+              {{ form.birthdate(class_ = 'form-control', placeholder =
+      form.birthdate.label.text, required = true) }}
+              <br>
+          </div>
+        </div>
+        <br>
+        <div class="row">  
+          <div class="col-md-4 mb-3">
+            <label for="state">Sexo</label>
+            {{ form.sex(class_ = 'form-control', placeholder = form.sex.label.text,
+    required = true) }}
+            <br>
+          </div>
+          <div class="col-md-5 mb-3">
+            <label for="zip">Grupo sanguíneo</label>
+            {{ form.rh(class_ = 'form-control', placeholder = form.rh.label.text,
+    required = true) }}
+            <br>
+          </div>
+        </div>    
+        <div class="row">
+          <div class="col-md-5 mb-3">
+            <label for="country">Número de teléfono</label>
+            {{ form.phonenumber(class_ = 'form-control', placeholder =
+                form.phonenumber.label.text, required = true) }}
+            <br>
+          </div>
+        </div>
+        <hr class="mb-4">
+        <h4 class="mb-3">Datos del perfil</h4>
+        <div class="mb-3">
+          <label for="email">Correo electrónico * <span class="text-muted"></span></label>
+          {{ form.email(class_ = 'form-control', placeholder = form.email.label.text,
+    required = true) }}
+          <br>
+        </div>
+        <div class="mb-3">
+          <label for="username">Cree un nombre de usuario *</label>
+          <div class="input-group">
+            <div class="input-group-prepend">
+            </div>
+            {{ form.username(class_ = 'form-control', placeholder =
+    form.username.label.text, required = true) }}
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="cc-name">Cree una contraseña *</label>
+            {{ form.password(class_ = 'form-control', placeholder =
+    form.password.label.text, required = true) }}
+            <small class="text-muted">Utilice un mínimo de 8 caracteres combinando números, letras, al menos una mayúscula y un caracter especial (.,! " # $ %...)  </small>
+            <br>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="cc-number">Confirme la contraseña *</label>
+            {{ form.confirm(class_ = 'form-control last-input', placeholder =
+    form.confirm.label.text, required = true) }}
+            <br>
+            <br>
+            <br>
+          </div>
+          <p>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" required>
+            <label class="form-check-label" for="invalidCheck2">
+              Acepto los términos y condiciones
+            </label>
+          </div>
+          <p>
+          <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+            Lea aquí nuestros términos y condiciones
+          </a>
+          </p>
+          <div class="collapse" id="collapseExample">
+            <div class="card card-body" style="text-align: justify; font-size: 18px;">
+              <h3> </h3>
+              <p>
+                La Política de Privacidad del Paciente del Hospital General De Barranquilla      
+                busca direccionar todas las acciones del hospital con el fin de lograr la    
+                prestación del servicio bajo condiciones que permitan el control y mitigación   
+                de los riesgos propios de la atención en salud y logren un sistema de salud en  
+                forma segura y altamente confiable. Estas acciones serán direccionadas por el 
+                Comité de Calidad del Hospital.
+              </p>
+              <p>
+                En la junta directiva del Hospital General De Barranquilla somos respetuosos  
+                de los datos personales de los titulares, y buscamos informar de manera  
+                suficiente a las personas sobre los derechos que tienen en su calidad de  
+                titulares de la información, como es el de conocer, actualizar y rectificar o  
+                suprimir sus datos personales frente a la entidad en su condición de  
+                responsable del tratamiento y en los términos de ley. Así mismo el hospital  
+                velará por el uso adecuado del tratamiento al cual serán sometidos los datos  
+                personales y finalidad de los mismos de todos sus usuarios, niños, niñas y/o  
+                adolescentes, enmarcados siempre dentro del cumplimiento de la misión  
+                institucional como prestador de servicios de salud, y demás funciones  
+                administrativas, constitucionales y legales de la Entidad.  
+              </p>
+              <p>
+                Tratamiento: Los datos personales proporcionados al Hospital por los 
+                diferentes canales de atención dispuestos por la entidad, de pacientes, 
+                estudiantes, trabajadores, contratistas, y demás usuarios, serán objeto de 
+                tratamiento de recolección, almacenamiento, uso, actualización, rectificación, 
+                circulación o supresión, según lo amerite cada caso, bajo el cumplimiento de 
+                la constitución y la ley. Finalidad: Los datos personales, dispuestos en las 
+                bases de datos, serán usados para la finalidad específica para la que fueron 
+                suministrados, enmarcados dentro del cumplimiento de la misión institucional 
+                como prestador de servicios de salud, y en el cumplimiento de las demás 
+                funciones administrativas, constitucionales y legales de la Entidad. Comité de 
+                Antitrámites y de Gobierno en Línea Todas las personas que intervengan en el 
+                tratamiento de datos personales en el Hospital que no tengan la naturaleza de 
+                datos públicos están obligadas a garantizar la reserva de la información, 
+                inclusive después de finalizada su relación con alguna de las labores que 
+                comprende el tratamiento, pudiendo sólo realizar suministro o comunicación de 
+                datos personales cuando ello corresponda al desarrollo de las actividades 
+                autorizadas en la Entidad, las normas de protección de datos personales y en 
+                los términos de la misma. El Hospital General De Barranquilla a través del 
+                comité de antitrámites y de Gobierno en línea velará por el uso adecuado del 
+                tratamiento y finalidad de los datos personales de todos sus usuarios, así 
+                como también de los niños, niñas o adolescentes. 
+              </p> <br> <br>
+            </div> 
+          </div>
+        </p>
+
+        <p class="pull-right">Si ya se encuentra registrado pulse
+          <a href="{{ url_for('login') }}">Ingresar</a>
+        </p>
+        </div>
+        <hr class="mb-4">
+        <input
+        type="submit"
+        value="Registrar"
+        class="btn btn-primary btn-lg btn-block"
+        />
+        <br>
+        <br>
+      </form>
+    </div>
+  </div>
+</div>
 
 {% endblock %}

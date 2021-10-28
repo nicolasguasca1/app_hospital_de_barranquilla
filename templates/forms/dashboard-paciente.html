@@ -2,20 +2,16 @@
 {% block title %}Gestión de médicos{% endblock %} 
 {% block content %}
 
-
-<br />
-<br />
-<form
-  action="/vistapaciente/"
-  method="post"
-  style="
-    padding: 1rem;
-    background-clip: border-box;
-    border: 1px solid rgba(0, 0, 0, 0.125);
-    border-radius: 0.25rem;
-    background-color: #fcfcfc;
-  "
->  <h3>Gestión de Pacientes</h3>
+<form method = "post" 
+style="
+padding: 1rem;
+background-clip: border-box;
+border: 1px solid rgba(0, 0, 0, 0.125);
+border-radius: 0.25rem;
+background-color: #fcfcfc;
+"
+>
+  <h3>Gestión de Pacientes</h3>
   <div class="row" style="padding: 1rem">
     <div class="form-group">
       <div class="col-sm-2" style="text-align: right">
@@ -23,12 +19,38 @@
       </div>
       <div class="col-sm-4">
         {{ form.txtNroDoc(class_ = 'form-control first-input last-input',
-        placeholder=form.txtNroDoc.label.text, required = true)}}
+        placeholder=form.txtNroDoc.label.text, required = true,value = session['txtNroDoc'])}}
       </div>
       <div class="col-sm-2">
-        <button type="submit" class="btn btn-primary btn-block">
+        <button 
+          type="submit" 
+          name = "srchbtn"
+          value = "Buscar"
+          onclick  = "{ form.SearchRegMed() }"
+          class="btn btn-primary btn-block">
           Buscar
         </button>
+      </div>
+    </div>
+  </div>
+</form>  
+<br />
+<form
+  method="post"
+  style="
+    padding: 1rem;
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
+    background-color: #fcfcfc; ">
+  <div class="row" style="padding: 1rem">
+    <div class="form-group">
+      <div class="col-sm-2" style="text-align: right">
+        {{ form.selTipId(class_ = 'form-control')}}
+      </div>
+      <div class="col-sm-4">
+        {{ form.txtNroDoc(class_ = 'form-control first-input last-input',
+        placeholder=form.txtNroDoc.label.text, required = true,value = session['txtNroDoc'])}}
       </div>
     </div>
   </div>
@@ -38,42 +60,50 @@
         >{{form.TxtNombres.label.text}}</label
       >
       <div class="col-sm-4">
-        {{ form.TxtNombres(class_ = 'form-control', required = true)}}
+        {{ form.TxtNombres(class_ = 'form-control', required = true,value = session['nombres'])}}
       </div>
       <label class="col-sm-2 control-label" style="text-align: right"
         >{{form.TxtApellidos.label.text}}</label
       >
       <div class="col-sm-4">
-        {{ form.TxtApellidos(class_ = 'form-control', required = true)}}
+        {{ form.TxtApellidos(class_ = 'form-control', required = true, value = session['apellidos'])}}
       </div>
-    
     </div>
   </div>
   <div class="row" style="padding: 1rem">
     <div class="form-group">
       <label class="col-sm-2 control-label" style="text-align: right"
-        >{{form.DateFecha.label.text}}</label
+        >{{form.DateFecha.label.text}} {{ session['DateFecha']}}</label
       >
       <div class="col-sm-4">
         {{ form.DateFecha(class_ = 'form-control', style='width:48%;')}}
       </div>
       <label class="col-sm-2 control-label" style="text-align: right">
-        {{form.selSexo.label.text}}</label>
+        {{form.selSexo.label.text}}  {{ session['selSexo']}}</label>
       <div class="col-sm-4">
-        {{ form.selSexo(class_ = 'form-control', required = true)}}
+        {{ form.selSexo(class_ = 'form-control')}}
       </div>
+    </div>
+  </div>
+
+  <div class="row" style="padding: 1rem">
+    <div class="form-group">
       <label class="col-sm-2 control-label" style="text-align: right">
-        {{form.selGrupoRh.label.text}}</label>
+        {{form.selGrupoRh.label.text}}  {{ session['selGrupoRh']}}</label>
       <div class="col-sm-4">
-        {{ form.selGrupoRh(class_ = 'form-control', required = true)}}
+        {{ form.selGrupoRh(class_ = 'form-control')}}
       </div>
       <label class="col-sm-2 control-label" style="text-align: right">
         {{form.TxtNroCel.label.text}}</label>
       <div class="col-sm-4">
-        {{ form.TxtNroCel(class_ = 'form-control', required = true)}}
+        {{ form.TxtNroCel(class_ = 'form-control',value = session['telefono'])}}
       </div>
     </div>
   </div>
+
+
+
+
   <div class="row" style="padding: 1rem">
     <div class="form-group">
       <label class="col-sm-3 control-label">Datos de autenticación</label>
@@ -85,13 +115,13 @@
         >{{form.txtUsuario.label.text}}</label
       >
       <div class="col-sm-4">
-        {{ form.txtUsuario(class_ = 'form-control', required = true)}}
+        {{ form.txtUsuario(class_ = 'form-control', required = true, value = session['usuario'])}}
       </div>
       <label class="col-sm-2 control-label" style="text-align: right"
         >{{form.PwdClave.label.text}}</label
       >
       <div class="col-sm-4">
-        {{ form.PwdClave(class_ = 'form-control', required = true)}}
+        {{ form.PwdClave(class_ = 'form-control')}}
       </div>
     </div>
   </div>
@@ -101,27 +131,51 @@
         >{{form.mailUsuario.label.text}}</label
       >
       <div class="col-sm-4">
-        {{ form.mailUsuario(class_ = 'form-control', required = true)}}
+        {{ form.mailUsuario(class_ = 'form-control',value = session['mail'])}}
       </div>
     </div>
   </div>
   <div class="row" style="padding: 1rem">
     <div class="form-group">
       <div class="col-sm-2">
-        <button type="submit" class="btn btn-primary btn-block">Crear Registro</button>
+        <button 
+          type="submit"
+          name = "regbtn"
+          onclick  = "{ form.CreateRegPac() }"
+          value = "Crear Registro"
+          class= "btn btn-primary btn-block" {% if session['found'] %} disabled = True {%endif%}>
+          Crear Registro
+      </button>
       </div>
       <div class="col-sm-2">
-        <button type="submit" class="btn btn-primary btn-block">Actualizar</button>
+        <button
+          type="submit"
+          name = "updbtn"
+          onclick  = "{ form.UpdateRegPac() }"
+          value = "Actualizar"
+          class="btn btn-primary btn-block" {% if not session['found'] %} disabled = True {%endif%}>
+          Actualizar
+      </button>
       </div>
       <div class="col-sm-2">
-        <button type="submit" class="btn btn-primary btn-block">
-          Eliminar
+        <button 
+            type="submit"
+            name = "delbtn"
+            onclick  = "{ form.DeleteRegPac() }"
+            value = "Eliminar"
+            class="btn btn-primary btn-block" {% if not session['found'] or not session['activo'] %} disabled = True {%endif%}>
+            Eliminar
         </button>
       </div>
       <div class="col-sm-2">
-        <button type="submit" class="btn btn-primary btn-block">
-          Notificar
-        </button>
+        <button 
+            type="submit"
+            name = "recvbtn"
+            onclick  = "{ form.RecoveryRegPac() }"
+            value = "Recuperar"
+            class="btn btn-primary btn-block" {% if not session['found'] or session['activo'] %} disabled = True {%endif%}>
+            Recuperar
+      </button>
       </div>
     </div>
   </div>
