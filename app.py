@@ -1353,7 +1353,7 @@ def perfilpac():
                     # Validar los datos
                     if newpwd == None or len(newpwd) == 0 or not pass_valido(newpwd):
                         flash(
-                            'ADVERTENCIA: Debe suministrar una clave válida', 'advertencia')
+                            'ADVERTENCIA: Debe suministrar una clave válida. Utilice un mínimo de 8 caracteres combinando números, letras, al menos una mayúscula y un caracter especial (.,! " # $ %...)', 'advertencia')
                         swerror = True
                     if confirm == None or len(confirm) == 0 or not pass_valido(confirm):
                         flash(
