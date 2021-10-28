@@ -965,6 +965,10 @@ def dashboardpaciente():
                         flash(
                             'ADVERTENCIA: Debe suministrar un email válido', 'advertencia')
                         swerror = True
+                    if password == None or len(password) == 0 or not pass_valido(password):
+                        flash(
+                            'ADVERTENCIA: Debe suministrar una clave válida', 'advertencia')
+                        swerror = True
                     if not swerror:
                         # Preparar la consulta
                         pwd = generate_password_hash(
@@ -1006,6 +1010,10 @@ def dashboardpaciente():
                     if id == None or len(id) == 0:
                         flash(
                             'ADVERTENCIA: Debe suministrar un numero de identificación', 'advertencia')
+                        swerror = True
+                    if password == None or len(password) == 0 or not pass_valido(password):
+                        flash(
+                            'ADVERTENCIA: Debe suministrar una clave válida', 'advertencia')
                         swerror = True
                     if not swerror:
                         # Preparar la consulta
