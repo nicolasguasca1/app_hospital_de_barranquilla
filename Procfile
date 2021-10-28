@@ -3,3 +3,4 @@ Explanation: A Procfile tells Heroku how to startup your application on it's ser
 TO ENABLE THIS FILE ERASE THE EXTENSION FROM THE NAME
 
 web: gunicorn app:app --log-file=-
+—preload
