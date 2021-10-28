@@ -1,5 +1,13 @@
 {% extends 'layouts/main.html' %} {% block content %}
-<h1>Lo sentimos...</h1>
-<p>No se ha encontrado la ruta!</p>
-<p><a href="{{url_for('home')}}">Ir de vuelta a inicio</a></p>
+<div class="col">
+  <h1>Lo sentimos...</h1>
+  <img
+    class="d-flex mx-auto mb-4"
+    src="../../static/img/errorLogo.png"
+    alt=""
+    height="auto"
+  />
+  <p>No se ha encontrado la ruta!</p>
+  <p><a href="{{url_for('home')}}">Ir de vuelta a inicio</a></p>
+</div>
 {% endblock %}
