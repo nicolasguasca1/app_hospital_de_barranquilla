@@ -87,12 +87,13 @@ def login():
         pwd = escape(form.pwd.data.strip())
         # Validar los datos
         swvalido = True
-        if len(usr) < 6 or len(usr) > 40:
-            swvalido = False
-            flash("El nombre de usuario es requerido y tiene entre 6 y 40 caracteres")
-        if len(pwd) < 6 or len(pwd) > 40:
-            swvalido = False
-            flash("El nombre de usuario es requerido y tiene entre 6 y 40 caracteres")
+        # if len(usr) < 6 or len(usr) > 40:
+        #     swvalido = False
+        #     flash(
+        #         "El nombre de usuario es requerido y tiene entre 6 y 40 caracteres", 'error')
+        # if len(pwd) < 6 or len(pwd) > 40:
+        #     swvalido = False
+        #     flash("El nombre de usuario es requerido y tiene entre 6 y 40 caracteres")
         # Preparar la consulta
         sqlmed = f"SELECT idmedico, nombres, mail, clave, idrol FROM Médico WHERE usuario = '{usr}'"
         sqlpac = f"SELECT idpaciente, nombres, mail, clave, idrol FROM Paciente WHERE usuario = '{usr}'"
@@ -115,7 +116,7 @@ def login():
                 session['rol'] = resmed[0][4]
                 return render_template('pages/placeholder.home.html')
             else:
-                flash('ERROR: Usuario o clave invalidos1')
+                flash('ERROR: Usuario o clave invalidos', 'error')
                 return render_template('forms/login.html', form=form)
         elif len(respac) != 0:
             cbd = respac[0][3]  # Recuperar la clave
@@ -129,7 +130,7 @@ def login():
                 session['rol'] = respac[0][4]
                 return render_template('pages/placeholder.home.html')
             else:
-                flash('ERROR: Usuario o clave invalidos2')
+                flash('ERROR: Usuario o clave invalidos', 'error')
                 return render_template('forms/login.html', form=form)
         elif len(resadmin) != 0:
             cbd = resadmin[0][3]  # Recuperar la clave
@@ -143,14 +144,14 @@ def login():
                 session['rol'] = resadmin[0][4]
                 return render_template('pages/placeholder.home.html')
             else:
-                flash('ERROR: Usuario o clave invalidos3')
+                flash('ERROR: Usuario o clave invalidos', 'error')
                 return render_template('forms/login.html', form=form)
 
         # elif form.btn():
         #     login_user(user)
         #     flash('Ha iniciado sesión correctamente.')
         else:
-            flash('ERROR: Usuario o clave invalidos4')
+            flash('ERROR: Usuario o clave invalidos', 'error')
             return render_template('forms/login.html', form=form)
 
 
@@ -179,22 +180,24 @@ def registropac():
         # Validar los datos
         swerror = False
         if id == None or len(id) == 0:
-            flash('ERROR: Debe suministrar un numero de identificación')
+            flash(
+                'ADVERTENCIA: Debe suministrar un numero de identificación', 'advertencia')
             swerror = True
         if username == None or len(username) == 0 or not login_valido(username):
-            flash('ERROR: Debe suministrar un usuario válido ')
+            flash('ADVERTENCIA: Debe suministrar un usuario válido ', 'advertencia')
             swerror = True
         if email == None or len(email) == 0 or not email_valido(email):
-            flash('ERROR: Debe suministrar un email válido')
+            flash('ADVERTENCIA: Debe suministrar un email válido', 'advertencia')
             swerror = True
         if password == None or len(password) == 0 or not pass_valido(password):
-            flash('ERROR: Debe suministrar una clave válida')
+            flash('ADVERTENCIA: Debe suministrar una clave válida', 'advertencia')
             swerror = True
         if confirm == None or len(confirm) == 0 or not pass_valido(confirm):
-            flash('ERROR: Debe suministrar una verificación de clave válida')
+            flash(
+                'ADVERTENCIA: Debe suministrar una verificación de clave válida', 'advertencia')
             swerror = True
         if password != confirm:
-            flash('ERROR: La clave y la confirmación no coinciden')
+            flash('ADVERTENCIA: La clave y la confirmación no coinciden', 'advertencia')
             swerror = True
         if not swerror:
             # Preparar la consulta
@@ -208,7 +211,7 @@ def registropac():
                 flash('ERROR: No se pudo insertar el registro')
             else:
                 flash(
-                    'Actualización: Datos grabados con exito. Para acceder ingrese sus credenciales.')
+                    'Datos grabados con exito. Para acceder ingrese sus credenciales.', 'actualiza')
                 return redirect(url_for('login'))
 
         return render_template('forms/registropac.html', form=pacform)
@@ -242,37 +245,41 @@ def registromed():
         # Validar los datos
         swerror = False
         if name == None or len(name) == 0:
-            flash('ERROR: Debe suministrar el nombre del medico')
+            flash('ADVERTENCIA: Debe suministrar el nombre del medico', 'advertencia')
             swerror = True
         if lastname == None or len(lastname) == 0:
-            flash('ERROR: Debe suministrar el apellido del medico')
+            flash('ADVERTENCIA: Debe suministrar el apellido del medico', 'advertencia')
             swerror = True
         if tipoid == None or len(tipoid) == 0:
-            flash('ERROR: Debe suministrar el tipo de documento')
+            flash('ADVERTENCIA: Debe suministrar el tipo de documento', 'advertencia')
             swerror = True
         if id == None or len(id) == 0:
-            flash('ERROR: Debe suministrar un numero de identificación')
+            flash(
+                'ADVERTENCIA: Debe suministrar un numero de identificación', 'advertencia')
             swerror = True
         if specialty == None or len(specialty) == 0:
-            flash('ERROR: Debe suministrar la especialidad del médico')
+            flash(
+                'ADVERTENCIA: Debe suministrar la especialidad del médico', 'advertencia')
             swerror = True
         if modalidad == None or len(modalidad) == 0:
-            flash('ERROR: Debe suministrar la jornada de trabajo del médico')
+            flash(
+                'ADVERTENCIA: Debe suministrar la jornada de trabajo del médico', 'advertencia')
             swerror = True
         if username == None or len(username) == 0 or not login_valido(username):
-            flash('ERROR: Debe suministrar un usuario válido ')
+            flash('ADVERTENCIA: Debe suministrar un usuario válido ', 'advertencia')
             swerror = True
         if email == None or len(email) == 0 or not email_valido(email):
-            flash('ERROR: Debe suministrar un email válido')
+            flash('ADVERTENCIA: Debe suministrar un email válido', 'advertencia')
             swerror = True
         if password == None or len(password) == 0 or not pass_valido(password):
-            flash('ERROR: Debe suministrar una clave válida')
+            flash('ADVERTENCIA: Debe suministrar una clave válida', 'advertencia')
             swerror = True
         if confirm == None or len(confirm) == 0 or not pass_valido(confirm):
-            flash('ERROR: Debe suministrar una verificación de clave válida')
+            flash(
+                'ADVERTENCIA: Debe suministrar una verificación de clave válida', 'advertencia')
             swerror = True
         if password != confirm:
-            flash('ERROR: La clave y la confirmación no coinciden')
+            flash('ADVERTENCIA: La clave y la confirmación no coinciden', 'advertencia')
             swerror = True
         if not swerror:
             # Preparar la consulta
@@ -282,10 +289,10 @@ def registromed():
                          rh, modalidad, email, professionalId, phonenumber, username, pwd, role))
             # Verificar resultados
             if res == 0:
-                flash('ERROR: No se pudo insertar el registro')
+                flash('ERROR: No se pudo insertar el registro', 'error')
             else:
                 flash(
-                    'Actualización: Datos grabados con exito. Para acceder ingrese sus credenciales.')
+                    'Datos grabados con exito. Para acceder ingrese sus credenciales.', 'actualiza')
                 return redirect(url_for('login'))
 
         return render_template('forms/registromed.html', form=medform)
@@ -315,13 +322,14 @@ def vistaCita():
             if jsdata1 != '1':
                 # Preparar la consulta
                 sqlcita = f"SELECT idpaciente, especialidad, idmedico, horario, fecha, comentarios, valoracion, id FROM Cita WHERE id = '{jsdata}'"
-                
+
                 # Ejecutar la consulta
                 rescita = seleccion(sqlcita)
                 fecha_split = str(rescita[0][4]).split("-")
-                fecha_cita = datetime(int(fecha_split[0]), int(fecha_split[1]), int(fecha_split[2]))
+                fecha_cita = datetime(int(fecha_split[0]), int(
+                    fecha_split[1]), int(fecha_split[2]))
                 fecha_hoy = datetime.now()  # fecha de hoy
-                #Consultar valoracion
+                # Consultar valoracion
                 sqlval = f"SELECT Valoracion FROM Valoraciones WHERE id = '{rescita[0][6]}'"
                 resval = seleccion(sqlval)
                 if resval:
@@ -356,11 +364,12 @@ def vistaCita():
                 # Preparar la consulta
                 sqlcita = f"SELECT idpaciente, especialidad, idmedico, horario, fecha, comentarios, valoracion, id FROM Cita WHERE id = '{jsdata}'"
                 # Ejecutar la consulta
-                rescita = seleccion(sqlcita)                
+                rescita = seleccion(sqlcita)
                 fecha_split = str(rescita[0][4]).split("-")
-                fecha_cita = datetime(int(fecha_split[0]), int(fecha_split[1]), int(fecha_split[2]))
+                fecha_cita = datetime(int(fecha_split[0]), int(
+                    fecha_split[1]), int(fecha_split[2]))
                 fecha_hoy = datetime.now()  # fecha de hoy
-                #Consultar valoracion
+                # Consultar valoracion
                 sqlval = f"SELECT Valoracion FROM Valoraciones WHERE id = '{rescita[0][6]}'"
                 resval = seleccion(sqlval)
                 if resval:
@@ -393,14 +402,14 @@ def vistaCita():
                 return render_template('pages/wedit.html', data=datos)
         else:
             if request.form['rol'] == '1':
-                jsdata = request.form['valoracion']                
+                jsdata = request.form['valoracion']
             elif request.form['rol'] == '2':
-                jsdata1 = request.form['comentario']                
+                jsdata1 = request.form['comentario']
             else:
-                  jsdata = request.form['valoracion']
-                  jsdata1 = request.form['comentario'] 
+                jsdata = request.form['valoracion']
+                jsdata1 = request.form['comentario']
             jsdata2 = request.form['id']
-            
+
             if request.form['rol'] == '1':
                 sql = f"UPDATE Cita SET valoracion = ? WHERE id = ?"
                 res = accion(sql, (jsdata, jsdata2))
@@ -411,9 +420,9 @@ def vistaCita():
                 sql = f"UPDATE Cita SET comentarios = ?, valoracion = ? WHERE id = ?"
                 res = accion(sql, (jsdata1, jsdata, jsdata2))
             if res == 0:
-                flash('ERROR: No se pudo actualizar el registro')
+                flash('ERROR: No se pudo actualizar el registro', 'error')
             else:
-                flash("El registro se ha actualizado")
+                flash("El registro se ha actualizado", 'actualiza')
             return redirect(url_for('lista'))
     else:
         return render_template('error/no_logueado.html')
@@ -450,7 +459,7 @@ def lista():
                         "estado": rescita[i][8]
                     }
                     datos.append(temp)
-                    datos = sorted(datos, key=lambda d: d['fecha']) 
+                    datos = sorted(datos, key=lambda d: d['fecha'])
                     i += 1
                 return render_template('pages/lista.html', data=datos)
             elif session["rol"] == '2':
@@ -484,7 +493,7 @@ def lista():
                         "valoracion": rescita[i][6]
                     }
                     datos.append(temp)
-                    datos = sorted(datos, key=lambda d: d['fecha']) 
+                    datos = sorted(datos, key=lambda d: d['fecha'])
                     i += 1
                 return render_template('pages/lista.html', data=datos)
             else:
@@ -518,11 +527,12 @@ def lista():
                         "valoracion": rescita[i][6]
                     }
                     datos.append(temp)
-                    datos = sorted(datos, key=lambda d: d['fecha']) 
+                    datos = sorted(datos, key=lambda d: d['fecha'])
                     i += 1
                 return render_template('pages/lista.html', data=datos)
     else:
         return render_template('pages/invalid.html')
+
 
 @app.route('/borrarCita', methods=['GET', 'POST'])
 def borrarCita():
@@ -532,10 +542,11 @@ def borrarCita():
         sql = f"UPDATE Cita set Estado = ? where id = ?"
         res = accion(sql, (estado, jsdata))
         if res == 0:
-            flash('ERROR: No se pudo borrar el registro')
+            flash('ERROR: No se pudo borrar el registro', 'error')
         else:
-            flash("El registro se ha borrado")
+            flash("INFO: El registro se ha borrado", 'info')
         return redirect(url_for('lista'))
+
 
 @app.route('/borrarcitasForm', methods=['GET'])
 def borrarForm():
@@ -678,32 +689,40 @@ def dashboardmedico():
                     # Validar los datos
                     swerror = False
                     if name == None or len(name) == 0:
-                        flash('ERROR: Debe suministrar el nombre del medico')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar el nombre del medico', 'advertencia')
                         swerror = True
                     if lastname == None or len(lastname) == 0:
-                        flash('ERROR: Debe suministrar el apellido del medico')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar el apellido del medico', 'advertencia')
                         swerror = True
                     if tipoid == None or len(tipoid) == 0:
-                        flash('ERROR: Debe suministrar el tipo de documento')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar el tipo de documento', 'advertencia')
                         swerror = True
                     if id == None or len(id) == 0:
-                        flash('ERROR: Debe suministrar un numero de identificación')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar un numero de identificación', 'advertencia')
                         swerror = True
                     if specialty == None or len(specialty) == 0:
-                        flash('ERROR: Debe suministrar la especialidad del médico')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar la especialidad del médico', 'advertencia')
                         swerror = True
                     if modalidad == None or len(modalidad) == 0:
                         flash(
-                            'ERROR: Debe suministrar la jornada de trabajo del médico')
+                            'ADVERTENCIA: Debe suministrar la jornada de trabajo del médico', 'advertencia')
                         swerror = True
                     if username == None or len(username) == 0 or not login_valido(username):
-                        flash('ERROR: Debe suministrar un usuario válido ')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar un usuario válido', 'advertencia')
                         swerror = True
                     if email == None or len(email) == 0 or not email_valido(email):
-                        flash('ERROR: Debe suministrar un email válido')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar un email válido', 'advertencia')
                         swerror = True
                     if password == None or len(password) == 0 or not pass_valido(password):
-                        flash('ERROR: Debe suministrar una clave válida')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar una clave válida', 'advertencia')
                         swerror = True
                     if not swerror:
                         # Preparar la consulta
@@ -714,10 +733,10 @@ def dashboardmedico():
                                      modalidad, email, phonenumber, username, pwd, role))
                         # Verificar resultados
                         if res == 0:
-                            flash('ERROR: No se pudo insertar el registro')
+                            flash('ERROR: No se pudo insertar el registro', 'error')
                         else:
                             flash(
-                                'Actualización: Datos grabados con exito.')
+                                'Datos grabados con exito.', 'actualiza')
                     return render_template('forms/dashboard-medico.html', form=form)
 
                 elif request.form.get('updbtn') == 'Actualizar':
@@ -736,23 +755,32 @@ def dashboardmedico():
                     # Validar los datos
                     swerror = False
                     if name == None or len(name) == 0:
-                        flash('ERROR: Debe suministrar el nombre del medico')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar el nombre del medico', 'advertencia')
                         swerror = True
                     if lastname == None or len(lastname) == 0:
-                        flash('ERROR: Debe suministrar el apellido del medico')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar el apellido del medico', 'advertencia')
                         swerror = True
                     if tipoid == None or len(tipoid) == 0:
-                        flash('ERROR: Debe suministrar el tipo de documento')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar el tipo de documento', 'advertencia')
                         swerror = True
                     if id == None or len(id) == 0:
-                        flash('ERROR: Debe suministrar un numero de identificación')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar un numero de identificación', 'advertencia')
                         swerror = True
                     if specialty == None or len(specialty) == 0:
-                        flash('ERROR: Debe suministrar la especialidad del médico')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar la especialidad del médico', 'advertencia')
                         swerror = True
                     if modalidad == None or len(modalidad) == 0:
                         flash(
-                            'ERROR: Debe suministrar la jornada de trabajo del médico')
+                            'ADVERTENCIA: Debe suministrar la jornada de trabajo del médico', 'advertencia')
+                        swerror = True
+                    if password == None or len(password) == 0 or not pass_valido(password):
+                        flash(
+                            'ADVERTENCIA: Debe suministrar una clave válida', 'advertencia')
                         swerror = True
                     if not swerror:
                         # Preparar la consulta
@@ -764,10 +792,10 @@ def dashboardmedico():
                                       email, phonenumber, username, pwd, role, session['idmed']))
                         if res2 == 0:
                             flash(
-                                'ERROR: No se pudieron almacenar los datos, reintente')
+                                'ERROR: No se pudieron almacenar los datos, reintente', 'error')
                         else:
                             flash(
-                                'INFO: Los datos fueron actualizados satisfactoriamente')
+                                'Los datos fueron actualizados satisfactoriamente', 'actualiza')
                     return render_template('forms/dashboard-medico.html', form=form)
 
                 elif request.form.get('srchbtn') == 'Buscar':
@@ -807,7 +835,7 @@ def dashboardmedico():
                         session['mail'] = ""
                         session['modalidad'] = ""
                         session['found'] = False
-                        flash('ERROR: Médico no existe, debe registrarlo')
+                        flash('ERROR: Médico no existe, debe registrarlo', 'error')
                     return render_template('forms/dashboard-medico.html', form=form)
 
                 elif request.form.get('delbtn') == 'Eliminar':
@@ -821,10 +849,12 @@ def dashboardmedico():
                     # Validar los datos
                     swerror = False
                     if tipoid == None or len(tipoid) == 0:
-                        flash('ERROR: Debe suministrar el tipo de documento')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar el tipo de documento', 'advertencia')
                         swerror = True
                     if id == None or len(id) == 0:
-                        flash('ERROR: Debe suministrar un numero de identificación')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar un numero de identificación', 'advertencia')
                         swerror = True
                     if not swerror:
                         sql3 = f"UPDATE Médico set Estado = ? where idmedico = ?"
@@ -833,11 +863,11 @@ def dashboardmedico():
                         res2 = accion(sql3, (state, session['idmed']))
                         if res2 == 0:
                             flash(
-                                'ERROR: No se pudieron Eliminar los datos, reintente')
+                                'ERROR: No se pudieron Eliminar los datos, reintente', 'error')
                         else:
                             session['activo'] = False
                             flash(
-                                'INFO: Los datos fueron Eliminados satisfactoriamente')
+                                'INFO: Los datos fueron eliminados satisfactoriamente', 'info')
                     return render_template('forms/dashboard-medico.html', form=form)
 
                 if request.form.get('recvbtn') == 'Recuperar':
@@ -848,17 +878,20 @@ def dashboardmedico():
                     # Validar los datos
                     swerror = False
                     if tipoid == None or len(tipoid) == 0:
-                        flash('ERROR: Debe suministrar el tipo de documento')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar el tipo de documento', 'advertencia')
                         swerror = True
                     if id == None or len(id) == 0:
-                        flash('ERROR: Debe suministrar un numero de identificación')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar un numero de identificación', 'advertencia')
                         swerror = True
                     if specialty == None or len(specialty) == 0:
-                        flash('ERROR: Debe suministrar la especialidad del médico')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar la especialidad del médico', 'advertencia')
                         swerror = True
                     if modalidad == None or len(modalidad) == 0:
                         flash(
-                            'ERROR: Debe suministrar la jornada de trabajo del médico')
+                            'ADVERTENCIA: Debe suministrar la jornada de trabajo del médico', 'advertencia')
                         swerror = True
                     if not swerror:
                         sql3 = f"UPDATE Médico set Estado = ? where idmedico = ?"
@@ -867,11 +900,11 @@ def dashboardmedico():
                         res2 = accion(sql3, (state, session['idmed']))
                         if res2 == 0:
                             flash(
-                                'ERROR: No se pudieron Eliminar los datos, reintente')
+                                'ERROR: No se pudo eliminar los datos, reintente', 'error')
                         else:
                             session['activo'] = True
                             flash(
-                                'INFO: Los datos fueron Recuperados satisfactoriamente')
+                                'Los datos fueron recuperados satisfactoriamente', 'actualiza')
                 return render_template('forms/dashboard-medico.html', form=form)
         else:
             return render_template('pages/invalid.html')
@@ -913,19 +946,24 @@ def dashboardpaciente():
                     # Validar los datos
                     swerror = False
                     if name == None or len(name) == 0:
-                        flash('ERROR: Debe suministrar el nombre del paciente')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar el nombre del paciente', 'advertencia')
                         swerror = True
                     if tipoid == None or len(tipoid) == 0:
-                        flash('ERROR: Debe suministrar el tipo de documento')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar el tipo de documento', 'advertencia')
                         swerror = True
                     if id == None or len(id) == 0:
-                        flash('ERROR: Debe suministrar un numero de identificación')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar un numero de identificación', 'advertencia')
                         swerror = True
                     if username == None or len(username) == 0 or not login_valido(username):
-                        flash('ERROR: Debe suministrar un usuario válido ')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar un usuario válido', 'advertencia')
                         swerror = True
                     if email == None or len(email) == 0 or not email_valido(email):
-                        flash('ERROR: Debe suministrar un email válido')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar un email válido', 'advertencia')
                         swerror = True
                     if not swerror:
                         # Preparar la consulta
@@ -936,10 +974,10 @@ def dashboardpaciente():
                                      genero, rhgrup, email, phonenumber, username, pwd, role))
                         # Verificar resultados
                         if res == 0:
-                            flash('ERROR: No se pudo insertar el registro')
+                            flash('ERROR: No se pudo insertar el registro', 'error')
                         else:
                             flash(
-                                'Actualización: Datos grabados con exito.')
+                                'Datos grabados con exito.', 'actualiza')
                     return render_template('forms/dashboard-paciente.html', form=form)
 
                 if request.form.get('updbtn') == 'Actualizar':
@@ -958,13 +996,16 @@ def dashboardpaciente():
                     # Validar los datos
                     swerror = False
                     if name == None or len(name) == 0:
-                        flash('ERROR: Debe suministrar el nombre del paciente')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar el nombre del paciente', 'advertencia')
                         swerror = True
                     if tipoid == None or len(tipoid) == 0:
-                        flash('ERROR: Debe suministrar el tipo de documento')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar el tipo de documento', 'advertencia')
                         swerror = True
                     if id == None or len(id) == 0:
-                        flash('ERROR: Debe suministrar un numero de identificación')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar un numero de identificación', 'advertencia')
                         swerror = True
                     if not swerror:
                         # Preparar la consulta
@@ -974,10 +1015,10 @@ def dashboardpaciente():
                                       rhgrup, email, phonenumber, username, role, session['idpac']))
                         if res2 == 0:
                             flash(
-                                'ERROR: No se pudieron almacenar los datos, reintente')
+                                'ERROR: No se pudo almacenar los datos, reintente', 'error')
                         else:
                             flash(
-                                'INFO: Los datos fueron actualizados satisfactoriamente')
+                                'Los datos fueron actualizados satisfactoriamente', 'actualiza')
                     return render_template('forms/dashboard-paciente.html', form=form)
 
                 if request.form.get('srchbtn') == 'Buscar':
@@ -1021,7 +1062,7 @@ def dashboardpaciente():
                         session['usuario'] = ""
                         session['clave'] = ""
                         session['found'] = False
-                        flash('ERROR: Paciente no existe, debe registrarlo')
+                        flash('ERROR: Paciente no existe, debe registrarlo', 'error')
                     return render_template('forms/dashboard-paciente.html', form=form)
 
                 if request.form.get('delbtn') == 'Eliminar':
@@ -1033,10 +1074,12 @@ def dashboardpaciente():
                     # Validar los datos
                     swerror = False
                     if tipoid == None or len(tipoid) == 0:
-                        flash('ERROR: Debe suministrar el tipo de documento')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar el tipo de documento', 'advertencia')
                         swerror = True
                     if id == None or len(id) == 0:
-                        flash('ERROR: Debe suministrar un numero de identificación')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar un numero de identificación', 'advertencia')
                         swerror = True
                     if not swerror:
                         sql3 = f"UPDATE Paciente set Estado = ? where idpaciente = ?"
@@ -1045,11 +1088,11 @@ def dashboardpaciente():
                         res2 = accion(sql3, (state, session['idpac']))
                         if res2 == 0:
                             flash(
-                                'ERROR: No se pudieron Eliminar los datos, reintente')
+                                'ERROR: No se pudo eliminar los datos, reintente', 'error')
                         else:
                             session['activo'] = False
                             flash(
-                                'INFO: Los datos fueron Eliminados satisfactoriamente')
+                                'INFO: Los datos fueron eliminados satisfactoriamente', 'info')
                     return render_template('forms/dashboard-paciente.html', form=form)
 
                 if request.form.get('recvbtn') == 'Recuperar':
@@ -1058,10 +1101,12 @@ def dashboardpaciente():
                     # Validar los datos
                     swerror = False
                     if tipoid == None or len(tipoid) == 0:
-                        flash('ERROR: Debe suministrar el tipo de documento')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar el tipo de documento', 'advertencia')
                         swerror = True
                     if id == None or len(id) == 0:
-                        flash('ERROR: Debe suministrar un numero de identificación')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar un numero de identificación', 'advertencia')
                         swerror = True
                     if not swerror:
                         sql3 = f"UPDATE Paciente set Estado = ? where idpaciente = ?"
@@ -1070,11 +1115,11 @@ def dashboardpaciente():
                         res2 = accion(sql3, (state, session['idpac']))
                         if res2 == 0:
                             flash(
-                                'ERROR: No se pudieron Eliminar los datos, reintente')
+                                'ERROR: No se pudo eliminar los datos, reintente', 'error')
                         else:
                             session['activo'] = True
                             flash(
-                                'INFO: Los datos fueron Recuperados satisfactoriamente')
+                                'Los datos fueron recuperados satisfactoriamente', 'actualiza')
                 return render_template('forms/dashboard-paciente.html', form=form)
         else:
             return render_template('pages/invalid.html')
@@ -1113,9 +1158,9 @@ def citas():
                      hora, fecha, comentario, valoracion))
         # Verificar resultados
         if res == 0:
-            flash('ERROR: No se pudo insertar el registro')
+            flash('ERROR: No se pudo insertar el registro', 'error')
         else:
-            flash('Actualización: Datos grabados con exito en la BD.')
+            flash('Datos grabados con exito en la base de datos.', 'actualiza')
         return redirect(url_for('lista'))
 
 # rutas del dashboard administrativo
@@ -1175,19 +1220,19 @@ def DashboardAdmin():
 #                 flash('ERROR: Debe suministrar la jornada de trabajo del médico')
 #                 swerror = True
 #             if username == None or len(username) == 0 or not login_valido(username):
-#                 flash('ERROR: Debe suministrar un usuario válido ')
+#                 flash('ADVERTENCIA: Debe suministrar un usuario válido', 'advertencia')
 #                 swerror = True
 #             if email == None or len(email) == 0 or not email_valido(email):
-#                 flash('ERROR: Debe suministrar un email válido')
+#                 flash('ADVERTENCIA: Debe suministrar un email válido', 'advertencia')
 #                 swerror = True
 #             if password == None or len(password) == 0 or not pass_valido(password):
-#                 flash('ERROR: Debe suministrar una clave válida')
+#                 flash('ADVERTENCIA: Debe suministrar una clave válida', 'advertencia')
 #                 swerror = True
 #             # if confirm == None or len(confirm) == 0 or not pass_valido(confirm):
-#             #    flash('ERROR: Debe suministrar una verificación de clave válida')
+#             #    flash('ADVERTENCIA: Debe suministrar una verificación de clave válida', 'advertencia')
 #             #    swerror = True
 #             # if password != confirm:
-#             #    flash('ERROR: La clave y la confirmación no coinciden')
+#             #    flash('ERROR: La clave y la confirmación no coinciden', 'error')
 #             #    swerror = True
 #             if not swerror:
 #                 # Preparar la consulta
@@ -1250,7 +1295,8 @@ def perfilpac():
                     # Ejecutar la consulta
                     res = seleccion(sql)
                     if mailUsuario == None or len(mailUsuario) == 0 or not email_valido(mailUsuario):
-                        flash('ERROR: Debe suministrar un email válido')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar un email válido', 'advertencia')
                         swerror = True
                     if not swerror:
                         # Proceso los resultados
@@ -1261,10 +1307,10 @@ def perfilpac():
                         res2 = accion(sql2, (mailUsuario, usuario))
                         if res2 == 0:
                             flash(
-                                'ERROR: No se pudieron almacenar los datos, reintente')
+                                'ERROR: No se pudo almacenar los datos, reintente', 'error')
                         else:
                             flash(
-                                'INFO: Los datos fueron almacenados satisfactoriamente')
+                                'Los datos fueron almacenados satisfactoriamente', 'actualiza')
                 elif request.form.get('action2') == 'Actualizar usuario':
                     newusr = escape(request.form['usr'])
                     swerror = False
@@ -1272,7 +1318,8 @@ def perfilpac():
                     # Ejecutar la consulta
                     res = seleccion(sql)
                     if newusr == None or len(newusr) == 0 or not login_valido(newusr):
-                        flash('ERROR: Debe suministrar un usuario válido ')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar un usuario válido', 'advertencia')
                         swerror = True
                     if not swerror:
                         # Proceso los resultados
@@ -1283,11 +1330,11 @@ def perfilpac():
                         res2 = accion(sql2, (newusr, usuario))
                         if res2 == 0:
                             flash(
-                                'ERROR: No se pudieron almacenar los datos, reintente')
+                                'ERROR: No se pudo almacenar los datos, reintente', 'error')
                         else:
                             session['usr'] = newusr
                             flash(
-                                'INFO: Los datos fueron almacenados satisfactoriamente')
+                                'Los datos fueron almacenados satisfactoriamente', 'actualiza')
                 elif request.form.get('action3') == 'Actualizar contraseña':
                     newpwd = escape(request.form['pwd'])
                     confirm = escape(request.form['confirm'])
@@ -1297,14 +1344,16 @@ def perfilpac():
                     res = seleccion(sql)
                     # Validar los datos
                     if newpwd == None or len(newpwd) == 0 or not pass_valido(newpwd):
-                        flash('ERROR: Debe suministrar una clave válida')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar una clave válida', 'advertencia')
                         swerror = True
                     if confirm == None or len(confirm) == 0 or not pass_valido(confirm):
                         flash(
-                            'ERROR: Debe suministrar una verificación de clave válida')
+                            'ADVERTENCIA: Debe suministrar una verificación de clave válida', 'advertencia')
                         swerror = True
                     if newpwd != confirm:
-                        flash('ERROR: La clave y la confirmación no coinciden')
+                        flash(
+                            'ERROR: La clave y la confirmación no coinciden', 'error')
                         swerror = True
                     if not swerror:
                         # Proceso los resultados
@@ -1315,10 +1364,10 @@ def perfilpac():
                         res2 = accion(sql2, (pwd, usuario))
                         if res2 == 0:
                             flash(
-                                'ERROR: No se pudieron almacenar los datos, reintente')
+                                'ERROR: No se pudo almacenar los datos, reintente', 'error')
                         else:
                             flash(
-                                'INFO: Los datos fueron almacenados satisfactoriamente')
+                                'Los datos fueron almacenados satisfactoriamente', 'actualiza')
                 return render_template('forms/perfil.html', form=frm, data=res)
         else:
             return render_template('pages/invalid.html')
@@ -1353,7 +1402,8 @@ def perfilmed():
                     # Ejecutar la consulta
                     res = seleccion(sql)
                     if mailUsuario == None or len(mailUsuario) == 0 or not email_valido(mailUsuario):
-                        flash('ERROR: Debe suministrar un email válido')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar un email válido', 'advertencia')
                         swerror = True
                     if not swerror:
                         # Proceso los resultados
@@ -1364,10 +1414,10 @@ def perfilmed():
                         res2 = accion(sql2, (mailUsuario, usuario))
                         if res2 == 0:
                             flash(
-                                'ERROR: No se pudieron almacenar los datos, reintente')
+                                'ERROR: No se pudo almacenar los datos, reintente', 'error')
                         else:
                             flash(
-                                'INFO: Los datos fueron almacenados satisfactoriamente')
+                                'Los datos fueron almacenados satisfactoriamente', 'actualiza')
                 elif request.form.get('action2') == 'Actualizar usuario':
                     newusr = escape(request.form['usr'])
                     swerror = False
@@ -1375,7 +1425,8 @@ def perfilmed():
                     # Ejecutar la consulta
                     res = seleccion(sql)
                     if newusr == None or len(newusr) == 0 or not login_valido(newusr):
-                        flash('ERROR: Debe suministrar un usuario válido ')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar un usuario válido', 'advertencia')
                         swerror = True
                     if not swerror:
                         # Proceso los resultados
@@ -1386,11 +1437,11 @@ def perfilmed():
                         res2 = accion(sql2, (newusr, usuario))
                         if res2 == 0:
                             flash(
-                                'ERROR: No se pudieron almacenar los datos, reintente')
+                                'ERROR: No se pudo almacenar los datos, reintente', 'error')
                         else:
                             session['usr'] = newusr
                             flash(
-                                'INFO: Los datos fueron almacenados satisfactoriamente')
+                                'Los datos fueron almacenados satisfactoriamente', 'actualiza')
                 elif request.form.get('action3') == 'Actualizar contraseña':
                     newpwd = escape(request.form['pwd'])
                     confirm = escape(request.form['confirm'])
@@ -1400,14 +1451,16 @@ def perfilmed():
                     res = seleccion(sql)
                     # Validar los datos
                     if newpwd == None or len(newpwd) == 0 or not pass_valido(newpwd):
-                        flash('ERROR: Debe suministrar una clave válida')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar una clave válida', 'advertencia')
                         swerror = True
                     if confirm == None or len(confirm) == 0 or not pass_valido(confirm):
                         flash(
-                            'ERROR: Debe suministrar una verificación de clave válida')
+                            'ADVERTENCIA: Debe suministrar una verificación de clave válida', 'advertencia')
                         swerror = True
                     if newpwd != confirm:
-                        flash('ERROR: La clave y la confirmación no coinciden')
+                        flash(
+                            'ERROR: La clave y la confirmación no coinciden', 'error')
                         swerror = True
                     if not swerror:
                         # Proceso los resultados
@@ -1418,10 +1471,10 @@ def perfilmed():
                         res2 = accion(sql2, (pwd, usuario))
                         if res2 == 0:
                             flash(
-                                'ERROR: No se pudieron almacenar los datos, reintente')
+                                'ERROR: No se pudo almacenar los datos, reintente', 'error')
                         else:
                             flash(
-                                'INFO: Los datos fueron almacenados satisfactoriamente')
+                                'Los datos fueron almacenados satisfactoriamente', 'actualiza')
                 return render_template('forms/perfil.html', form=frm, data=res)
         else:
             return render_template('pages/invalid.html')
@@ -1456,7 +1509,8 @@ def perfiladmin():
                     # Ejecutar la consulta
                     res = seleccion(sql)
                     if mailUsuario == None or len(mailUsuario) == 0 or not email_valido(mailUsuario):
-                        flash('ERROR: Debe suministrar un email válido')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar un email válido', 'advertencia')
                         swerror = True
                     if not swerror:
                         # Proceso los resultados
@@ -1467,10 +1521,10 @@ def perfiladmin():
                         res2 = accion(sql2, (mailUsuario, usuario))
                         if res2 == 0:
                             flash(
-                                'ERROR: No se pudieron almacenar los datos, reintente')
+                                'ERROR: No se pudo almacenar los datos, reintente', 'error')
                         else:
                             flash(
-                                'INFO: Los datos fueron almacenados satisfactoriamente')
+                                'Los datos fueron almacenados satisfactoriamente', 'actualiza')
                 elif request.form.get('action2') == 'Actualizar usuario':
                     newusr = escape(request.form['usr'])
                     swerror = False
@@ -1478,7 +1532,8 @@ def perfiladmin():
                     # Ejecutar la consulta
                     res = seleccion(sql)
                     if newusr == None or len(newusr) == 0 or not login_valido(newusr):
-                        flash('ERROR: Debe suministrar un usuario válido ')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar un usuario válido', 'advertencia')
                         swerror = True
                     if not swerror:
                         # Proceso los resultados
@@ -1489,11 +1544,11 @@ def perfiladmin():
                         res2 = accion(sql2, (newusr, usuario))
                         if res2 == 0:
                             flash(
-                                'ERROR: No se pudieron almacenar los datos, reintente')
+                                'ERROR: No se pudo almacenar los datos, reintente', 'error')
                         else:
                             session['usr'] = newusr
                             flash(
-                                'INFO: Los datos fueron almacenados satisfactoriamente')
+                                'Los datos fueron almacenados satisfactoriamente', 'actualiza')
                 elif request.form.get('action3') == 'Actualizar contraseña':
                     newpwd = escape(request.form['pwd'])
                     confirm = escape(request.form['confirm'])
@@ -1503,14 +1558,16 @@ def perfiladmin():
                     res = seleccion(sql)
                     # Validar los datos
                     if newpwd == None or len(newpwd) == 0 or not pass_valido(newpwd):
-                        flash('ERROR: Debe suministrar una clave válida')
+                        flash(
+                            'ADVERTENCIA: Debe suministrar una clave válida', 'advertencia')
                         swerror = True
                     if confirm == None or len(confirm) == 0 or not pass_valido(confirm):
                         flash(
-                            'ERROR: Debe suministrar una verificación de clave válida')
+                            'ADVERTENCIA: Debe suministrar una verificación de clave válida', 'advertencia')
                         swerror = True
                     if newpwd != confirm:
-                        flash('ERROR: La clave y la confirmación no coinciden')
+                        flash(
+                            'ERROR: La clave y la confirmación no coinciden', 'error')
                         swerror = True
                     if not swerror:
                         # Proceso los resultados
@@ -1521,10 +1578,10 @@ def perfiladmin():
                         res2 = accion(sql2, (pwd, usuario))
                         if res2 == 0:
                             flash(
-                                'ERROR: No se pudieron almacenar los datos, reintente')
+                                'ERROR: No se pudo almacenar los datos, reintente', 'error')
                         else:
                             flash(
-                                'INFO: Los datos fueron almacenados satisfactoriamente')
+                                'Los datos fueron almacenados satisfactoriamente', 'actualiza')
                 return render_template('forms/perfil.html', form=frm, data=res)
         else:
             return render_template('pages/invalid.html')

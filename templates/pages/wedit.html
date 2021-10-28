@@ -1,85 +1,182 @@
-<div style="width: 36rem; margin: auto; text-align: right;">
-    <img id="close" onclick="close_()" src="/static/img/close-icon.png" alt="" style="width: 23px; cursor: pointer;">
-    </div>
-    <div style="width: 36rem; margin: auto;">
-        <div class="card"style="padding:1rem;position: relative; display: flex; flex-direction: row;min-width: 0;word-wrap: break-word;background-color: #fff;background-clip: border-box;border: 1px solid rgba(0,0,0,.125);border-radius: .25rem;">
-        <div style="padding: 1rem; background-clip: border-box; border: 1px solid rgba(0,0,0,.125); border-radius: .25rem; ">
-            <p><strong>Detalle de cita id: {{data.id}}</strong></p>
-            <p>Fecha de cita: {{data.fecha}}</p>
-            <p>Paciente: {{data.paciente}}</p>
-            <p>ID: {{data.idp}}</p>
-            <p>Doctor: {{data.doctor}}</p>
-            <p>ID: {{data.idd}}</p>
-            <p>Especialidad: {{data.descrip}}</p>
-            <br>
-            {% if data.edicion == '0' %}
-                <p>Comentarios:</p>
-            {% elif data.edicion == '1' and data.rol != '1' %}
-                <p>Comentarios:</p>
-            {% endif%}
-            <form action="/wedit" method="POST">
-                <input type="text" name="id" value="{{data.id}}" style="height: 0px; visibility: collapse; padding: 0; border: 0; position: fixed;">
-                <input type="text" name="rol" value="{{data.rol}}" style="height: 0px; visibility: collapse; padding: 0; border: 0; position: fixed;">
-            {% if data.rol != '1' and data.ontime == 1 and data.edicion == '1' %}
-                <div style="background-clip: border-box;
-                    border: 1px solid rgba(0,0,0,.125);
-                    border-radius: .25rem; padding: 0.5rem;">
-                    <textarea class="form-control" id="comentario" name="comentario">{{data.comentario}}</textarea>
-                </div>
-            {% elif data.edicion == '0' or data.ontime == 0 and data.rol != '1' %}
-                <div style="background-clip: border-box;
-                    border: 1px solid rgba(0,0,0,.125);
-                    border-radius: .25rem; padding: 0.5rem;">
-                    <textarea class="form-control" id="comentario" disabled>{{data.comentario}}</textarea>
-                </div>
-            {% endif %}            
-            {% if data.edicion == '0' %}
-            <p>Valoración:</p>
-            {% elif data.edicion == '1' and data.rol != '2' %}
-            <p>Valoración:</p>
-            {%endif%}
-            {% if data.rol != '2' and data.ontime == 1 and data.edicion == '1' %}
-            <div style="background-clip: border-box;
-                border: 1px solid rgba(0,0,0,.125);
-                border-radius: .25rem; padding: 0.5rem;">
-                    <select class="form-control" id="valoracion" name="valoracion">
-                        <option value="1">Malo</option>
-                        <option value="2">Regular</option>
-                        <option value="3">Bueno</option>
-                        <option value="4">Excelente</option>
-                    </select>
-            </div>
-            {% elif data.edicion == '0' or data.ontime == 0 and data.rol != '2' %}
-            <div style="background-clip: border-box;
-                border: 1px solid rgba(0,0,0,.125);
-                border-radius: .25rem; padding: 0.5rem;">
-                    <input type="text" class="form-control" id ="valoracion" value="{{data.valoracion}}" disabled>
-            </div>
-            {% endif %}
-            {% if data.ontime == 1 and data.edicion == '1' %}
-                <div style="padding: .5rem;">
-                    <button type="submit" id="update" class="btn btn-primary btn-block">Actualizar</button>
-                </div>                
-            {% elif data.edicion == '1' %}
-            <div style="padding: .5rem;">
-                <button type="submit" id="update" class="btn btn-primary btn-block" disabled>Actualizar</button>
-            </div>                
-            {% endif %}
-            </form>
+<div style="width: 36rem; margin: auto; text-align: right">
+  <img
+    id="close"
+    onclick="close_()"
+    src="/static/img/close-icon.png"
+    alt=""
+    style="width: 23px; cursor: pointer"
+  />
+</div>
+<div style="width: 36rem; margin: auto">
+  <div
+    class="card"
+    style="
+      padding: 1rem;
+      position: relative;
+      display: flex;
+      flex-direction: row;
+      min-width: 0;
+      word-wrap: break-word;
+      background-color: #fff;
+      background-clip: border-box;
+      border: 1px solid rgba(0, 0, 0, 0.125);
+      border-radius: 0.25rem;
+    "
+  >
+    <div
+      style="
+        padding: 1rem;
+        background-clip: border-box;
+        border: 1px solid rgba(0, 0, 0, 0.125);
+        border-radius: 0.25rem;
+      "
+    >
+      <p><strong>Detalle de cita id: {{data.id}}</strong></p>
+      <p>Fecha de cita: {{data.fecha}}</p>
+      <p>Paciente: {{data.paciente}}</p>
+      <p>ID: {{data.idp}}</p>
+      <p>Doctor: {{data.doctor}}</p>
+      <p>ID: {{data.idd}}</p>
+      <p>Especialidad: {{data.descrip}}</p>
+      <br />
+      {% if data.edicion == '0' %}
+      <p>Comentarios del profesional:</p>
+      {% elif data.edicion == '1' and data.rol != '1' %}
+      <p>Comentarios del profesional:</p>
+      {% endif%}
+      <form action="/wedit" method="POST">
+        <input
+          type="text"
+          name="id"
+          value="{{data.id}}"
+          style="
+            height: 0px;
+            visibility: collapse;
+            padding: 0;
+            border: 0;
+            position: fixed;
+          "
+        />
+        <input
+          type="text"
+          name="rol"
+          value="{{data.rol}}"
+          style="
+            height: 0px;
+            visibility: collapse;
+            padding: 0;
+            border: 0;
+            position: fixed;
+          "
+        />
+        {% if data.rol != '1' and data.ontime == 1 and data.edicion == '1' %}
+        <div
+          style="
+            background-clip: border-box;
+            border: 1px solid rgba(0, 0, 0, 0.125);
+            border-radius: 0.25rem;
+            padding: 0.5rem;
+          "
+        >
+          <textarea class="form-control" id="comentario" name="comentario">
+{{data.comentario}}</textarea
+          >
         </div>
-        <div style="padding: 1rem;"> 
-            <div style="background-clip: border-box;
-                    border: 1px solid rgba(0,0,0,.125);
-                    border-radius: .25rem; padding: 1rem;">
-                    <img src="/static/img/user-logo.png" width="96px">
-                    <p style="text-align: center;">{{data.paciente}}</p>
-            </div>
-            <div style="background-clip: border-box;
-                    border: 1px solid rgba(0,0,0,.125);
-                    border-radius: .25rem; padding: 1rem; margin-top: 2rem;">
-                    <img src="/static/img/doctor-logo.png" width="96px">
-                    <p style="text-align: center;">{{data.doctor}}</p>
-            </div>
+        {% elif data.edicion == '0' or data.ontime == 0 and data.rol != '1' %}
+        <div
+          style="
+            background-clip: border-box;
+            border: 1px solid rgba(0, 0, 0, 0.125);
+            border-radius: 0.25rem;
+            padding: 0.5rem;
+          "
+        >
+          <textarea class="form-control" id="comentario" disabled>
+{{data.comentario}}</textarea
+          >
         </div>
+        {% endif %} {% if data.edicion == '0' %}
+        <p>Valoración del servicio prestado:</p>
+        {% elif data.edicion == '1' and data.rol != '2' %}
+        <p>Valoración del servicio prestado:</p>
+        {%endif%} {% if data.rol != '2' and data.ontime == 1 and data.edicion ==
+        '1' %}
+        <div
+          style="
+            background-clip: border-box;
+            border: 1px solid rgba(0, 0, 0, 0.125);
+            border-radius: 0.25rem;
+            padding: 0.5rem;
+          "
+        >
+          <select class="form-control" id="valoracion" name="valoracion">
+            <option value="1">Malo</option>
+            <option value="2">Regular</option>
+            <option value="3">Bueno</option>
+            <option value="4">Excelente</option>
+          </select>
+        </div>
+        {% elif data.edicion == '0' or data.ontime == 0 and data.rol != '2' %}
+        <div
+          style="
+            background-clip: border-box;
+            border: 1px solid rgba(0, 0, 0, 0.125);
+            border-radius: 0.25rem;
+            padding: 0.5rem;
+          "
+        >
+          <input
+            type="text"
+            class="form-control"
+            id="valoracion"
+            value="{{data.valoracion}}"
+            disabled
+          />
+        </div>
+        {% endif %} {% if data.ontime == 1 and data.edicion == '1' %}
+        <div style="padding: 0.5rem">
+          <button type="submit" id="update" class="btn btn-primary btn-block">
+            Actualizar
+          </button>
+        </div>
+        {% elif data.edicion == '1' %}
+        <div style="padding: 0.5rem">
+          <button
+            type="submit"
+            id="update"
+            class="btn btn-primary btn-block"
+            disabled
+          >
+            Actualizar
+          </button>
+        </div>
+        {% endif %}
+      </form>
     </div>
+    <div style="padding: 1rem">
+      <div
+        style="
+          background-clip: border-box;
+          border: 1px solid rgba(0, 0, 0, 0.125);
+          border-radius: 0.25rem;
+          padding: 1rem;
+        "
+      >
+        <img src="/static/img/user-logo.png" width="96px" />
+        <p style="text-align: center">{{data.paciente}}</p>
+      </div>
+      <div
+        style="
+          background-clip: border-box;
+          border: 1px solid rgba(0, 0, 0, 0.125);
+          border-radius: 0.25rem;
+          padding: 1rem;
+          margin-top: 2rem;
+        "
+      >
+        <img src="/static/img/doctor-logo.png" width="96px" />
+        <p style="text-align: center">{{data.doctor}}</p>
+      </div>
+    </div>
+  </div>
 </div>
