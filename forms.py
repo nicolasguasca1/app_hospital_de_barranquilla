@@ -142,7 +142,7 @@ class DashBoardMedico(FlaskForm):
         message='Se requiere el apellido'), Length(min=2, max=40)])
     especialidad = SelectField(u'Especialidad actual: ', choices=dataEsp)
     phone = StringField('Telefono')
-    time = SelectField(u'Jornada de trabajo', choices=datamod)
+    time = SelectField(u'Jornada de trabajo actual: ', choices=datamod)
     user = StringField('Usuario', validators=[DataRequired(
         message='Se requiere nombre de usuario'), Length(min=2, max=40)])
     password = PasswordField('Contraseña')
@@ -227,8 +227,8 @@ class DashBoardPaciente(FlaskForm):
     TxtNroCel = TextField(
         ' Nro Celular *', validators=[InputRequired(message='Digite nro Celular')])
     DateFecha = DateField('Fecha de Nacimiento', format='%Y-%m-%d')
-    selSexo = SelectField(u'Genero', choices=datasex)
-    selGrupoRh = SelectField(u'Grupo Sanguineo', choices=[
+    selSexo = SelectField(u'Genero: ', choices=datasex)
+    selGrupoRh = SelectField(u'Grupo Sanguineo: ', choices=[
                              ('A+', 'A+'), ('A-', 'A-'), ('B+', 'B+'), ('B-', 'B-'), ('O+', 'O+'), ('O-', 'O-'), ('AB+', 'AB+'), ('AB-', 'AB-')])
     txtUsuario = TextField(
         'Usuario *', validators=[InputRequired(message='Ingrese Usuario')])

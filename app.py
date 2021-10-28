@@ -586,7 +586,7 @@ def dashboardmedico():
             if request.method == 'GET':
                 session['tipoid'] = ""
                 session['txtNroDoc'] = ""
-                session['nombres'] = "" 
+                session['nombres'] = ""
                 session['apellidos'] = ""
                 session['mail'] = ""
                 session['telefono'] = ""
@@ -626,7 +626,8 @@ def dashboardmedico():
                         flash('ERROR: Debe suministrar la especialidad del médico')
                         swerror = True
                     if modalidad == None or len(modalidad) == 0:
-                        flash('ERROR: Debe suministrar la jornada de trabajo del médico')
+                        flash(
+                            'ERROR: Debe suministrar la jornada de trabajo del médico')
                         swerror = True
                     if username == None or len(username) == 0 or not login_valido(username):
                         flash('ERROR: Debe suministrar un usuario válido ')
@@ -639,9 +640,11 @@ def dashboardmedico():
                         swerror = True
                     if not swerror:
                         # Preparar la consulta
-                        pwd = generate_password_hash(password)  # Cifrar la clave
+                        pwd = generate_password_hash(
+                            password)  # Cifrar la clave
                         sql = 'INSERT INTO Médico(nombres,apellidos,tipoId,NumeroId,idespecialidad,modalidad,mail,teléfono,usuario,clave,idrol) VALUES(?,?,?,?,?,?,?,?,?,?,?)'
-                        res = accion(sql, (name, lastname, tipoid, id, specialty,modalidad,email,phonenumber,username,pwd,role))
+                        res = accion(sql, (name, lastname, tipoid, id, specialty,
+                                     modalidad, email, phonenumber, username, pwd, role))
                         # Verificar resultados
                         if res == 0:
                             flash('ERROR: No se pudo insertar el registro')
@@ -681,18 +684,23 @@ def dashboardmedico():
                         flash('ERROR: Debe suministrar la especialidad del médico')
                         swerror = True
                     if modalidad == None or len(modalidad) == 0:
-                        flash('ERROR: Debe suministrar la jornada de trabajo del médico')
+                        flash(
+                            'ERROR: Debe suministrar la jornada de trabajo del médico')
                         swerror = True
                     if not swerror:
                         # Preparar la consulta
-                        pwd = generate_password_hash(password)  # Cifrar la clave
+                        pwd = generate_password_hash(
+                            password)  # Cifrar la clave
                         sql2 = f"UPDATE Médico set nombres = ?,apellidos = ?, tipoId = ?,NumeroId=?,idespecialidad=?,modalidad=?,mail=?,teléfono=?,usuario=?,clave=?,idrol=?  where idmedico = ?"
                         # Ejecutar la consulta
-                        res2 = accion(sql2, (name, lastname, tipoid, id, specialty,modalidad,email,phonenumber,username,pwd,role,session['idmed']))
+                        res2 = accion(sql2, (name, lastname, tipoid, id, specialty, modalidad,
+                                      email, phonenumber, username, pwd, role, session['idmed']))
                         if res2 == 0:
-                            flash('ERROR: No se pudieron almacenar los datos, reintente')
+                            flash(
+                                'ERROR: No se pudieron almacenar los datos, reintente')
                         else:
-                            flash('INFO: Los datos fueron actualizados satisfactoriamente')
+                            flash(
+                                'INFO: Los datos fueron actualizados satisfactoriamente')
                     return render_template('forms/dashboard-medico.html', form=form)
 
                 elif request.form.get('srchbtn') == 'Buscar':
@@ -704,7 +712,7 @@ def dashboardmedico():
                     res = seleccion(sql)
                     # Proceso los resultados
                     if len(res) != 0:
-                        #session.clear()
+                        # session.clear()
                         session['tipoid'] = tipoid
                         session['txtNroDoc'] = txtNroDoc
                         session['nombres'] = res[0][0]
@@ -719,8 +727,8 @@ def dashboardmedico():
                         if Estado == "ACTIVO":
                             session['activo'] = True
                         else:
-                            session['activo'] = False    
-                            session['found'] = True
+                            session['activo'] = False
+                        session['found'] = True
                     else:
                         session['tipoid'] = tipoid
                         session['txtNroDoc'] = txtNroDoc
@@ -755,12 +763,14 @@ def dashboardmedico():
                         sql3 = f"UPDATE Médico set Estado = ? where idmedico = ?"
                         state = "INACTIVO"
                         # Ejecutar la consulta
-                        res2 = accion(sql3, (state,session['idmed']))
+                        res2 = accion(sql3, (state, session['idmed']))
                         if res2 == 0:
-                            flash('ERROR: No se pudieron Eliminar los datos, reintente')
+                            flash(
+                                'ERROR: No se pudieron Eliminar los datos, reintente')
                         else:
                             session['activo'] = False
-                            flash('INFO: Los datos fueron Eliminados satisfactoriamente')
+                            flash(
+                                'INFO: Los datos fueron Eliminados satisfactoriamente')
                     return render_template('forms/dashboard-medico.html', form=form)
 
                 if request.form.get('recvbtn') == 'Recuperar':
@@ -780,18 +790,21 @@ def dashboardmedico():
                         flash('ERROR: Debe suministrar la especialidad del médico')
                         swerror = True
                     if modalidad == None or len(modalidad) == 0:
-                        flash('ERROR: Debe suministrar la jornada de trabajo del médico')
+                        flash(
+                            'ERROR: Debe suministrar la jornada de trabajo del médico')
                         swerror = True
                     if not swerror:
                         sql3 = f"UPDATE Médico set Estado = ? where idmedico = ?"
                         state = "ACTIVO"
                         # Ejecutar la consulta
-                        res2 = accion(sql3, (state,session['idmed']))
+                        res2 = accion(sql3, (state, session['idmed']))
                         if res2 == 0:
-                            flash('ERROR: No se pudieron Eliminar los datos, reintente')
+                            flash(
+                                'ERROR: No se pudieron Eliminar los datos, reintente')
                         else:
                             session['activo'] = True
-                            flash('INFO: Los datos fueron Recuperados satisfactoriamente')
+                            flash(
+                                'INFO: Los datos fueron Recuperados satisfactoriamente')
                 return render_template('forms/dashboard-medico.html', form=form)
         else:
             return render_template('pages/invalid.html')
@@ -799,10 +812,9 @@ def dashboardmedico():
         return render_template('errors/no_logueado.html')
 
 
-@app.route('/dashboard/paciente' , methods=['GET', 'POST'])
+@app.route('/dashboard/paciente', methods=['GET', 'POST'])
 # @login_required
 # Con el condicional se aseguran de que la vista se renderiza solo si el usuario está logueado
-
 def dashboardpaciente():
     if session:
         if session.get('rol') == '3':
@@ -850,9 +862,11 @@ def dashboardpaciente():
                         swerror = True
                     if not swerror:
                         # Preparar la consulta
-                        pwd = generate_password_hash(password)  # Cifrar la clave
+                        pwd = generate_password_hash(
+                            password)  # Cifrar la clave
                         sql = 'INSERT INTO Paciente(nombres,apellidos,tipoId,NumeroId,fechaNacimiento,sexo,grupoSanguineo,mail,telefono,usuario,clave,idrol) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)'
-                        res = accion(sql, (name, lastname, tipoid, id, birthday,genero,rhgrup,email,phonenumber,username,pwd,role))
+                        res = accion(sql, (name, lastname, tipoid, id, birthday,
+                                     genero, rhgrup, email, phonenumber, username, pwd, role))
                         # Verificar resultados
                         if res == 0:
                             flash('ERROR: No se pudo insertar el registro')
@@ -889,11 +903,14 @@ def dashboardpaciente():
                         # Preparar la consulta
                         sql2 = f"UPDATE Paciente set nombres=?,apellidos=?,tipoId=?,NumeroId=?,fechaNacimiento=?,sexo=?,grupoSanguineo = ?,mail=?,telefono=?,usuario=?,idrol=?  where idpaciente = ?"
                         # Ejecutar la consulta
-                        res2 = accion(sql2, (name, lastname, tipoid, id, birthday,genero,rhgrup,email,phonenumber,username,role,session['idpac']))
+                        res2 = accion(sql2, (name, lastname, tipoid, id, birthday, genero,
+                                      rhgrup, email, phonenumber, username, role, session['idpac']))
                         if res2 == 0:
-                            flash('ERROR: No se pudieron almacenar los datos, reintente')
+                            flash(
+                                'ERROR: No se pudieron almacenar los datos, reintente')
                         else:
-                            flash('INFO: Los datos fueron actualizados satisfactoriamente')
+                            flash(
+                                'INFO: Los datos fueron actualizados satisfactoriamente')
                     return render_template('forms/dashboard-paciente.html', form=form)
 
                 if request.form.get('srchbtn') == 'Buscar':
@@ -905,7 +922,7 @@ def dashboardpaciente():
                     res = seleccion(sql)
                     # Proceso los resultados
                     if len(res) != 0:
-                        #session.clear()
+                        # session.clear()
                         session['tipoid'] = tipoid
                         session['txtNroDoc'] = txtNroDoc
                         session['nombres'] = res[0][0]
@@ -922,12 +939,12 @@ def dashboardpaciente():
                         if Estado == "ACTIVO":
                             session['activo'] = True
                         else:
-                            session['activo'] = False    
+                            session['activo'] = False
                         session['found'] = True
                     else:
                         session['tipoid'] = tipoid
                         session['txtNroDoc'] = txtNroDoc
-                        session['nombres'] = "" 
+                        session['nombres'] = ""
                         session['apellidos'] = ""
                         session['DateFecha'] = ""
                         session['selSexo'] = ""
@@ -958,12 +975,14 @@ def dashboardpaciente():
                         sql3 = f"UPDATE Paciente set Estado = ? where idpaciente = ?"
                         state = "INACTIVO"
                         # Ejecutar la consulta
-                        res2 = accion(sql3, (state,session['idpac']))
+                        res2 = accion(sql3, (state, session['idpac']))
                         if res2 == 0:
-                            flash('ERROR: No se pudieron Eliminar los datos, reintente')
+                            flash(
+                                'ERROR: No se pudieron Eliminar los datos, reintente')
                         else:
                             session['activo'] = False
-                            flash('INFO: Los datos fueron Eliminados satisfactoriamente')
+                            flash(
+                                'INFO: Los datos fueron Eliminados satisfactoriamente')
                     return render_template('forms/dashboard-paciente.html', form=form)
 
                 if request.form.get('recvbtn') == 'Recuperar':
@@ -981,12 +1000,14 @@ def dashboardpaciente():
                         sql3 = f"UPDATE Paciente set Estado = ? where idpaciente = ?"
                         state = "ACTIVO"
                         # Ejecutar la consulta
-                        res2 = accion(sql3, (state,session['idpac']))
+                        res2 = accion(sql3, (state, session['idpac']))
                         if res2 == 0:
-                            flash('ERROR: No se pudieron Eliminar los datos, reintente')
+                            flash(
+                                'ERROR: No se pudieron Eliminar los datos, reintente')
                         else:
                             session['activo'] = True
-                            flash('INFO: Los datos fueron Recuperados satisfactoriamente')
+                            flash(
+                                'INFO: Los datos fueron Recuperados satisfactoriamente')
                 return render_template('forms/dashboard-paciente.html', form=form)
         else:
             return render_template('pages/invalid.html')
