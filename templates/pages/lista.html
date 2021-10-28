@@ -1,5 +1,5 @@
-{% extends 'layouts/main.html' %} {% block title %}Listado de citas{% endblock
-%} {% block content %}
+{% extends 'layouts/main.html' %} {% block title %}Listado de citas{% endblock%} 
+{% block content %}
 
 <br />
 <br />
@@ -16,6 +16,7 @@
       padding: 1rem;
     "
   >
+  {% if session.rol == '3' %}
     <table class="table">
       <thead>
         <tr>
@@ -24,22 +25,31 @@
           <th scope="col">Paciente</th>
           <th scope="col">Doctor</th>
           <th scope="col">Hora/Fecha</th>
+          <th scope="col">Estado</th>
           <th></th>
         </tr>
       </thead>
       <tbody>
         {% for item in data %}
         <tr>
-          <th scope="row">{{item.index}}</th>
+          <th scope="row">{{loop.index}}</th>
           <td>{{item.descrip}}</td>
           <td>{{item.paciente}}</td>
           <td>{{item.doctor}}</td>
-          <td>{{item.fecha}}</td>
+          <td>{{item.hora}} | {{item.fecha}}</td>
+          <td>{{item.estado}}</td>
           <td>
             <img
               id="view{{index}}"
-              onclick="view({{item.id}})"
+              onclick="view({{item.id}}, 0)"
               src="/static/img/view.png"
+              alt=""
+              style="width: 33px; margin-right: 12px; cursor: pointer"
+            />
+            <img
+              id="edit{{index}}"
+              onclick="view({{item.id}}, 1)"
+              src="/static/img/edit-logo.png"
               alt=""
               style="width: 33px; margin-right: 12px; cursor: pointer"
             />
@@ -55,8 +65,56 @@
         {% endfor %}
       </tbody>
     </table>
+  {% else %}
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Descripción</th>
+          <th scope="col">Paciente</th>
+          <th scope="col">Doctor</th>
+          <th scope="col">Hora/Fecha</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for item in data %}
+        <tr>
+          <th scope="row">{{loop.index}}</th>
+          <td>{{item.descrip}}</td>
+          <td>{{item.paciente}}</td>
+          <td>{{item.doctor}}</td>
+          <td>{{item.hora}} | {{item.fecha}}</td>
+          <td>
+            <img
+              id="view{{index}}"
+              onclick="view({{item.id}}, 0)"
+              src="/static/img/view.png"
+              alt=""
+              style="width: 33px; margin-right: 12px; cursor: pointer"
+            />
+            <img
+              id="edit{{index}}"
+              onclick="view({{item.id}}, 1)"
+              src="/static/img/edit-logo.png"
+              alt=""
+              style="width: 33px; margin-right: 12px; cursor: pointer"
+            />
+            <img
+              id="delete{{index}}"
+              onclick="deleteBtn({{item.id}})"
+              src="/static/img/deleted-logo.png"
+              alt=""
+              style="width: 23px; cursor: pointer"
+            />
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
     <div>
-      {% if session.rol == '1' %}
+    {% if session.rol == '1' %}
       <img
         id="add"
         onclick="mk_table()"
@@ -64,11 +122,12 @@
         alt=""
         style="width: 30px; cursor: pointer"
       />
-      {% endif%}
+    {% endif %}
     </div>
   </div>
 </div>
-{% endblock %} {% block detail %}
+{% endblock %} 
+{% block detail %}
 <div
   id="dark"
   style="

@@ -311,47 +311,110 @@ def vistaCita():
 
         if request.method == 'GET':
             jsdata = request.args.get('jsdata')
-            print("jsdata: "+jsdata)
+            jsdata1 = request.args.get('jsdata1')
+            if jsdata1 != '1':
+                # Preparar la consulta
+                sqlcita = f"SELECT idpaciente, especialidad, idmedico, horario, fecha, comentarios, valoracion, id FROM Cita WHERE id = '{jsdata}'"
+                
+                # Ejecutar la consulta
+                rescita = seleccion(sqlcita)
+                fecha_split = str(rescita[0][4]).split("-")
+                fecha_cita = datetime(int(fecha_split[0]), int(fecha_split[1]), int(fecha_split[2]))
+                fecha_hoy = datetime.now()  # fecha de hoy
+                #Consultar valoracion
+                sqlval = f"SELECT Valoracion FROM Valoraciones WHERE id = '{rescita[0][6]}'"
+                resval = seleccion(sqlval)
+                if resval:
+                    val = resval[0][0]
+                else:
+                    val = ""
 
-            # Preparar la consulta
-            sqlcita = f"SELECT idpaciente, especialidad, idmedico, horario, fecha, comentarios, valoracion, id FROM Cita WHERE id = '{jsdata}'"
-            sqlval = f"SELECT Valoracion FROM Valoraciones"
-            # Ejecutar la consulta
-            rescita = seleccion(sqlcita)
-            resval = seleccion(sqlval)
-            fecha_split = str(rescita[0][4]).split("-")
-            fecha_cita = datetime(int(fecha_split[0]), int(
-                fecha_split[1]), int(fecha_split[2]))
-            fecha_hoy = datetime.now()  # fecha de hoy
-            dataVal = []
-            i = 0
-            while i < len(resval):
-                dataVal.append(resval[i][0])
-                i += 1
-
-            if (fecha_cita < fecha_hoy):
-                ontime = 1
+                if (fecha_cita < fecha_hoy):
+                    ontime = 1
+                else:
+                    ontime = 0
+                sqlmed = f"SELECT nombres, apellidos FROM Médico WHERE idmedico = '{rescita[0][2]}'"
+                sqlpac = f"SELECT nombres, apellidos FROM Paciente WHERE idpaciente = '{rescita[0][0]}'"
+                resmed = seleccion(sqlmed)
+                respac = seleccion(sqlpac)
+                datos = {
+                    "id": rescita[0][7],
+                    "descrip": rescita[0][1],
+                    "paciente": str(respac[0][0])+" "+str(respac[0][1]),
+                    "idp": rescita[0][0],
+                    "doctor": str(resmed[0][0])+" "+str(resmed[0][1]),
+                    "idd": rescita[0][2],
+                    "fecha": str(rescita[0][3])+" "+str(rescita[0][4]),
+                    "comentario": rescita[0][5],
+                    "valoracion": val,
+                    "rol": rol,
+                    "ontime": ontime,
+                    "edicion": '0'
+                }
+                return render_template('pages/wedit.html', data=datos)
             else:
-                ontime = 0
-            sqlmed = f"SELECT nombres, apellidos FROM Médico WHERE idmedico = '{rescita[0][2]}'"
-            sqlpac = f"SELECT nombres, apellidos FROM Paciente WHERE idpaciente = '{rescita[0][0]}'"
-            resmed = seleccion(sqlmed)
-            respac = seleccion(sqlpac)
-            datos = {
-                "id": rescita[0][7],
-                "descrip": rescita[0][1],
-                "paciente": str(respac[0][0])+" "+str(respac[0][1]),
-                "idp": rescita[0][0],
-                "doctor": str(resmed[0][0])+" "+str(resmed[0][1]),
-                "idd": rescita[0][2],
-                "fecha": str(rescita[0][3])+" "+str(rescita[0][4]),
-                "comentario": rescita[0][5],
-                "valoracion": rescita[0][6],
-                "rol": rol,
-                "ontime": ontime
-            }
+                # Preparar la consulta
+                sqlcita = f"SELECT idpaciente, especialidad, idmedico, horario, fecha, comentarios, valoracion, id FROM Cita WHERE id = '{jsdata}'"
+                # Ejecutar la consulta
+                rescita = seleccion(sqlcita)                
+                fecha_split = str(rescita[0][4]).split("-")
+                fecha_cita = datetime(int(fecha_split[0]), int(fecha_split[1]), int(fecha_split[2]))
+                fecha_hoy = datetime.now()  # fecha de hoy
+                #Consultar valoracion
+                sqlval = f"SELECT Valoracion FROM Valoraciones WHERE id = '{rescita[0][6]}'"
+                resval = seleccion(sqlval)
+                if resval:
+                    val = resval[0][0]
+                else:
+                    val = ""
 
-            return render_template('pages/wedit.html', data=datos)
+                if (fecha_cita < fecha_hoy):
+                    ontime = 1
+                else:
+                    ontime = 0
+                sqlmed = f"SELECT nombres, apellidos FROM Médico WHERE idmedico = '{rescita[0][2]}'"
+                sqlpac = f"SELECT nombres, apellidos FROM Paciente WHERE idpaciente = '{rescita[0][0]}'"
+                resmed = seleccion(sqlmed)
+                respac = seleccion(sqlpac)
+                datos = {
+                    "id": rescita[0][7],
+                    "descrip": rescita[0][1],
+                    "paciente": str(respac[0][0])+" "+str(respac[0][1]),
+                    "idp": rescita[0][0],
+                    "doctor": str(resmed[0][0])+" "+str(resmed[0][1]),
+                    "idd": rescita[0][2],
+                    "fecha": str(rescita[0][3])+" "+str(rescita[0][4]),
+                    "comentario": rescita[0][5],
+                    "valoracion": val,
+                    "rol": rol,
+                    "ontime": ontime,
+                    "edicion": '1'
+                }
+                return render_template('pages/wedit.html', data=datos)
+        else:
+            if request.form['rol'] == '1':
+                jsdata = request.form['valoracion']                
+            elif request.form['rol'] == '2':
+                jsdata1 = request.form['comentario']                
+            else:
+                  jsdata = request.form['valoracion']
+                  jsdata1 = request.form['comentario'] 
+            jsdata2 = request.form['id']
+            
+            if request.form['rol'] == '1':
+                sql = f"UPDATE Cita SET valoracion = ? WHERE id = ?"
+                res = accion(sql, (jsdata, jsdata2))
+            elif request.form['rol'] == '2':
+                sql = f"UPDATE Cita SET comentarios = ? WHERE id = ?"
+                res = accion(sql, (jsdata1, jsdata2))
+            else:
+                sql = f"UPDATE Cita SET comentarios = ?, valoracion = ? WHERE id = ?"
+                res = accion(sql, (jsdata1, jsdata, jsdata2))
+            if res == 0:
+                flash('ERROR: No se pudo actualizar el registro')
+            else:
+                flash("El registro se ha actualizado")
+            return redirect(url_for('lista'))
     else:
         return render_template('error/no_logueado.html')
 
@@ -363,10 +426,9 @@ def lista():
             if session["rol"] == '3':
                 datos = []
                 # Preparar la consulta
-                sqlcita = f"SELECT idpaciente, especialidad, idmedico, horario, fecha, comentarios, valoracion, id FROM Cita"
+                sqlcita = f"SELECT idpaciente, especialidad, idmedico, horario, fecha, comentarios, valoracion, id, Estado FROM Cita"
                 # Ejecutar la consulta
                 rescita = seleccion(sqlcita)
-
                 i = 0
                 while i < len(rescita):
                     sqlmed = f"SELECT nombres, apellidos FROM Médico WHERE idmedico = '{rescita[i][2]}'"
@@ -381,11 +443,14 @@ def lista():
                         "id": rescita[i][7],
                         "doctor": str(resmed[0][0])+" "+str(resmed[0][1]),
                         "idd": rescita[i][2],
-                        "fecha": str(rescita[i][3])+" | "+str(rescita[i][4]),
+                        "fecha": rescita[i][4],
+                        "hora": rescita[i][3],
                         "comentario": rescita[i][5],
-                        "valoracion": rescita[i][6]
+                        "valoracion": rescita[i][6],
+                        "estado": rescita[i][8]
                     }
                     datos.append(temp)
+                    datos = sorted(datos, key=lambda d: d['fecha']) 
                     i += 1
                 return render_template('pages/lista.html', data=datos)
             elif session["rol"] == '2':
@@ -395,7 +460,7 @@ def lista():
                 # Ejecutar la consulta
                 respac = seleccion(sqlpac)
                 # Preparar la consulta
-                sqlcita = f"SELECT idpaciente, especialidad, idmedico, horario, fecha, comentarios, valoracion, id FROM Cita WHERE idmedico = '{respac[0][0]}'"
+                sqlcita = f"SELECT idpaciente, especialidad, idmedico, horario, fecha, comentarios, valoracion, id FROM Cita WHERE idmedico = '{respac[0][0]}' and Estado = 'ACTIVO'"
                 # Ejecutar la consulta
                 rescita = seleccion(sqlcita)
 
@@ -413,11 +478,13 @@ def lista():
                         "id": rescita[i][7],
                         "doctor": str(resmed[0][0])+" "+str(resmed[0][1]),
                         "idd": rescita[i][2],
-                        "fecha": str(rescita[i][3])+" "+str(rescita[i][4]),
+                        "fecha": rescita[i][4],
+                        "hora": rescita[i][3],
                         "comentario": rescita[i][5],
                         "valoracion": rescita[i][6]
                     }
                     datos.append(temp)
+                    datos = sorted(datos, key=lambda d: d['fecha']) 
                     i += 1
                 return render_template('pages/lista.html', data=datos)
             else:
@@ -427,7 +494,7 @@ def lista():
                 # Ejecutar la consulta
                 respac = seleccion(sqlpac)
                 # Preparar la consulta
-                sqlcita = f"SELECT idpaciente, especialidad, idmedico, horario, fecha, comentarios, valoracion, id FROM Cita WHERE idpaciente = '{respac[0][0]}'"
+                sqlcita = f"SELECT idpaciente, especialidad, idmedico, horario, fecha, comentarios, valoracion, id FROM Cita WHERE idpaciente = '{respac[0][0]}' and Estado = 'ACTIVO'"
                 # Ejecutar la consulta
                 rescita = seleccion(sqlcita)
 
@@ -445,30 +512,30 @@ def lista():
                         "id": rescita[i][7],
                         "doctor": str(resmed[0][0])+" "+str(resmed[0][1]),
                         "idd": rescita[i][2],
-                        "fecha": str(rescita[i][3])+" "+str(rescita[i][4]),
+                        "fecha": rescita[i][4],
+                        "hora": rescita[i][3],
                         "comentario": rescita[i][5],
                         "valoracion": rescita[i][6]
                     }
                     datos.append(temp)
+                    datos = sorted(datos, key=lambda d: d['fecha']) 
                     i += 1
                 return render_template('pages/lista.html', data=datos)
     else:
         return render_template('pages/invalid.html')
 
-
 @app.route('/borrarCita', methods=['GET', 'POST'])
 def borrarCita():
     if request.method == 'POST':
         jsdata = request.form['data']
-        print(jsdata)
-        sql = f"DELETE FROM Cita WHERE id = '{jsdata}'"
-        res = borrar(sql)
+        estado = "INACTIVO"
+        sql = f"UPDATE Cita set Estado = ? where id = ?"
+        res = accion(sql, (estado, jsdata))
         if res == 0:
             flash('ERROR: No se pudo borrar el registro')
         else:
             flash("El registro se ha borrado")
         return redirect(url_for('lista'))
-
 
 @app.route('/borrarcitasForm', methods=['GET'])
 def borrarForm():

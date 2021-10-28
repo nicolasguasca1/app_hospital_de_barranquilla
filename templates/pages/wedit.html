@@ -4,7 +4,7 @@
     <div style="width: 36rem; margin: auto;">
         <div class="card"style="padding:1rem;position: relative; display: flex; flex-direction: row;min-width: 0;word-wrap: break-word;background-color: #fff;background-clip: border-box;border: 1px solid rgba(0,0,0,.125);border-radius: .25rem;">
         <div style="padding: 1rem; background-clip: border-box; border: 1px solid rgba(0,0,0,.125); border-radius: .25rem; ">
-            <p><strong>Detalle de cita {{data.id}}</strong></p>
+            <p><strong>Detalle de cita id: {{data.id}}</strong></p>
             <p>Fecha de cita: {{data.fecha}}</p>
             <p>Paciente: {{data.paciente}}</p>
             <p>ID: {{data.idp}}</p>
@@ -12,40 +12,60 @@
             <p>ID: {{data.idd}}</p>
             <p>Especialidad: {{data.descrip}}</p>
             <br>
-            <p>Comentarios:</p>
-            <div style="background-clip: border-box;
-                border: 1px solid rgba(0,0,0,.125);
-                border-radius: .25rem; padding: 0.5rem;">
-                {% if data.rol == '2'and data.ontime == 1 %}
-                    <textarea class="form-control" id="comentario">{{data.comentario}}</textarea>
-                {% else %}
+            {% if data.edicion == '0' %}
+                <p>Comentarios:</p>
+            {% elif data.edicion == '1' and data.rol != '1' %}
+                <p>Comentarios:</p>
+            {% endif%}
+            <form action="/wedit" method="POST">
+                <input type="text" name="id" value="{{data.id}}" style="height: 0px; visibility: collapse; padding: 0; border: 0; position: fixed;">
+                <input type="text" name="rol" value="{{data.rol}}" style="height: 0px; visibility: collapse; padding: 0; border: 0; position: fixed;">
+            {% if data.rol != '1' and data.ontime == 1 and data.edicion == '1' %}
+                <div style="background-clip: border-box;
+                    border: 1px solid rgba(0,0,0,.125);
+                    border-radius: .25rem; padding: 0.5rem;">
+                    <textarea class="form-control" id="comentario" name="comentario">{{data.comentario}}</textarea>
+                </div>
+            {% elif data.edicion == '0' or data.ontime == 0 and data.rol != '1' %}
+                <div style="background-clip: border-box;
+                    border: 1px solid rgba(0,0,0,.125);
+                    border-radius: .25rem; padding: 0.5rem;">
                     <textarea class="form-control" id="comentario" disabled>{{data.comentario}}</textarea>
-                {% endif %}
-            </div>
+                </div>
+            {% endif %}            
+            {% if data.edicion == '0' %}
             <p>Valoración:</p>
+            {% elif data.edicion == '1' and data.rol != '2' %}
+            <p>Valoración:</p>
+            {%endif%}
+            {% if data.rol != '2' and data.ontime == 1 and data.edicion == '1' %}
             <div style="background-clip: border-box;
                 border: 1px solid rgba(0,0,0,.125);
                 border-radius: .25rem; padding: 0.5rem;">
-                {% if data.rol == '1' and data.ontime == 1 %}
-                    {% if data.valoracion == "" %}
-                    <select class="form-control" id="valoracion">
-                        <option value="Malo">Malo</option>
-                        <option value="Regular">Regular</option>
-                        <option value="Bueno">Bueno</option>
-                        <option value="Excelente">Excelente</option>
+                    <select class="form-control" id="valoracion" name="valoracion">
+                        <option value="1">Malo</option>
+                        <option value="2">Regular</option>
+                        <option value="3">Bueno</option>
+                        <option value="4">Excelente</option>
                     </select>
-                    {% else%}
-                    <textarea class="form-control" id ="valoracion">{{data.valoracion}}</textarea>
-                    {% endif%}
-                {% else %}
-                    <textarea class="form-control" id ="valoracion" disabled>{{data.valoracion}}</textarea>
-                {% endif %}
             </div>
-            {% if data.rol != '3' and data.ontime == 1 %}
-                <div id="update" style="width: 60%; margin: auto;height: 20px; background: blue; margin-top: 1.5rem; color: white;text-align: center; cursor: pointer;" onclick="updateCita({{data.id}})">Actualizar</div>
-            {% else %}
-                <div id="update" class="btn btn-primary btn-block" style="width: 60%; margin: auto;height: 20px; background: rgb(135, 135, 250); margin-top: 1.5rem; color: white;text-align: center;">Actualizar</div>
+            {% elif data.edicion == '0' or data.ontime == 0 and data.rol != '2' %}
+            <div style="background-clip: border-box;
+                border: 1px solid rgba(0,0,0,.125);
+                border-radius: .25rem; padding: 0.5rem;">
+                    <input type="text" class="form-control" id ="valoracion" value="{{data.valoracion}}" disabled>
+            </div>
             {% endif %}
+            {% if data.ontime == 1 and data.edicion == '1' %}
+                <div style="padding: .5rem;">
+                    <button type="submit" id="update" class="btn btn-primary btn-block">Actualizar</button>
+                </div>                
+            {% elif data.edicion == '1' %}
+            <div style="padding: .5rem;">
+                <button type="submit" id="update" class="btn btn-primary btn-block" disabled>Actualizar</button>
+            </div>                
+            {% endif %}
+            </form>
         </div>
         <div style="padding: 1rem;"> 
             <div style="background-clip: border-box;

@@ -170,12 +170,12 @@ function add_data()
         mk_table();
     }
 }
-function view(index)
+function view(index, edit)
 { 
     document.getElementById("dark").style.background = "rgba(0, 0, 0, .7)";
     document.getElementById("dark").style.visibility = "visible";
     console.log("view");
-    wedit_(index);
+    wedit_(index, edit);
 }
 
 function close_()
@@ -187,12 +187,13 @@ function close_()
     console.log("close");    
 }
 
-function wedit_(index)
+function wedit_(index, edit)
 {
     $.ajax({
         type:'GET',
         url:'/wedit',
-        data:{jsdata: index},
+        data:{jsdata: index,
+              jsdata1: edit},
         success:function(response)
         {
             document.getElementById("w-edit").innerHTML = response;
