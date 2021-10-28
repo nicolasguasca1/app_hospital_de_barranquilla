@@ -77,7 +77,7 @@ class RegisterFormMed(FlaskForm):
         'Correo electrónico', validators=[DataRequired(), Length(min=6, max=40)]
     )
     professionalId = StringField(
-        'Número de tarjeta profesional', validators=[DataRequired(), Length(min=6, max=40)]
+        'Número de médico registrado para ejercer', validators=[DataRequired(), Length(min=6, max=40)]
     )
     username = StringField(
         'Defina un nombre de usuario', validators=[DataRequired(), Length(min=6, max=25)]
